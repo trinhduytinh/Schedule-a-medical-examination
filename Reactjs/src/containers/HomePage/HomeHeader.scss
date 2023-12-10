@@ -41,7 +41,7 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      .support{
+      .support {
         padding-right: 50px;
         display: flex;
         align-items: center;
@@ -51,17 +51,31 @@
           margin-right: 5px;
         }
       }
-      .language-vi{
+      .language-vi {
         cursor: pointer;
-        &.active{
-          color: orange;
+        opacity: 0.2;
+        &.active {
+          opacity: 1;
+          span {
+            color: orange;
+          }
+        }
+        &:hover {
+          opacity: 0.8;
         }
       }
-      .language-japan{
+      .language-japan {
         margin: 0 10px;
         cursor: pointer;
-        &.active{
-          color: blue;
+        opacity: 0.2;
+        &.active {
+          opacity: 1;
+          span {
+            color: blue;
+          }
+        }
+        &:hover {
+          opacity: 0.8;
         }
       }
     }

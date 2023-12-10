@@ -1,0 +1,23 @@
+{
+  "homeheader": {
+    "specialty": "専門",
+    "search-doctor": "専門医を検索",
+    "health-facility": "医療機関",
+    "select-room": "病院またはクリニックを選択",
+    "doctor": "医者",
+    "select-doctor": "優れた医者を選択",
+    "fee": "診療費",
+    "check-health": "一般健康診断",
+    "support": "サポート"
+  },
+  "banner": {
+    "title1": "医療プラットフォーム",
+    "title2": "包括的な健康ケア",
+    "specialized-examination": "専門医による診断",
+    "remote-examination": "遠隔診断",
+    "general-examination": "一般的な健康診断",
+    "medical-tests": "医学検査",
+    "mental-health": "精神的な健康",
+    "dental-examination": "歯科診断"
+  }
+}
