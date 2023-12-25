@@ -16,7 +16,7 @@ class HomeHeader extends Component {
         <div className="home-header-container">
           <div className="home-header-content">
             <div className="left-content">
-              <i class="fas fa-bars"></i>
+              <i className="fas fa-bars"></i>
               <div className="header-logo"></div>
             </div>
             <div className="center-content">
@@ -105,7 +105,7 @@ class HomeHeader extends Component {
             <div className="options">
               <div className="option-child">
                 <div className="icon-child">
-                  <i class="far fa-hospital"></i>
+                  <i className="far fa-hospital"></i>
                 </div>
                 <div className="text-child">
                   <FormattedMessage id={"banner.specialized-examination"} />
@@ -113,7 +113,7 @@ class HomeHeader extends Component {
               </div>
               <div className="option-child">
                 <div className="icon-child">
-                  <i class="fas fa-mobile-alt"></i>
+                  <i className="fas fa-mobile-alt"></i>
                 </div>
                 <div className="text-child">
                   <FormattedMessage id={"banner.remote-examination"} />
