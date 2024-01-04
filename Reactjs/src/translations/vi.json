@@ -48,7 +48,9 @@
     "position": "Chức danh",
     "role": "Vai trò",
     "image": "Ảnh đại diện",
-    "save": "Lưu lại"
+    "save": "Lưu lại",
+    "upload-photo": "Tải ảnh",
+    "edit": "Lưu thay đổi"
   }
 
 }
