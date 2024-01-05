@@ -26,7 +26,9 @@
     background: #e3e3e3 !important;
   }
 }
-
+.slick-disabled{
+  display: none !important;
+}
 .section-share {
   &.section-specialty {
     background: #f5f5f5;
@@ -55,7 +57,7 @@
           background-image: url("../../assets/medical-facility/benh-vien-da-khoa.jpg");
         }
         &.section-outstanding-doctor {
-          background-image: url("../../assets/outstanding-doctor/doctor2.jpg");
+          // background-image: url("../../assets/outstanding-doctor/doctor2.jpg");
           width: 120px;
           height: 120px;
           border-radius: 50%;

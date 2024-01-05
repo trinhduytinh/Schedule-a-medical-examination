@@ -1,19 +1,19 @@
 {
   "homeheader": {
-    "specialty": "Medical specialty",
-    "search-doctor": "Find a doctor by specialty",
-    "health-facility": "Health facilities",
-    "select-room": "Choose a hospital or clinic",
+    "specialty": "Specialty",
+    "search-doctor": "Search doctor by specialty",
+    "health-facility": "Health Facility",
+    "select-room": "Select hospital room",
     "doctor": "Doctor",
-    "select-doctor": "Choose a good doctor",
-    "fee": "Examination package",
+    "select-doctor": "Select top doctor",
+    "fee": "Treatment package",
     "check-health": "General health check",
     "support": "Support",
     "welcome": "Welcome"
   },
   "banner": {
-    "title1": "MEDICAL FOUNDATION",
-    "title2": "COMPREHENSIVE HEALTH CARE",
+    "title1": "HEALTH CARE PLATFORM",
+    "title2": "FULLY-CAPABLE HEALTHCARE SERVICES",
     "specialized-examination": "Specialized examination",
     "remote-examination": "Remote examination",
     "general-examination": "General examination",
@@ -23,17 +23,17 @@
   },
   "menu": {
     "admin": {
-      "manage-user": "User management",
-      "manage-doctor": "Doctor management",
-      "manage-admin": "Admin management",
-      "crud": "User CRUD",
-      "crud-redux": "User CRUD with Redux",
-      "clinic": "Clinics",
-      "manage-clinic": "Clinic management",
+      "manage-user": "Manage User",
+      "manage-doctor": "Manage Doctor",
+      "manage-admin": "Manage Admin",
+      "crud": "CRUD user",
+      "crud-redux": "CRUD redux",
+      "clinic": "Hospital",
+      "manage-clinic": "Manage Hospital",
       "specialty": "Specialty",
-      "manage-specialty": "Specialty management",
+      "manage-specialty": "Manage Specialty",
       "handbook": "Handbook",
-      "manage-handbook": "Handbook management"
+      "manage-handbook": "Manage Handbook"
     }
   },
   "manage-user": {
@@ -47,9 +47,13 @@
     "gender": "Gender",
     "position": "Position",
     "role": "Role",
-    "image": "Avatar",
+    "image": "Profile picture",
     "save": "Save",
-    "upload-photo": "Upload photos",
-    "edit": "Edit user"
+    "upload-photo": "Upload photo",
+    "edit": "Save changes"
+  },
+  "homepage": {
+    "outstanding-doctor": "Outstanding Doctors",
+    "more-infor": "More Information"
   }
 }
