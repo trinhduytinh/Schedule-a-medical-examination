@@ -114,9 +114,11 @@
   }
   .section-customize {
     padding: 5px;
+    cursor: pointer;
     .customize-border {
-      border: 1px solid gold;
+      border: 1px groove #bab8b7;
       padding: 20px;
+      background-color: #ffffff;
     }
   }
 }

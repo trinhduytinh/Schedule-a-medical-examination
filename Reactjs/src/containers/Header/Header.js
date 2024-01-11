@@ -8,8 +8,8 @@ import { LANGUAGES } from "../../utils";
 import "./Header.scss";
 
 class Header extends Component {
-  handleChangeLanguage = (language) => {
-    this.props.changeLanguageAppRedux(language);
+  handleChangeLanguage = (event) => {
+    this.props.changeLanguageAppRedux(event.target.value);
   };
   render() {
     const { processLogout, language, userInfo } = this.props;
@@ -25,7 +25,7 @@ class Header extends Component {
             <FormattedMessage id="homeheader.welcome" />,{" "}
             {userInfo && userInfo.firstName ? userInfo.firstName : ""}!
           </span>
-          <span
+          {/* <span
             className={
               language == LANGUAGES.VI ? "language-vi active" : "language-vi"
             }
@@ -38,8 +38,14 @@ class Header extends Component {
             }
             onClick={() => this.handleChangeLanguage(LANGUAGES.EN)}>
             EN
-          </span>
+          </span> */}
           {/* nút logout */}
+
+          <select value={language} onChange={this.handleChangeLanguage}>
+            <option value={LANGUAGES.VI}>Tiếng Việt</option>
+            <option value={LANGUAGES.EN}>English</option>
+            <option value={LANGUAGES.JA}>日本語</option>
+          </select>
           <div
             className="btn btn-logout"
             onClick={processLogout}

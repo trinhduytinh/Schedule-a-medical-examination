@@ -3,21 +3,57 @@
     "specialty": "専門",
     "search-doctor": "専門医を検索",
     "health-facility": "医療機関",
-    "select-room": "病院またはクリニックを選択",
+    "select-room": "病院または診療室を選択",
     "doctor": "医者",
     "select-doctor": "優れた医者を選択",
-    "fee": "診療費",
+    "fee": "受診パッケージ",
     "check-health": "一般健康診断",
-    "support": "サポート"
+    "support": "サポート",
+    "welcome": "こんにちは"
   },
   "banner": {
     "title1": "医療プラットフォーム",
     "title2": "包括的な健康ケア",
-    "specialized-examination": "専門医による診断",
-    "remote-examination": "遠隔診断",
-    "general-examination": "一般的な健康診断",
+    "specialized-examination": "専門医診察",
+    "remote-examination": "遠隔診察",
+    "general-examination": "一般診察",
     "medical-tests": "医学検査",
-    "mental-health": "精神的な健康",
-    "dental-examination": "歯科診断"
+    "mental-health": "メンタルヘルス",
+    "dental-examination": "歯科検診"
+  },
+  "menu": {
+    "admin": {
+      "manage-user": "ユーザー管理",
+      "manage-doctor": "医者管理",
+      "manage-admin": "管理者管理",
+      "crud": "CRUDユーザー",
+      "crud-redux": "CRUD Redux",
+      "clinic": "診療所",
+      "manage-clinic": "診療所管理",
+      "specialty": "専門",
+      "manage-specialty": "専門管理",
+      "handbook": "ハンドブック",
+      "manage-handbook": "ハンドブック管理"
+    }
+  },
+  "manage-user": {
+    "add": "新しいユーザーを追加",
+    "email": "メール",
+    "password": "パスワード",
+    "first-name": "名",
+    "last-name": "姓",
+    "phone-number": "電話番号",
+    "address": "住所",
+    "gender": "性別",
+    "position": "役職",
+    "role": "役割",
+    "image": "プロフィール画像",
+    "save": "保存",
+    "upload-photo": "写真をアップロード",
+    "edit": "変更を保存"
+  },
+  "homepage": {
+    "outstanding-doctor": "先週の優れた医者",
+    "more-infor": "詳細を表示"
   }
 }
