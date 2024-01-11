@@ -1,9 +1,10 @@
 import db from "../models/index";
-import {translate } from "bing-translate-api";
+import { translate } from "bing-translate-api";
 let getTopDoctorHome = (limit) => {
   return new Promise(async (resolve, reject) => {
     try {
       let users = await db.User.findAll({
+        where: { roleId: "R2" },
         limit: limit,
         order: [["createdAt", "DESC"]], //sap xep theo ngay tao
         attributes: {
@@ -60,42 +61,79 @@ let saveDetailInforDoctor = (inputData) => {
       if (
         !inputData.doctorId ||
         !inputData.contentHTML ||
-        !inputData.contentMarkdown
+        !inputData.contentMarkdown ||
+        !inputData.action
       ) {
         resolve({
           errCode: 1,
           errMessage: "Missing parameter",
         });
       } else {
-        let contentHTMLEn = '', contentHTMLJa = '', descriptionEn = '', descriptionJa = '';
-        
+        let contentHTMLEn = "",
+          contentHTMLJa = "",
+          descriptionEn = "",
+          descriptionJa = "";
+
         try {
-          const translationHTMLen = await translate(inputData.contentHTML, null, 'en');
+          const translationHTMLen = await translate(
+            inputData.contentHTML,
+            null,
+            "en"
+          );
           contentHTMLEn = translationHTMLen.translation;
 
-          const translationHTMLja = await translate(inputData.contentHTML, null, 'ja');
+          const translationHTMLja = await translate(
+            inputData.contentHTML,
+            null,
+            "ja"
+          );
           contentHTMLJa = translationHTMLja.translation;
 
-          const translationDescen = await translate(inputData.description, null, 'en');
+          const translationDescen = await translate(
+            inputData.description,
+            null,
+            "en"
+          );
           descriptionEn = translationDescen.translation;
 
-          const translationDescja = await translate(inputData.description, null, 'ja');
+          const translationDescja = await translate(
+            inputData.description,
+            null,
+            "ja"
+          );
           descriptionJa = translationDescja.translation;
-
         } catch (err) {
           console.error(err);
         }
 
-        await db.Markdown.create({
-          contentHTML: inputData.contentHTML,
-          contentHTMLEn: contentHTMLEn,
-          contentHTMLJa: contentHTMLJa,
-          contentMarkdown: inputData.contentMarkdown,
-          description: inputData.description,
-          descriptionEn: descriptionEn,
-          descriptionJa: descriptionJa,
-          doctorId: inputData.doctorId,
-        });
+        if (inputData.action === "CREATE") {
+          await db.Markdown.create({
+            contentHTML: inputData.contentHTML,
+            contentHTMLEn: contentHTMLEn,
+            contentHTMLJa: contentHTMLJa,
+            contentMarkdown: inputData.contentMarkdown,
+            description: inputData.description,
+            descriptionEn: descriptionEn,
+            descriptionJa: descriptionJa,
+            doctorId: inputData.doctorId,
+          });
+        } else if (inputData.action === "EDIT") {
+          let doctorMarkdown = await db.Markdown.findOne({
+            where: { doctorId: inputData.doctorId },
+            raw: false,
+          });
+          if (doctorMarkdown) {
+            doctorMarkdown.contentHTML = inputData.contentHTML;
+            doctorMarkdown.contentHTMLEn = contentHTMLEn;
+            doctorMarkdown.contentHTMLJa = contentHTMLJa;
+            doctorMarkdown.contentMarkdown = inputData.contentMarkdown;
+            doctorMarkdown.description = inputData.description;
+            doctorMarkdown.descriptionEn = descriptionEn;
+            doctorMarkdown.descriptionJa = descriptionJa;
+            await doctorMarkdown.save();
+          }
+        }
+
         resolve({
           errCode: 0,
           errMessage: "Save infor doctor succeed!",
@@ -126,7 +164,15 @@ let getDetailDoctorById = (inputId) => {
           include: [
             {
               model: db.Markdown,
-              attributes: ["description", "descriptionEn", "descriptionJa", "contentHTML","contentHTMLEn", "contentHTMLJa", "contentMarkdown"],
+              attributes: [
+                "description",
+                "descriptionEn",
+                "descriptionJa",
+                "contentHTML",
+                "contentHTMLEn",
+                "contentHTMLJa",
+                "contentMarkdown",
+              ],
             },
             {
               model: db.Allcode,
@@ -137,10 +183,10 @@ let getDetailDoctorById = (inputId) => {
           raw: false,
           nest: true,
         });
-        if(data && data.image){
-          data.image = new Buffer(data.image, 'base64').toString('binary');
+        if (data && data.image) {
+          data.image = new Buffer(data.image, "base64").toString("binary");
         }
-        if(!data) data = {}
+        if (!data) data = {};
         resolve({
           errCode: 0,
           data: data,

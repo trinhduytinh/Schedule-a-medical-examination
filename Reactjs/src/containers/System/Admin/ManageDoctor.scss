@@ -20,6 +20,20 @@
             opacity: 0.9;
         }
     }
+    .create-content-doctor{
+        margin-bottom: 30px;
+        margin-top: 20px;
+        border-radius: 3px;
+        outline: none;
+        border: none;
+        padding: 5px;
+        background: #0866ff;
+        color: white;
+        cursor: pointer;
+        &:hover{
+            opacity: 0.9;
+        }
+    }
     .more-infor{
         .content-left{
             // padding-bottom: 15px;
