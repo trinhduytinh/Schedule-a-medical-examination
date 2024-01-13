@@ -92,7 +92,6 @@ class ManageDoctor extends Component {
         hasOldData: false,
       });
     }
-    console.log("hoi dan it channel: ", res);
   };
   handleOnChangeDesc = (event) => {
     this.setState({

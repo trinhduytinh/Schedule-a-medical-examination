@@ -26,15 +26,15 @@ class Login extends Component {
     });
   };
   handleLogin = async () => {
-    console.log("Kích vào")
+    console.log("Kích vào");
     this.setState({
       errMessage: "",
     });
-    console.log("Kích vào")
+    console.log("Kích vào");
     try {
-      console.log("Kích vào")
+      console.log("Kích vào");
       let data = await handleLoginApi(this.state.username, this.state.password);
-      console.log(data)
+      console.log(data);
       if (data && data.errCode != 0) {
         this.setState({
           errMessage: data.message,
@@ -57,6 +57,10 @@ class Login extends Component {
     this.setState({
       isShowPassword: !this.state.isShowPassword,
     });
+  };
+  //ham kich hoat enter
+  handleKeyDown = (event) => {
+    if (event.key === "Enter") this.handleLogin();
   };
   render() {
     //JSX
@@ -84,6 +88,7 @@ class Login extends Component {
                   placeholder="Enter your password"
                   value={this.state.password}
                   onChange={(event) => this.handleOnChangePassword(event)}
+                  onKeyDown={(event) => this.handleKeyDown(event)}
                 />
                 <span
                   onClick={() => {
@@ -138,7 +143,8 @@ const mapDispatchToProps = (dispatch) => {
     navigate: (path) => dispatch(push(path)),
     // adminLoginSuccess: (adminInfo) =>
     //   dispatch(actions.adminLoginSuccess(adminInfo)),
-    userLoginSuccess: (userInfor) => dispatch(actions.userLoginSuccess(userInfor)),
+    userLoginSuccess: (userInfor) =>
+      dispatch(actions.userLoginSuccess(userInfor)),
   };
 };
 

@@ -8,7 +8,7 @@ class About extends Component {
           Truyền thông về Trịnh Duy Tính
         </div>
         <div className="section-about-content">
-          <div className="content-left">
+          <div className="content-left embed-responsive embed-responsive-16by9">
             <iframe
               width="100%"
               height="400px"

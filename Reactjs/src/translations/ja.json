@@ -1,44 +1,47 @@
 {
   "homeheader": {
-    "specialty": "専門",
-    "search-doctor": "専門医を検索",
+    "specialty": "専門分野",
+    "search-doctor": "専門分野で医師を検索",
     "health-facility": "医療機関",
-    "select-room": "病院または診療室を選択",
-    "doctor": "医者",
-    "select-doctor": "優れた医者を選択",
-    "fee": "受診パッケージ",
+    "select-room": "病院または診療所を選択",
+    "doctor": "医師",
+    "select-doctor": "優れた医師を選択",
+    "fee": "診療費",
     "check-health": "一般健康診断",
     "support": "サポート",
-    "welcome": "こんにちは"
+    "welcome": "ようこそ"
   },
   "banner": {
     "title1": "医療プラットフォーム",
     "title2": "包括的な健康ケア",
-    "specialized-examination": "専門医診察",
-    "remote-examination": "遠隔診察",
-    "general-examination": "一般診察",
+    "specialized-examination": "専門検査",
+    "remote-examination": "遠隔診療",
+    "general-examination": "総合診断",
     "medical-tests": "医学検査",
-    "mental-health": "メンタルヘルス",
+    "mental-health": "精神保健",
     "dental-examination": "歯科検診"
   },
   "menu": {
     "admin": {
       "manage-user": "ユーザー管理",
-      "manage-doctor": "医者管理",
+      "manage-doctor": "医師管理",
       "manage-admin": "管理者管理",
       "crud": "CRUDユーザー",
       "crud-redux": "CRUD Redux",
-      "clinic": "診療所",
-      "manage-clinic": "診療所管理",
-      "specialty": "専門",
-      "manage-specialty": "専門管理",
+      "clinic": "クリニック",
+      "manage-clinic": "クリニック管理",
+      "specialty": "専門分野",
+      "manage-specialty": "専門分野管理",
       "handbook": "ハンドブック",
       "manage-handbook": "ハンドブック管理"
+    },
+    "doctor": {
+      "manage-schedule": "診療予定の管理"
     }
   },
   "manage-user": {
     "add": "新しいユーザーを追加",
-    "email": "メール",
+    "email": "Eメール",
     "password": "パスワード",
     "first-name": "名",
     "last-name": "姓",
@@ -53,7 +56,13 @@
     "edit": "変更を保存"
   },
   "homepage": {
-    "outstanding-doctor": "先週の優れた医者",
-    "more-infor": "詳細を表示"
+    "outstanding-doctor": "先週の優れた医師",
+    "more-infor": "詳細を見る"
+  },
+  "manage-schedule": {
+    "title": "医師の診療予定の管理",
+    "choose-doctor": "医師を選択",
+    "choose-date": "日付を選択",
+    "save": "情報の保存"
   }
 }

@@ -1,19 +1,19 @@
 {
   "homeheader": {
     "specialty": "Specialty",
-    "search-doctor": "Search doctor by specialty",
-    "health-facility": "Health Facility",
-    "select-room": "Select hospital room",
+    "search-doctor": "Search doctors by specialty",
+    "health-facility": "Health facility",
+    "select-room": "Select hospital or clinic",
     "doctor": "Doctor",
-    "select-doctor": "Select top doctor",
-    "fee": "Treatment package",
-    "check-health": "General health check",
+    "select-doctor": "Select a skilled doctor",
+    "fee": "Examination package",
+    "check-health": "General health check-up",
     "support": "Support",
     "welcome": "Welcome"
   },
   "banner": {
-    "title1": "HEALTH CARE PLATFORM",
-    "title2": "FULLY-CAPABLE HEALTHCARE SERVICES",
+    "title1": "MEDICAL PLATFORM",
+    "title2": "COMPREHENSIVE HEALTHCARE",
     "specialized-examination": "Specialized examination",
     "remote-examination": "Remote examination",
     "general-examination": "General examination",
@@ -23,17 +23,20 @@
   },
   "menu": {
     "admin": {
-      "manage-user": "Manage User",
-      "manage-doctor": "Manage Doctor",
-      "manage-admin": "Manage Admin",
+      "manage-user": "User management",
+      "manage-doctor": "Doctor management",
+      "manage-admin": "Admin management",
       "crud": "CRUD user",
       "crud-redux": "CRUD redux",
-      "clinic": "Hospital",
-      "manage-clinic": "Manage Hospital",
+      "clinic": "Clinic",
+      "manage-clinic": "Clinic management",
       "specialty": "Specialty",
-      "manage-specialty": "Manage Specialty",
+      "manage-specialty": "Specialty management",
       "handbook": "Handbook",
-      "manage-handbook": "Manage Handbook"
+      "manage-handbook": "Handbook management"
+    },
+    "doctor": {
+      "manage-schedule": "Manage doctor's schedule"
     }
   },
   "manage-user": {
@@ -47,13 +50,19 @@
     "gender": "Gender",
     "position": "Position",
     "role": "Role",
-    "image": "Profile picture",
+    "image": "Profile image",
     "save": "Save",
     "upload-photo": "Upload photo",
     "edit": "Save changes"
   },
   "homepage": {
-    "outstanding-doctor": "Outstanding Doctors",
-    "more-infor": "More Information"
+    "outstanding-doctor": "Outstanding doctors of the week",
+    "more-infor": "See more"
+  },
+  "manage-schedule": {
+    "title": "Manage doctor's appointment schedule",
+    "choose-doctor": "Choose a doctor",
+    "choose-date": "Choose date",
+    "save": "Save infor"
   }
 }
