@@ -9,7 +9,7 @@ import DatePicker from "../../../components/Input/DatePicker";
 import moment from "moment";
 import _, { times } from "lodash";
 import { toast } from "react-toastify";
-
+import { saveBulkScheduleDoctor } from "../../../services/userService";
 class ManageSchedule extends Component {
   constructor(props) {
     super(props);
@@ -82,7 +82,7 @@ class ManageSchedule extends Component {
       });
     }
   };
-  handleSaveSchedule = () => {
+  handleSaveSchedule = async () => {
     let { rangetime, selectedDoctor, currentDate } = this.state;
     let result = [];
     if (selectedDoctor && _.isEmpty(selectedDoctor)) {
@@ -93,15 +93,17 @@ class ManageSchedule extends Component {
       toast.error("Invalid date!");
       return;
     }
-    let formateDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
+    // let formateDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
+    // let formateDate = moment(currentDate).unix();
+    let formateDate = new Date(currentDate).getTime();
     if (rangetime && rangetime.length > 0) {
       let selectedTime = rangetime.filter((item) => item.isSelected === true);
       if (selectedTime && selectedTime.length > 0) {
         selectedTime.map((schedule) => {
           let object = {};
-          object.doctorId = selectedDoctor.value;
+          object.doctorID = selectedDoctor.value;
           object.date = formateDate;
-          object.time = schedule.keyMap;
+          object.timeType = schedule.keyMap;
           result.push(object);
         });
       } else {
@@ -109,12 +111,17 @@ class ManageSchedule extends Component {
         return;
       }
     }
+    let res = await saveBulkScheduleDoctor({
+      arrSchedule: result,
+      doctorID: selectedDoctor.value,
+      formateDate: formateDate,
+    });
+    console.log("hoi dan it check saveBulkScheduleDoctor: ", res);
     console.log("hoi dan it check result: ", result);
   };
   render() {
     let { language } = this.props;
     let { rangetime } = this.state;
-    console.log("hoi dan it check state: ", rangetime);
     return (
       <div className="manage-schedule-container">
         <div className="m-s-title">
