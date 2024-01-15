@@ -64,5 +64,13 @@
     "choose-doctor": "医師を選択",
     "choose-date": "日付を選択",
     "save": "情報の保存"
+  },
+  "patient": {
+    "detail-doctor": {
+      "schedule": "スケジュール",
+      "no-schedule": "この時間帯は予約ができません。別の時間を選択してください。",
+      "choose": "選んで",
+      "book-free": "予約する（無料）"
+    }
   }
 }
