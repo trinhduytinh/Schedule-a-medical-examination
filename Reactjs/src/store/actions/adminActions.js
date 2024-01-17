@@ -249,14 +249,13 @@ export const saveDetailDoctor = (data) => {
   return async (dispatch, getState) => {
     try {
       let res = await saveDetailDoctorService(data);
-      console.log("check save data: ", data);
       if (res && res.errCode === 0) {
         toast.success("Save infor Detail Doctor succeed!");
         dispatch({
           type: actionTypes.SAVE_DETAIL_DOCTOR_SUCCESS,
         });
       } else {
-        console.log("loi", res)
+        console.log("loi", res);
         toast.error("Save infor Detail Doctor error!");
         dispatch({
           type: actionTypes.SAVE_DETAIL_DOCTOR_FAILED,
@@ -274,7 +273,7 @@ export const saveDetailDoctor = (data) => {
 export const fetchAllsScheduleTime = () => {
   return async (dispatch, getState) => {
     try {
-      let res = await getAllCodeService('TIME');
+      let res = await getAllCodeService("TIME");
       if (res && res.errCode === 0) {
         dispatch({
           type: actionTypes.FETCH_ALLCODE_SCHEDULE_TIME_DOCTORS_SUCCESS,
@@ -293,3 +292,43 @@ export const fetchAllsScheduleTime = () => {
     }
   };
 };
+
+export const getRequiredDoctorInFor = () => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: actionTypes.FETCH_REQUIRED_DOCTOR_INFO_START });
+      let resPrice = await getAllCodeService("PRICE");
+      let resPayment = await getAllCodeService("PAYMENT");
+      let resProvince = await getAllCodeService("PROVINCE");
+      if (
+        resPrice &&
+        resPrice.errCode === 0 &&
+        resPayment &&
+        resPayment.errCode === 0 &&
+        resProvince &&
+        resProvince.errCode === 0
+      ) {
+        let data = {
+          resPrice: resPrice.data,
+          resPayment: resPayment.data,
+          resProvince: resProvince.data,
+        };
+        dispatch(fetchRequiredDoctorInFoSuccess(data));
+      } else {
+        dispatch(fetchRequiredDoctorInFoFailed());
+      }
+    } catch (e) {
+      dispatch(fetchRequiredDoctorInFoFailed());
+      console.log("fetchRequiredDoctorInFoFailed error", e);
+    }
+  };
+};
+
+export const fetchRequiredDoctorInFoSuccess = (allRequiredData) => ({
+  type: actionTypes.FETCH_REQUIRED_DOCTOR_INFO_SUCCESS,
+  data: allRequiredData,
+});
+
+export const fetchRequiredDoctorInFoFailed = () => ({
+  type: actionTypes.FETCH_REQUIRED_DOCTOR_INFO_FAILED,
+});

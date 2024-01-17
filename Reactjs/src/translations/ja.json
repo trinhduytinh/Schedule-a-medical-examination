@@ -72,5 +72,20 @@
       "choose": "選んで",
       "book-free": "予約する（無料）"
     }
+  },
+  "admin": {
+    "manage-doctor": {
+      "title": "医師の追加情報を作成する",
+      "select-doctor": "医師を選択する",
+      "intro": "紹介情報",
+      "add": "情報を作成する",
+      "save": "情報を保存する",
+      "price": "診察料",
+      "payment": "支払い方法",
+      "province": "都道府県/市",
+      "nameClinic": "クリニック名",
+      "addressClinic": "クリニックの住所",
+      "note": "備考"
+    }
   }
 }

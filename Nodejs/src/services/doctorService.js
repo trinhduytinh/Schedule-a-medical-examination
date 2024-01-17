@@ -65,7 +65,13 @@ let saveDetailInforDoctor = (inputData) => {
         !inputData.doctorId ||
         !inputData.contentHTML ||
         !inputData.contentMarkdown ||
-        !inputData.action
+        !inputData.action ||
+        !inputData.selectedPrice ||
+        !inputData.selectedPayment ||
+        !inputData.selectedProvince ||
+        !inputData.nameClinic ||
+        !inputData.addressClinic ||
+        !inputData.note
       ) {
         resolve({
           errCode: 1,
@@ -108,7 +114,7 @@ let saveDetailInforDoctor = (inputData) => {
         } catch (err) {
           console.error(err);
         }
-
+        //upsert to Markdown
         if (inputData.action === "CREATE") {
           await db.Markdown.create({
             contentHTML: inputData.contentHTML,
@@ -137,6 +143,33 @@ let saveDetailInforDoctor = (inputData) => {
           }
         }
 
+        //upsert to Doctor_infor table
+        let doctorInfor = await db.Doctor_Infor.findOne({
+          where: {
+            doctorId: inputData.doctorId,
+          },
+          raw: false,
+        });
+        if (doctorInfor) {
+          doctorInfor.doctorId = inputData.doctorId;
+          doctorInfor.priceId = inputData.selectedPrice.value;
+          doctorInfor.provinceId = inputData.selectedProvince.value;
+          doctorInfor.paymentId = inputData.selectedPayment.value;
+          doctorInfor.nameClinic = inputData.nameClinic;
+          doctorInfor.addressClinic = inputData.addressClinic;
+          doctorInfor.note = inputData.note;
+          await doctorInfor.save();
+        } else {
+          await db.Doctor_Infor.create({
+            doctorId: inputData.doctorId,
+            priceId: inputData.selectedPrice.value,
+            provinceId: inputData.selectedProvince.value,
+            paymentId: inputData.selectedPayment.value,
+            nameClinic: inputData.nameClinic,
+            addressClinic: inputData.addressClinic,
+            note: inputData.note,
+          });
+        }
         resolve({
           errCode: 0,
           errMessage: "Save infor doctor succeed!",
