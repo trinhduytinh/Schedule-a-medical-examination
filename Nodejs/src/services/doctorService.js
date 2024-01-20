@@ -215,6 +215,19 @@ let getDetailDoctorById = (inputId) => {
               as: "positionData",
               attributes: ["valueEn", "valueVi"],
             },
+            {
+              model: db.Doctor_Infor,
+              attributes: {
+                exclude: ["id", "doctorID"],
+              },
+            //eager loading giúp load tất cả các entity trong 1 câu lệnh, tất cả các entity con sẽ được load ra trong 1 lần gọi duy nhấ
+              include:[
+                {model: db.Allcode, as: 'priceTypeData', attributes:['valueEn', 'valueJa', 'valueVi']},
+                {model: db.Allcode, as: 'provinceTypeData', attributes:['valueEn', 'valueJa', 'valueVi']},
+                {model: db.Allcode, as: 'paymentTypeData', attributes:['valueEn', 'valueJa', 'valueVi']}
+
+              ]
+            },
           ],
           raw: false,
           nest: true,
