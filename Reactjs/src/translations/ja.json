@@ -71,6 +71,13 @@
       "no-schedule": "この時間帯は予約ができません。別の時間を選択してください。",
       "choose": "選んで",
       "book-free": "予約する（無料）"
+    },
+    "extra-infor-doctor": {
+      "text-address": "診察場所",
+      "price": "診察料: ",
+      "detail": "詳細を見る",
+      "payment": "患者は次の方法で料金を支払うことができます: ",
+      "hide-price": "価格リストを非表示にする"
     }
   },
   "admin": {

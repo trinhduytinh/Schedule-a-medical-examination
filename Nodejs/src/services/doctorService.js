@@ -220,13 +220,24 @@ let getDetailDoctorById = (inputId) => {
               attributes: {
                 exclude: ["id", "doctorID"],
               },
-            //eager loading giúp load tất cả các entity trong 1 câu lệnh, tất cả các entity con sẽ được load ra trong 1 lần gọi duy nhấ
-              include:[
-                {model: db.Allcode, as: 'priceTypeData', attributes:['valueEn', 'valueJa', 'valueVi']},
-                {model: db.Allcode, as: 'provinceTypeData', attributes:['valueEn', 'valueJa', 'valueVi']},
-                {model: db.Allcode, as: 'paymentTypeData', attributes:['valueEn', 'valueJa', 'valueVi']}
-
-              ]
+              //eager loading giúp load tất cả các entity trong 1 câu lệnh, tất cả các entity con sẽ được load ra trong 1 lần gọi duy nhấ
+              include: [
+                {
+                  model: db.Allcode,
+                  as: "priceTypeData",
+                  attributes: ["valueEn", "valueJa", "valueVi"],
+                },
+                {
+                  model: db.Allcode,
+                  as: "provinceTypeData",
+                  attributes: ["valueEn", "valueJa", "valueVi"],
+                },
+                {
+                  model: db.Allcode,
+                  as: "paymentTypeData",
+                  attributes: ["valueEn", "valueJa", "valueVi"],
+                },
+              ],
             },
           ],
           raw: false,
@@ -309,10 +320,56 @@ let getScheduleByDate = (doctorID, date) => {
           ],
           raw: true,
           nest: true,
-          raw: false,
-          nest: true,
         });
         if (!data) data = [];
+        resolve({
+          errCode: 0,
+          data: data,
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+let getExtraInforDoctorById = (doctorId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!doctorId) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required parameter",
+        });
+      } else {
+        let data = await db.Doctor_Infor.findOne({
+          where: {
+            doctorId: doctorId,
+          },
+          attributes: {
+            exclude: ["id", "doctorId"],
+          },
+          //eager loading giúp load tất cả các entity trong 1 câu lệnh, tất cả các entity con sẽ được load ra trong 1 lần gọi duy nhấ
+          include: [
+            {
+              model: db.Allcode,
+              as: "priceTypeData",
+              attributes: ["valueEn", "valueJa", "valueVi"],
+            },
+            {
+              model: db.Allcode,
+              as: "provinceTypeData",
+              attributes: ["valueEn", "valueJa", "valueVi"],
+            },
+            {
+              model: db.Allcode,
+              as: "paymentTypeData",
+              attributes: ["valueEn", "valueJa", "valueVi"],
+            },
+          ],
+          raw: true,
+          nest: true,
+        });
+        if (!data) data = {};
         resolve({
           errCode: 0,
           data: data,
@@ -330,4 +387,5 @@ module.exports = {
   getDetailDoctorById: getDetailDoctorById,
   bulkCreateSchedule: bulkCreateSchedule,
   getScheduleByDate: getScheduleByDate,
+  getExtraInforDoctorById: getExtraInforDoctorById,
 };

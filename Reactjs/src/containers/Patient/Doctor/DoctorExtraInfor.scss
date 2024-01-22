@@ -13,14 +13,18 @@
       color: #333;
     }
     .detail-address {
+      font-weight: 600;
       color: #333;
     }
   }
   .content-down {
     .short-infor {
-      span {
+      .detail {
         cursor: pointer;
         color: rgb(72, 196, 211);
+      }
+      .currency{
+        margin: 0 5px;
       }
     }
     .title-price {
