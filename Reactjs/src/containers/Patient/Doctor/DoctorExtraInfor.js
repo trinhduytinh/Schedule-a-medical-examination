@@ -93,7 +93,7 @@ class DoctorExtraInfor extends Component {
               <span
                 className="detail"
                 onClick={() => this.showHideDetailInfor(true)}>
-                X<FormattedMessage id="patient.extra-infor-doctor.detail" />
+                <FormattedMessage id="patient.extra-infor-doctor.detail" />
               </span>
             </div>
           )}
