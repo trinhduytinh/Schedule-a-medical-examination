@@ -12,19 +12,20 @@ let postBookAppointment = (data) => {
         //upsert patient
         let user = await db.User.findOrCreate({
           where: { email: data.email },
-          default: {
+          defaults: {
             email: data.email,
             roleId: "R3",
           },
         });
+
         if (user && user[0]) {
           await db.Booking.findOrCreate({
             where: { patientID: user[0].id },
-            default: {
+            defaults: {
               statusId: "S1",
               doctorId: data.doctorId,
               patientID: user[0].id,
-              data: data.date,
+              date: data.date,
               timeType: data.timeType,
             },
           });

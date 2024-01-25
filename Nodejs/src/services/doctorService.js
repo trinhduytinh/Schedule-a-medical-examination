@@ -18,12 +18,12 @@ let getTopDoctorHome = (limit) => {
           {
             model: db.Allcode,
             as: "positionData",
-            attributes: ["valueEn", "valueVi"],
+            attributes: ["valueEn", "valueVi", "valueJa"],
           },
           {
             model: db.Allcode,
             as: "genderData",
-            attributes: ["valueEn", "valueVi"],
+            attributes: ["valueEn", "valueVi", "valueJa"],
           },
         ],
         raw: true,
@@ -413,7 +413,7 @@ let getProfileDoctorById = (inputId) => {
             {
               model: db.Allcode,
               as: "positionData",
-              attributes: ["valueEn", "valueVi"],
+              attributes: ["valueEn", "valueVi", "valueJa"],
             },
             {
               model: db.Doctor_Infor,

@@ -78,7 +78,21 @@
       "detail": "View details",
       "payment": "Patients can pay the fees through the following methods: ",
       "hide-price": "Hide price list"
-  }
+    },
+    "booking-modal": {
+      "title": "Booking Information",
+      "fullName": "Full Name",
+      "phoneNumber": "Phone Number",
+      "email": "Email",
+      "address": "Contact Address",
+      "reason": "Reason for Examination",
+      "birthday": "Date of Birth",
+      "gender": "Gender",
+      "btnConfirm": "Confirm",
+      "btnCancel": "Cancel",
+      "priceBooking": "Free booking",
+      "price": "Examination fee: "
+    }
   },
   "admin": {
     "manage-doctor": {

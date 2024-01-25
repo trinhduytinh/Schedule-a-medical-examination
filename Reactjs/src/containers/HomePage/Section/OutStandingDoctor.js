@@ -28,6 +28,7 @@ class OutStandingDoctor extends Component {
   };
   render() {
     let arrDoctors = this.state.arrDoctors;
+    console.log("check arrDoctors", arrDoctors);
     let { language } = this.props;
     return (
       <div className="section-share section-outstanding-doctor">
@@ -53,6 +54,7 @@ class OutStandingDoctor extends Component {
                   }
                   let nameVi = `${item.positionData.valueVi}, ${item.lastName} ${item.firstName}`;
                   let nameEn = `${item.positionData.valueEn}, ${item.firstName} ${item.lastName}`;
+                  let nameJa = `${item.positionData.valueJa}, ${item.lastName} ${item.firstName}`;
                   return (
                     <div
                       className="section-customize"
@@ -68,7 +70,9 @@ class OutStandingDoctor extends Component {
                         </div>
                         <div className="position text-center">
                           <div>
-                            {language === LANGUAGES.VI ? nameVi : nameEn}
+                            {language === LANGUAGES.VI ? nameVi : ""}
+                            {language === LANGUAGES.EN ? nameEn : ""}
+                            {language === LANGUAGES.JA ? nameJa : ""}
                           </div>
                           <div>Cơ xương khớp</div>
                         </div>

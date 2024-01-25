@@ -74,7 +74,9 @@ class ProfileDoctor extends Component {
           <div>
             {time} - {date}
           </div>
-          <div>Miễn phí đặt lịch</div>
+          <div>
+            <FormattedMessage id={"patient.booking-modal.priceBooking"} />
+          </div>
         </>
       );
     }
@@ -86,19 +88,15 @@ class ProfileDoctor extends Component {
     let nameVi = "",
       nameEn = "",
       nameJa = "";
-    let contentHTML, description, nameDoctor, price;
+    let description, nameDoctor, price;
 
     if (dataProfile && dataProfile.positionData) {
       nameVi = `${dataProfile.positionData.valueVi}, ${dataProfile.lastName} ${dataProfile.firstName}`;
       nameEn = `${dataProfile.positionData.valueEn}, ${dataProfile.firstName} ${dataProfile.lastName}`;
-      nameJa = `${dataProfile.positionData.valueVi}, ${dataProfile.lastName} ${dataProfile.firstName}`;
+      nameJa = `${dataProfile.positionData.valueJa}, ${dataProfile.lastName} ${dataProfile.firstName}`;
     }
     switch (language) {
       case LANGUAGES.VI:
-        contentHTML =
-          dataProfile &&
-          dataProfile.Markdown &&
-          dataProfile.Markdown.contentHTML;
         description =
           dataProfile &&
           dataProfile.Markdown &&
@@ -115,10 +113,6 @@ class ProfileDoctor extends Component {
         );
         break;
       case LANGUAGES.EN:
-        contentHTML =
-          dataProfile &&
-          dataProfile.Markdown &&
-          dataProfile.Markdown.contentHTMLEn;
         description =
           dataProfile &&
           dataProfile.Markdown &&
@@ -135,10 +129,6 @@ class ProfileDoctor extends Component {
         );
         break;
       case LANGUAGES.JA:
-        contentHTML =
-          dataProfile &&
-          dataProfile.Markdown &&
-          dataProfile.Markdown.contentHTMLJa;
         description =
           dataProfile &&
           dataProfile.Markdown &&
@@ -180,7 +170,10 @@ class ProfileDoctor extends Component {
             )}
           </div>
         </div>
-        <div className="price">Giá khám: {price}</div>
+        <div className="price">
+          <FormattedMessage id={"patient.booking-modal.price"} />
+          {price}
+        </div>
       </div>
     );
   }

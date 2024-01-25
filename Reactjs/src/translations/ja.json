@@ -78,6 +78,20 @@
       "detail": "詳細を見る",
       "payment": "患者は次の方法で料金を支払うことができます: ",
       "hide-price": "価格リストを非表示にする"
+    },
+    "booking-modal": {
+      "title": "診察予約情報",
+      "fullName": "氏名",
+      "phoneNumber": "電話番号",
+      "email": "メール",
+      "address": "連絡先",
+      "reason": "受診理由",
+      "birthday": "生年月日",
+      "gender": "性別",
+      "btnConfirm": "確認",
+      "btnCancel": "キャンセル",
+      "priceBooking": "無料予約",
+      "price": "診察料: "
     }
   },
   "admin": {
