@@ -11,6 +11,8 @@ import { LANGUAGES } from "../../../../utils";
 import Select from "react-select";
 import { postPatientBookAppointment } from "../../../../services/userService";
 import { toast } from "react-toastify";
+import moment from "moment";
+
 class BookingModal extends Component {
   constructor(props) {
     super(props);
@@ -92,6 +94,8 @@ class BookingModal extends Component {
   handleConfirmBooking = async () => {
     //validate input
     let date = new Date(this.state.birthday).getTime();
+    let timeString = this.buildTimeBooking(this.props.dataTime);
+    let doctorName = this.buildDoctorName(this.props.dataTime)
     let res = await postPatientBookAppointment({
       fullName: this.state.fullName,
       phoneNumber: this.state.phoneNumber,
@@ -102,6 +106,9 @@ class BookingModal extends Component {
       selectedGender: this.state.selectedGender.value,
       doctorId: this.state.doctorId,
       timeType: this.state.timeType,
+      language: this.props.language,
+      timeString: timeString,
+      doctorName: doctorName,
     });
     if (res && res.errCode === 0) {
       toast.success("Booking a new appointment succeed!");
@@ -110,9 +117,60 @@ class BookingModal extends Component {
       toast.error("Booking a new appointment error!");
     }
   };
+  buildTimeBooking = (dataTime) => {
+    let { language } = this.props;
+    let date = "",
+      time = "";
+    if (dataTime && !_.isEmpty(dataTime)) {
+      if (language === LANGUAGES.VI) {
+        date = moment
+          .unix(+dataTime.date / 1000)
+          .format("dddd - DD/MM/YYYY")
+          .replace(/^t/g, "T")
+          .replace("chủ nhật", "Chủ Nhật");
+        time = dataTime.timeTypeData.valueVi;
+      }
+      if (language === LANGUAGES.EN) {
+        date = moment
+          .unix(+dataTime.date / 1000)
+          .locale("en")
+          .format("ddd - MM/DD/YYYY");
+        time = dataTime.timeTypeData.valueEn;
+      }
+      if (language === LANGUAGES.JA) {
+        date = moment
+          .unix(+dataTime.date / 1000)
+          .locale("ja")
+          .format("ddd - MM月DD日")
+          .replace("CN", "日")
+          .replace("T2", "月")
+          .replace("T3", "火")
+          .replace("T4", "水")
+          .replace("T5", "木")
+          .replace("T6", "金")
+          .replace("T7", "土");
+        time = dataTime.timeTypeData.valueVi;
+      }
+      return `${time} - ${date}`;
+    }
+    return "";
+  };
+  buildDoctorName = (dataTime) => {
+    let { language } = this.props;
+    if (dataTime && !_.isEmpty(dataTime)) {
+      let name = "";
+      if (language === LANGUAGES.VI)
+        name = `${dataTime.doctorData.lastName} ${dataTime.doctorData.firstName}`;
+      if (language === LANGUAGES.JA)
+        name = `${dataTime.doctorData.lastName} ${dataTime.doctorData.firstName}`;
+      if (language === LANGUAGES.EN)
+        name = `${dataTime.doctorData.firstName} ${dataTime.doctorData.lastName}`;
+      return name;
+    }
+    return "";
+  };
   render() {
     let { isOpenModal, closeBookingClose, dataTime } = this.props;
-
     return (
       <Modal
         isOpen={isOpenModal}
@@ -218,10 +276,10 @@ class BookingModal extends Component {
             <button
               className="btn-booking-confirm"
               onClick={() => this.handleConfirmBooking()}>
-               <FormattedMessage id={"patient.booking-modal.btnConfirm"} />
+              <FormattedMessage id={"patient.booking-modal.btnConfirm"} />
             </button>
             <button className="btn-booking-cancel" onClick={closeBookingClose}>
-            <FormattedMessage id={"patient.booking-modal.btnCancel"} />
+              <FormattedMessage id={"patient.booking-modal.btnCancel"} />
             </button>
           </div>
         </div>
