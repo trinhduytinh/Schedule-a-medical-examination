@@ -15,6 +15,7 @@ class DetailDoctor extends Component {
     };
   }
   async componentDidMount() {
+    //lay id trong duong dan
     if (
       this.props.match &&
       this.props.match.params &&

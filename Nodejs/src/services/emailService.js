@@ -22,7 +22,6 @@ let sendSimpleEmail = async (dataSend) => {
   });
 };
 let getBodyHTMLEmail = (dataSend) => {
-  console.log("check data: ", dataSend);
   let result = "";
   if (dataSend.language === "vi") {
     result = `
