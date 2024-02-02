@@ -57,7 +57,8 @@
   },
   "homepage": {
     "outstanding-doctor": "先週の優れた医師",
-    "more-infor": "詳細を見る"
+    "more-infor": "詳細を見る",
+    "specialty-popular": "人気の専門分野"
   },
   "manage-schedule": {
     "title": "医師の診療予定の管理",
