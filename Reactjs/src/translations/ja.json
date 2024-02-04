@@ -107,7 +107,9 @@
       "province": "都道府県/市",
       "nameClinic": "クリニック名",
       "addressClinic": "クリニックの住所",
-      "note": "備考"
+      "note": "備考",
+      "specialty": "専門を選択",
+      "select-clinic": "クリニックを選択"
     }
   }
 }

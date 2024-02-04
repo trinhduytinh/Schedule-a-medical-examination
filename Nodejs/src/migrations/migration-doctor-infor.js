@@ -13,6 +13,12 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      specialtyId: {
+        type: Sequelize.INTEGER,
+      },
+      clinicId: {
+        type: Sequelize.INTEGER,
+      },
       priceId: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -29,11 +35,33 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      addressClinicEn: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      addressClinicJa: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       nameClinic: {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      nameClinicEn: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      nameClinicJa: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       note: {
+        type: Sequelize.STRING,
+      },
+      noteEn: {
+        type: Sequelize.STRING,
+      },
+      noteJa: {
         type: Sequelize.STRING,
       },
       count: {

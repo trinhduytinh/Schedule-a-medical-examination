@@ -58,31 +58,54 @@ let getAllDoctor = () => {
     }
   });
 };
+let checkRequiredFields = (inputData) => {
+  let arrFields = [
+    "doctorId",
+    "contentHTML",
+    "contentMarkdown",
+    "action",
+    "selectedPrice",
+    "selectedPayment",
+    "selectedProvince",
+    "nameClinic",
+    "addressClinic",
+    "note",
+    "specialtyId",
+  ];
+  let isValid = true;
+  let element = "";
+  for (let i = 0; i < arrFields.length; i++) {
+    if (!inputData[arrFields[i]]) {
+      isValid = false;
+      element = arrFields[i];
+      break;
+    }
+  }
+  return {
+    isValid: isValid,
+    element: element,
+  };
+};
 let saveDetailInforDoctor = (inputData) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (
-        !inputData.doctorId ||
-        !inputData.contentHTML ||
-        !inputData.contentMarkdown ||
-        !inputData.action ||
-        !inputData.selectedPrice ||
-        !inputData.selectedPayment ||
-        !inputData.selectedProvince ||
-        !inputData.nameClinic ||
-        !inputData.addressClinic ||
-        !inputData.note
-      ) {
+      let checkObj = checkRequiredFields(inputData);
+      if (checkObj.isValid === false) {
         resolve({
           errCode: 1,
-          errMessage: "Missing parameter",
+          errMessage: `Missing parameter: ${checkObj.element}`,
         });
       } else {
         let contentHTMLEn = "",
           contentHTMLJa = "",
           descriptionEn = "",
-          descriptionJa = "";
-
+          descriptionJa = "",
+          addressClinicEn = "",
+          addressClinicJa = "",
+          nameClinicEn = "",
+          nameClinicJa = "",
+          noteEn = "",
+          noteJa = "";
         try {
           const translationHTMLen = await translate(
             inputData.contentHTML,
@@ -111,6 +134,34 @@ let saveDetailInforDoctor = (inputData) => {
             "ja"
           );
           descriptionJa = translationDescja.translation;
+          const translationAddressClinicEn = await translate(
+            inputData.addressClinic,
+            null,
+            "en"
+          );
+          addressClinicEn = translationAddressClinicEn.translation;
+          const translationAddressClinicJa = await translate(
+            inputData.addressClinic,
+            null,
+            "ja"
+          );
+          addressClinicJa = translationAddressClinicJa.translation;
+          const translationNameClinicEn = await translate(
+            inputData.nameClinic,
+            null,
+            "en"
+          );
+          nameClinicEn = translationNameClinicEn.translation;
+          const translationNameClinicJa = await translate(
+            inputData.nameClinic,
+            null,
+            "ja"
+          );
+          nameClinicJa = translationNameClinicJa.translation;
+          const translationNoteEn = await translate(inputData.note, null, "en");
+          noteEn = translationNoteEn.translation;
+          const translationNoteJa = await translate(inputData.note, null, "ja");
+          noteJa = translationNoteJa.translation;
         } catch (err) {
           console.error(err);
         }
@@ -156,8 +207,16 @@ let saveDetailInforDoctor = (inputData) => {
           doctorInfor.provinceId = inputData.selectedProvince.value;
           doctorInfor.paymentId = inputData.selectedPayment.value;
           doctorInfor.nameClinic = inputData.nameClinic;
+          doctorInfor.nameClinicEn = nameClinicEn;
+          doctorInfor.nameClinicJa = nameClinicJa;
           doctorInfor.addressClinic = inputData.addressClinic;
+          doctorInfor.addressClinicEn = addressClinicEn;
+          doctorInfor.addressClinicJa = addressClinicJa;
           doctorInfor.note = inputData.note;
+          doctorInfor.noteEn = noteEn;
+          doctorInfor.noteJa = noteJa;
+          doctorInfor.specialtyId = inputData.specialtyId;
+          doctorInfor.clinicId = inputData.clinicId;
           await doctorInfor.save();
         } else {
           await db.Doctor_Infor.create({
@@ -166,8 +225,16 @@ let saveDetailInforDoctor = (inputData) => {
             provinceId: inputData.selectedProvince.value,
             paymentId: inputData.selectedPayment.value,
             nameClinic: inputData.nameClinic,
+            nameClinicEn: nameClinicEn,
+            nameClinicJa: nameClinicJa,
             addressClinic: inputData.addressClinic,
+            addressClinicEn: addressClinicEn,
+            addressClinicJa: addressClinicJa,
             note: inputData.note,
+            noteEn: noteEn,
+            noteJa: noteJa,
+            specialtyId: inputData.specialtyId,
+            clinicId: inputData.clinicId,
           });
         }
         resolve({
@@ -236,6 +303,11 @@ let getDetailDoctorById = (inputId) => {
                   model: db.Allcode,
                   as: "paymentTypeData",
                   attributes: ["valueEn", "valueJa", "valueVi"],
+                },
+                {
+                  model: db.Specialty,
+                  as: "specialtyTypeData",
+                  attributes: ["name"],
                 },
               ],
             },

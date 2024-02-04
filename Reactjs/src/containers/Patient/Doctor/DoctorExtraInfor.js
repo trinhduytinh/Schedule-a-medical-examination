@@ -5,7 +5,7 @@ import "./DoctorExtraInfor.scss";
 import { getExtraInforDoctorById } from "../../../services/userService";
 import { LANGUAGES } from "../../../utils";
 import DoctorSchedule from "./DoctorSchedule";
-import { NumericFormat } from "react-number-format"; //format tien 
+import { NumericFormat } from "react-number-format"; //format tien
 import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
 class DoctorExtraInfor extends Component {
   constructor(props) {
@@ -37,7 +37,6 @@ class DoctorExtraInfor extends Component {
   render() {
     let { isShowDetailInfor, extraInfor } = this.state;
     let { language } = this.props;
-    console.log("check stateq: ", this.state);
     return (
       <div className="doctor-extra-infor-container">
         <div className="content-up">
@@ -45,11 +44,29 @@ class DoctorExtraInfor extends Component {
             <FormattedMessage id="patient.extra-infor-doctor.text-address" />
           </div>
           <div className="name-clinic">
-            {extraInfor && extraInfor.nameClinic ? extraInfor.nameClinic : ""}
+            {extraInfor && extraInfor.nameClinic && language === LANGUAGES.VI
+              ? extraInfor.nameClinic
+              : ""}
+            {extraInfor && extraInfor.nameClinicEn && language === LANGUAGES.EN
+              ? extraInfor.nameClinicEn
+              : ""}
+            {extraInfor && extraInfor.nameClinicJa && language === LANGUAGES.JA
+              ? extraInfor.nameClinicJa
+              : ""}
           </div>
           <div className="detail-address">
-            {extraInfor && extraInfor.addressClinic
+            {extraInfor && extraInfor.addressClinic && language === LANGUAGES.VI
               ? extraInfor.addressClinic
+              : ""}
+            {extraInfor &&
+            extraInfor.addressClinicEn &&
+            language === LANGUAGES.EN
+              ? extraInfor.addressClinicEn
+              : ""}
+            {extraInfor &&
+            extraInfor.addressClinicJa &&
+            language === LANGUAGES.JA
+              ? extraInfor.addressClinicJa
               : ""}
           </div>
         </div>
@@ -144,7 +161,15 @@ class DoctorExtraInfor extends Component {
                   </span>
                 </div>
                 <div className="note">
-                  {extraInfor && extraInfor.note ? extraInfor.note : ""}
+                  {extraInfor && extraInfor.note && language === LANGUAGES.VI
+                    ? extraInfor.note
+                    : ""}
+                  {extraInfor && extraInfor.noteEn && language === LANGUAGES.EN
+                    ? extraInfor.noteEn
+                    : ""}
+                  {extraInfor && extraInfor.noteJa && language === LANGUAGES.JA
+                    ? extraInfor.noteJa
+                    : ""}
                 </div>
               </div>
               <div className="payment">
