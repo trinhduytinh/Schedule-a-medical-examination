@@ -3,20 +3,139 @@ import { connect } from "react-redux";
 import "./DetailSpecialty.scss";
 import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
 import HomeHeader from "../../HomePage/HomeHeader";
+import DoctorSchedule from "../Doctor/DoctorSchedule";
+import DoctorExtraInfor from "../Doctor/DoctorExtraInfor";
+import ProfileDoctor from "../Doctor/ProfileDoctor";
+import {
+  getAllCodeService,
+  getAllDetailSpecialtyById,
+} from "../../../services/userService";
+import { LANGUAGES } from "../../../utils";
+import _ from "lodash";
+
 class DetailSpecialty extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      arrDoctorId: [],
+      dataDetailSpecialty: {},
+      listProvince: [],
+    };
   }
-  async componentDidMount() {}
-
+  async componentDidMount() {
+    //lay id trong duong dan
+    if (
+      this.props.match &&
+      this.props.match.params &&
+      this.props.match.params.id
+    ) {
+      let id = this.props.match.params.id;
+      let res = await getAllDetailSpecialtyById({
+        id: id,
+        location: "ALL",
+      });
+      let resProvince = await getAllCodeService("PROVINCE");
+      if (
+        res &&
+        res.errCode === 0 &&
+        resProvince &&
+        resProvince.errCode === 0
+      ) {
+        let data = res.data;
+        let arrDoctorId = [];
+        if (data && !_.isEmpty(res.data)) {
+          let arr = data.doctorSpecialty;
+          if (arr && arr.length > 0) {
+            arr.map((item) => {
+              arrDoctorId.push(item.doctorId);
+            });
+          }
+        }
+        this.setState({
+          dataDetailSpecialty: res.data,
+          arrDoctorId: arrDoctorId,
+          listProvince: resProvince.data,
+        });
+      }
+    }
+  }
+  handleOnChangeSelect = (event) => {
+    console.log("check onchange", event.target.value);
+  };
   async componentDidUpdate(prevProps, prevState, snapshot) {}
   render() {
+    let { arrDoctorId, dataDetailSpecialty, listProvince } = this.state;
+    let { language } = this.props;
     return (
-      <>
+      <div className="detail-specialty-container">
         <HomeHeader />
-        <div>hello</div>
-      </>
+        <div className="detail-specialty-body">
+          <div className="description-specialty">
+            {dataDetailSpecialty &&
+              !_.isEmpty(dataDetailSpecialty) &&
+              language === LANGUAGES.VI && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: dataDetailSpecialty.descriptionHTML,
+                  }}></div>
+              )}
+            {dataDetailSpecialty &&
+              !_.isEmpty(dataDetailSpecialty) &&
+              language === LANGUAGES.EN && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: dataDetailSpecialty.descriptionHTMLEn,
+                  }}></div>
+              )}
+            {dataDetailSpecialty &&
+              !_.isEmpty(dataDetailSpecialty) &&
+              language === LANGUAGES.JA && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: dataDetailSpecialty.descriptionHTMLJa,
+                  }}></div>
+              )}
+          </div>
+          <div className="search-sp-doctor">
+            <select onChange={(event) => this.handleOnChangeSelect(event)}>
+              {listProvince &&
+                listProvince.length > 0 &&
+                listProvince.map((item, index) => {
+                  return (
+                    <option key={index} value={item.keyMap}>
+                      {language === LANGUAGES.VI && item.valueVi}
+                      {language === LANGUAGES.EN && item.valueEn}
+                      {language === LANGUAGES.JA && item.valueJa}
+                    </option>
+                  );
+                })}
+            </select>
+          </div>
+          {arrDoctorId &&
+            arrDoctorId.length > 0 &&
+            arrDoctorId.map((item, index) => {
+              return (
+                <div className="each-doctor" key={index}>
+                  <div className="dt-content-left">
+                    <ProfileDoctor
+                      doctorId={item}
+                      isShowDescriptionDoctor={true}
+                      // dataTime={dataTime}
+                    />
+                  </div>
+                  <div className="dt-content-right">
+                    <div className="doctor-schedule">
+                      <DoctorSchedule doctorIdFromParent={item} />
+                    </div>
+                    <div className="doctor-extra-infor">
+                      <DoctorExtraInfor doctorIdFromParent={item} />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+      </div>
     );
   }
 }

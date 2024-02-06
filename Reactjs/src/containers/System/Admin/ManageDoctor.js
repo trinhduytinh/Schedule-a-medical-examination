@@ -34,7 +34,7 @@ class ManageDoctor extends Component {
       selectedPayment: "",
       selectedProvince: "",
       selectedClinic: "",
-      selectedSPecialty: "",
+      selectedSpecialty: "",
       nameClinic: "",
       addressClinic: "",
       note: "",
@@ -175,7 +175,7 @@ class ManageDoctor extends Component {
         this.state.selectedClinic && this.state.selectedClinic.value
           ? this.state.selectedClinic.value
           : "",
-      specialtyId: this.state.selectedSPecialty.value,
+      specialtyId: this.state.selectedSpecialty.value,
     });
   };
   handleChangeSelect = async (selectedDoctor) => {
@@ -195,7 +195,7 @@ class ManageDoctor extends Component {
         selectedPayment = "",
         selectedPrice = "",
         selectedProvince = "",
-        selectedSPecialty = "";
+        selectedSpecialty = "";
 
       if (res.data.Doctor_Infor) {
         addressClinic = res.data.Doctor_Infor.addressClinic;
@@ -214,7 +214,7 @@ class ManageDoctor extends Component {
         selectedProvince = listProvince.find((item) => {
           return item && item.value === provinceId;
         });
-        selectedSPecialty = listSpecialty.find((item) => {
+        selectedSpecialty = listSpecialty.find((item) => {
           return item && item.value === specialtyId;
         });
       }
@@ -229,7 +229,7 @@ class ManageDoctor extends Component {
         selectedPayment: selectedPayment,
         selectedPrice: selectedPrice,
         selectedProvince: selectedProvince,
-        selectedSPecialty: selectedSPecialty
+        selectedSpecialty: selectedSpecialty,
       });
     } else {
       this.setState({
@@ -240,6 +240,10 @@ class ManageDoctor extends Component {
         addressClinic: "",
         nameClinic: "",
         note: "",
+        selectedPayment: "",
+        selectedPrice: "",
+        selectedProvince: "",
+        selectedSpecialty: "",
       });
     }
   };
@@ -372,13 +376,13 @@ class ManageDoctor extends Component {
               <FormattedMessage id={"admin.manage-doctor.specialty"} />
             </label>
             <Select
-              value={this.state.selectedSPecialty}
+              value={this.state.selectedSpecialty}
               onChange={this.handleChangeSelectDoctorInFor}
               options={this.state.listSpecialty}
               placeholder={
                 <FormattedMessage id={"admin.manage-doctor.specialty"} />
               }
-              name="selectedSPecialty"
+              name="selectedSpecialty"
             />
           </div>
           <div className="col-6 form-group">
