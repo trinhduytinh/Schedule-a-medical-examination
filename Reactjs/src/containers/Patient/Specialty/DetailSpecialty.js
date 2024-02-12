@@ -51,21 +51,76 @@ class DetailSpecialty extends Component {
             });
           }
         }
+        let dataProvince = resProvince.data;
+        if (dataProvince && dataProvince.length > 0) {
+          dataProvince.unshift({
+            createdAt: null,
+            keyMap: "ALL",
+            type: "PROVINCE",
+            valueVi: "Toàn Quốc",
+            valueEn: "ALL",
+            valueJa: "全国",
+          });
+        }
         this.setState({
           dataDetailSpecialty: res.data,
           arrDoctorId: arrDoctorId,
-          listProvince: resProvince.data,
+          listProvince: dataProvince ? dataProvince : [],
         });
       }
     }
   }
-  handleOnChangeSelect = (event) => {
-    console.log("check onchange", event.target.value);
+  handleOnChangeSelect = async (event) => {
+    if (
+      this.props.match &&
+      this.props.match.params &&
+      this.props.match.params.id
+    ) {
+      let id = this.props.match.params.id;
+      let location = event.target.value;
+      let res = await getAllDetailSpecialtyById({
+        id: id,
+        location: location,
+      });
+      if (res && res.errCode === 0) {
+        let data = res.data;
+        let arrDoctorId = [];
+        if (data && !_.isEmpty(res.data)) {
+          let arr = data.doctorSpecialty;
+          if (arr && arr.length > 0) {
+            arr.map((item) => {
+              arrDoctorId.push(item.doctorId);
+            });
+          }
+        }
+        this.setState({
+          dataDetailSpecialty: res.data,
+          arrDoctorId: arrDoctorId,
+        });
+      }
+    }
+  };
+  getLocationDoctor = (key) => {
+    let { listProvince } = this.state;
+    let { language } = this.props;
+    for (let i = 0; i < listProvince.length; i++) {
+      if (listProvince[i].keyMap === key && language === LANGUAGES.VI) {
+        return listProvince[i].valueVi;
+      }
+      if (listProvince[i].keyMap === key && language === LANGUAGES.EN) {
+        return listProvince[i].valueEn;
+      }
+      if (listProvince[i].keyMap === key && language === LANGUAGES.JA) {
+        return listProvince[i].valueJa;
+      }
+    }
+    return "";
   };
   async componentDidUpdate(prevProps, prevState, snapshot) {}
   render() {
     let { arrDoctorId, dataDetailSpecialty, listProvince } = this.state;
     let { language } = this.props;
+    console.log("check state: ", this.state);
     return (
       <div className="detail-specialty-container">
         <HomeHeader />
@@ -114,14 +169,24 @@ class DetailSpecialty extends Component {
           {arrDoctorId &&
             arrDoctorId.length > 0 &&
             arrDoctorId.map((item, index) => {
+              let doctorLocation = dataDetailSpecialty.doctorSpecialty.find(
+                (doctor) => doctor.doctorId === item
+              ).provinceId;
               return (
                 <div className="each-doctor" key={index}>
                   <div className="dt-content-left">
                     <ProfileDoctor
                       doctorId={item}
                       isShowDescriptionDoctor={true}
+                      isShowLinkDetail={true}
+                      isShowPrice={false}
                       // dataTime={dataTime}
                     />
+                    <div className="location">
+                      <i className="fas fa-map-marker-alt">
+                        {" " + this.getLocationDoctor(doctorLocation)}
+                      </i>
+                    </div>
                   </div>
                   <div className="dt-content-right">
                     <div className="doctor-schedule">
