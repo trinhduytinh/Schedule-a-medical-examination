@@ -12,14 +12,41 @@ module.exports = {
       address: {
         type: Sequelize.STRING,
       },
+      addressEn: {
+        type: Sequelize.STRING,
+      },
+      addressJa: {
+        type: Sequelize.STRING,
+      },
       name: {
         type: Sequelize.STRING,
       },
-      description: {
+      nameEn: {
+        type: Sequelize.STRING,
+      },
+      nameJa: {
+        type: Sequelize.STRING,
+      },
+      descriptionMarkdown: {
+        type: Sequelize.TEXT,
+      },
+      descriptionMarkdownEn: {
+        type: Sequelize.TEXT,
+      },
+      descriptionMarkdownJa: {
+        type: Sequelize.TEXT,
+      },
+      descriptionHTML: {
+        type: Sequelize.TEXT,
+      },
+      descriptionHTMLEn: {
+        type: Sequelize.TEXT,
+      },
+      descriptionHTMLJa: {
         type: Sequelize.TEXT,
       },
       image: {
-        type: Sequelize.STRING,
+        type: Sequelize.BLOB('long'),
       },
       createdAt: {
         allowNull: false,

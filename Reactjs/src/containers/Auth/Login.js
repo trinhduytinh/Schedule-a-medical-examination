@@ -26,13 +26,10 @@ class Login extends Component {
     });
   };
   handleLogin = async () => {
-    console.log("Kích vào");
     this.setState({
       errMessage: "",
     });
-    console.log("Kích vào");
     try {
-      console.log("Kích vào");
       let data = await handleLoginApi(this.state.username, this.state.password);
       console.log(data);
       if (data && data.errCode != 0) {

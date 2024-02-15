@@ -103,8 +103,6 @@ class HomeHeader extends Component {
             </div>
           </div>
         </div>
-
-        {console.log("check issShowBanner", this.props.isShowBanner)}
         {this.props.isShowBanner === true && (
           <div className="home-header-banner">
             <div className="content-up">
