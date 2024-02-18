@@ -10,6 +10,7 @@ import {
   createNewSpecialty,
 } from "../../../services/userService";
 import { toast } from "react-toastify";
+import LoadingOverlay from "react-loading-overlay"; // mang hinh load doi
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 class ManageClinic extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class ManageClinic extends Component {
       imageBase64: "",
       descriptionHTML: "",
       descriptionMarkdown: "",
+      isShowLoading: false,
     };
   }
   async componentDidMount() {}
@@ -50,6 +52,9 @@ class ManageClinic extends Component {
     }
   };
   handleSaveNewClinic = async () => {
+    this.setState({
+      isShowLoading: true,
+    });
     let res = await createNewClinic(this.state);
     if (res && res.errCode === 0) {
       toast.success("Add new clinic succeeds");
@@ -60,59 +65,74 @@ class ManageClinic extends Component {
         descriptionHTML: "",
         descriptionMarkdown: "",
       });
+      this.setState({
+        isShowLoading: false,
+      });
     } else {
       toast.error("Something wrongs....");
+      this.setState({
+        isShowLoading: false,
+      });
       console.log(">> hoi dan it check res: ", res);
     }
   };
   render() {
     return (
-      <div className="manage-specialty-container">
-        <div className="ms-title">Quản lý phòng khám</div>
-        <div className="add-new-specialty row">
-          <div className="col-6 form-group">
-            <label className="form-label">Tên phòng khám</label>
-            <input
-              className="form-control"
-              type="text"
-              value={this.state.name}
-              onChange={(event) => this.handleOnChangeInput(event, "name")}
-            />
+      <>
+        <LoadingOverlay
+          active={this.state.isShowLoading}
+          spinner
+          text="Loading...">
+          <div className="manage-specialty-container">
+            <div className="ms-title">Quản lý phòng khám</div>
+            <div className="add-new-specialty row">
+              <div className="col-6 form-group">
+                <label className="form-label">Tên phòng khám</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  value={this.state.name}
+                  onChange={(event) => this.handleOnChangeInput(event, "name")}
+                />
+              </div>
+              <div className="col-6 form-group">
+                <label className="form-label">Ảnh phòng khám</label>
+                <input
+                  className="form-control"
+                  type="file"
+                  onChange={(event) => this.handleOnchangeImage(event)}
+                />
+              </div>
+              <div className="col-6 form-group">
+                <label className="form-label">Địa chỉ phòng khám </label>
+                <input
+                  className="form-control"
+                  type="text"
+                  value={this.state.address}
+                  onChange={(event) =>
+                    this.handleOnChangeInput(event, "address")
+                  }
+                />
+              </div>
+              <div className="col-12 mt-3">
+                <MdEditor
+                  style={{ height: "500px" }}
+                  renderHTML={(text) => mdParser.render(text)}
+                  onChange={this.handleEditorChange}
+                  value={this.state.descriptionMarkdown}
+                />
+              </div>
+              <div className="col-12">
+                <button
+                  className="btn-save-specialty"
+                  onClick={() => this.handleSaveNewClinic()}>
+                  Save
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="col-6 form-group">
-            <label className="form-label">Ảnh phòng khám</label>
-            <input
-              className="form-control"
-              type="file"
-              onChange={(event) => this.handleOnchangeImage(event)}
-            />
-          </div>
-          <div className="col-6 form-group">
-            <label className="form-label">Địa chỉ phòng khám </label>
-            <input
-              className="form-control"
-              type="text"
-              value={this.state.address}
-              onChange={(event) => this.handleOnChangeInput(event, "address")}
-            />
-          </div>
-          <div className="col-12 mt-3">
-            <MdEditor
-              style={{ height: "500px" }}
-              renderHTML={(text) => mdParser.render(text)}
-              onChange={this.handleEditorChange}
-              value={this.state.descriptionMarkdown}
-            />
-          </div>
-          <div className="col-12">
-            <button
-              className="btn-save-specialty"
-              onClick={() => this.handleSaveNewClinic()}>
-              Save
-            </button>
-          </div>
-        </div>
-      </div>
+        </LoadingOverlay>
+      </>
     );
   }
 }

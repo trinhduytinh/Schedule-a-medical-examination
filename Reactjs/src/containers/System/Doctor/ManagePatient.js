@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import "./ManagePatient.scss";
 import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
 import DatePicker from "../../../components/Input/DatePicker";
+import LoadingOverlay from "react-loading-overlay"; // mang hinh load doi
 import {
   getAllPatientForDoctor,
   handleLoginApi,
@@ -20,6 +21,7 @@ class ManagePatient extends Component {
       dataPatient: [],
       isOpenRemedyModal: false,
       dataModal: {},
+      isShowLoading: false,
     };
   }
   async componentDidMount() {
@@ -82,6 +84,9 @@ class ManagePatient extends Component {
   };
   sendRemedy = async (dataChild) => {
     let { dataModal } = this.state;
+    this.setState({
+      isShowLoading: true,
+    });
     let res = await postSendRemedy({
       email: dataChild.email,
       imgBase64: dataChild.imgBase64,
@@ -93,9 +98,15 @@ class ManagePatient extends Component {
     });
     if (res && res.errCode === 0) {
       toast.success("Send remedy succeeds!");
+      this.setState({
+        isShowLoading: false,
+      });
       await this.getDataPatient();
     } else {
       toast.error("Something wrongs...");
+      this.setState({
+        isShowLoading: false,
+      });
       console.log("error send remedy: ", res);
     }
   };
@@ -104,84 +115,89 @@ class ManagePatient extends Component {
     let { language } = this.props;
     return (
       <>
-        <div className="manage-patient-container">
-          <div className="m-p-title">Quản lý bệnh nhân khám bệnh</div>
-          <div className="manage-patient-body row">
-            <div className="col-4 form-group">
-              <label>Chọn phóng khám</label>
-              <DatePicker
-                onChange={this.handleOnchangeDatePicker}
-                className="form-control"
-                value={this.state.currentDate}
-              />
-            </div>
-            <div className="col-12 table-manage-patient">
-              <table id="customers">
-                <tbody>
-                  <tr>
-                    <th>STT</th>
-                    <th>Thời gian</th>
-                    <th>Họ và tên</th>
-                    <th>Địa chỉ</th>
-                    <th>Giới tính</th>
-                    <th>Ngày sinh</th>
-                    <th>Lý do</th>
-                    <th>Actions</th>
-                  </tr>
-                  {dataPatient && dataPatient.length > 0 ? (
-                    dataPatient.map((item, index) => {
-                      let time, gender;
-                      switch (language) {
-                        case LANGUAGES.VI:
-                          time = item.timeTypeDataPatient.valueVi;
-                          gender = item.patientData.genderData.valueVi;
-                          break;
-                        case LANGUAGES.EN:
-                          time = item.timeTypeDataPatient.valueEn;
-                          gender = item.patientData.genderData.valueEn;
-                          break;
-                        case LANGUAGES.JA:
-                          time = item.timeTypeDataPatient.valueJa;
-                          gender = item.patientData.genderData.valueJa;
-                          break;
-                      }
-                      return (
-                        <tr key={index}>
-                          <td>{index + 1}</td>
-                          <td>{time}</td>
-                          <td>{item.patientData.firstName}</td>
-                          <td>{item.patientData.address}</td>
-                          <td>{gender}</td>
-                          <td>{this.convertTime(item.birthday)}</td>
-                          <td>{item.reason}</td>
-                          <td>
-                            <button
-                              className="mp-btn-confirm"
-                              onClick={() => this.handleBtnConfirm(item)}>
-                              Xác nhận
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  ) : (
+        <LoadingOverlay
+          active={this.state.isShowLoading}
+          spinner
+          text="Loading...">
+          <div className="manage-patient-container">
+            <div className="m-p-title">Quản lý bệnh nhân khám bệnh</div>
+            <div className="manage-patient-body row">
+              <div className="col-4 form-group">
+                <label>Chọn phóng khám</label>
+                <DatePicker
+                  onChange={this.handleOnchangeDatePicker}
+                  className="form-control"
+                  value={this.state.currentDate}
+                />
+              </div>
+              <div className="col-12 table-manage-patient">
+                <table id="customers">
+                  <tbody>
                     <tr>
-                      <td colSpan={8} style={{ textAlign: "center" }}>
-                        no data
-                      </td>
+                      <th>STT</th>
+                      <th>Thời gian</th>
+                      <th>Họ và tên</th>
+                      <th>Địa chỉ</th>
+                      <th>Giới tính</th>
+                      <th>Ngày sinh</th>
+                      <th>Lý do</th>
+                      <th>Actions</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                    {dataPatient && dataPatient.length > 0 ? (
+                      dataPatient.map((item, index) => {
+                        let time, gender;
+                        switch (language) {
+                          case LANGUAGES.VI:
+                            time = item.timeTypeDataPatient.valueVi;
+                            gender = item.patientData.genderData.valueVi;
+                            break;
+                          case LANGUAGES.EN:
+                            time = item.timeTypeDataPatient.valueEn;
+                            gender = item.patientData.genderData.valueEn;
+                            break;
+                          case LANGUAGES.JA:
+                            time = item.timeTypeDataPatient.valueJa;
+                            gender = item.patientData.genderData.valueJa;
+                            break;
+                        }
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{time}</td>
+                            <td>{item.patientData.firstName}</td>
+                            <td>{item.patientData.address}</td>
+                            <td>{gender}</td>
+                            <td>{this.convertTime(item.birthday)}</td>
+                            <td>{item.reason}</td>
+                            <td>
+                              <button
+                                className="mp-btn-confirm"
+                                onClick={() => this.handleBtnConfirm(item)}>
+                                Xác nhận
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <td colSpan={8} style={{ textAlign: "center" }}>
+                          no data
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-        <RemedyModal
-          isOpenModal={isOpenRemedyModal}
-          dataModal={dataModal}
-          closeRemedyModal={this.closeRemedyModal}
-          sendRemedy={this.sendRemedy}
-        />
+          <RemedyModal
+            isOpenModal={isOpenRemedyModal}
+            dataModal={dataModal}
+            closeRemedyModal={this.closeRemedyModal}
+            sendRemedy={this.sendRemedy}
+          />
+        </LoadingOverlay>
       </>
     );
   }

@@ -1,3 +1,9 @@
+div._loading_overlay_wrapper {
+  position: relative !important;
+  ._loading_overlay_overlay {
+    z-index: 10000;
+  }
+}
 .manage-specialty-container {
   padding: 0 15px;
   .ms-title {
@@ -9,12 +15,12 @@
   }
   .add-new-specialty {
     .btn-save-specialty {
-        border: none;
-        background: orange;
-        padding: 8px 5px;
-        min-width: 75px;
-        border-radius: 3px;
-        margin: 15px 0;
+      border: none;
+      background: orange;
+      padding: 8px 5px;
+      min-width: 75px;
+      border-radius: 3px;
+      margin: 15px 0;
     }
   }
 }

@@ -320,7 +320,7 @@ class UserRedux extends Component {
                   <FormattedMessage id="manage-user.gender" />
                 </label>
                 <select
-                  class="form-select"
+                  className="form-select"
                   aria-label="Default select example"
                   onChange={(event) => {
                     this.onChangeInput(event, "gender");
@@ -344,7 +344,7 @@ class UserRedux extends Component {
                   <FormattedMessage id="manage-user.position" />
                 </label>
                 <select
-                  class="form-select"
+                  className="form-select"
                   aria-label="Default select example"
                   onChange={(event) => {
                     this.onChangeInput(event, "position");
@@ -368,7 +368,7 @@ class UserRedux extends Component {
                   <FormattedMessage id="manage-user.role" />
                 </label>
                 <select
-                  class="form-select"
+                  className="form-select"
                   aria-label="Default select example"
                   onChange={(event) => {
                     this.onChangeInput(event, "role");

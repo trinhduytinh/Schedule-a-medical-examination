@@ -84,7 +84,7 @@ let sendAttachment = async (dataSend) => {
     subject: "Hóa đơn khám bệnh", // Subject line
     // text: "Hello world?", // plain text body
     html: getBodyHTMLEmailRemedy(dataSend), // html body
-    attachments: [
+    attachments: [//gui file
       {
         filename: `remedy-${dataSend.patientId}-${new Date().getTime()}.png`,
         content: dataSend.imgBase64.split("base64,")[1],
