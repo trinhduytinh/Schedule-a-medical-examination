@@ -16,7 +16,7 @@ class ManageSchedule extends Component {
     this.state = {
       listDoctors: [],
       selectedDoctor: {},
-      currentDate: "",
+      currentDate: moment(new Date()).startOf('day').valueOf(),//lay ngay ko lay gio de phu hop vs thu vien lich
       rangetime: [],
     };
   }

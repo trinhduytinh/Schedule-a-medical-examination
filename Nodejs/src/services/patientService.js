@@ -16,7 +16,12 @@ let postBookAppointment = (data) => {
         !data.doctorId ||
         !data.timeType ||
         !data.date ||
-        !data.fullName
+        !data.fullName ||
+        !data.selectedGender ||
+        !data.address ||
+        !data.reason ||
+        !data.phoneNumber ||
+        !data.birthday
       ) {
         resolve({
           errCode: 1,
@@ -38,6 +43,10 @@ let postBookAppointment = (data) => {
           defaults: {
             email: data.email,
             roleId: "R3",
+            gender: data.selectedGender,
+            address: data.address,
+            firstName: data.fullName,
+            phonenumber: data.phoneNumber,
           },
         });
 
@@ -50,6 +59,8 @@ let postBookAppointment = (data) => {
               patientID: user[0].id,
               date: data.date,
               timeType: data.timeType,
+              reason: data.reason,
+              birthday: data.birthday,
               token: token,
             },
           });

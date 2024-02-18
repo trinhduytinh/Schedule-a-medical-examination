@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 require("dotenv").config();
 let sendSimpleEmail = async (dataSend) => {
-  const transporter = nodemailer.createTransport({
+  let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
     secure: true,
@@ -13,7 +13,7 @@ let sendSimpleEmail = async (dataSend) => {
   });
 
   // send mail with defined transport object
-  const info = await transporter.sendMail({
+  let info = await transporter.sendMail({
     from: '"Trịnh Duy Tính 👻" <tinhtrinh54@gmail.com>', // sender address
     to: dataSend.receiverEmail, // list of receivers
     subject: "Thông tin đặt lịch khám bệnh", // Subject line
@@ -32,7 +32,7 @@ let getBodyHTMLEmail = (dataSend) => {
     <div><b>Bác sĩ: ${dataSend.doctorName}</div>
     <p>Nếu các thông tin trên là chính xác , vui lòng click vào đường link bên dưới để xác nhận và hoàn tất thủ tục đặt lịch khám bệnh</p>
     <div><a href=${dataSend.redirectLink} target="_blank">Click here</a></div>
-    <div>Xinh chân thành cảm ơn</div>
+    <div>Xin chân thành cảm ơn</div>
     <div>Chúc bạn một ngày tốt lành</div>
 
 `;
@@ -61,11 +61,74 @@ let getBodyHTMLEmail = (dataSend) => {
   <div><a href=${dataSend.redirectLink} target="_blank">こちらをクリック</a></div>
   <div>心から感謝いたします</div>
   <div>素晴らしい一日をお過ごしください</div>
-
    `;
+  }
+  return result;
+};
+let sendAttachment = async (dataSend) => {
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+      user: process.env.EMAIL_APP,
+      pass: process.env.EMAIL_APP_PASSWORD,
+    },
+  });
+
+  // send mail with defined transport object
+  let info = await transporter.sendMail({
+    from: '"Trịnh Duy Tính 👻" <tinhtrinh54@gmail.com>', // sender address
+    to: dataSend.email, // list of receivers
+    subject: "Hóa đơn khám bệnh", // Subject line
+    // text: "Hello world?", // plain text body
+    html: getBodyHTMLEmailRemedy(dataSend), // html body
+    attachments: [
+      {
+        filename: `remedy-${dataSend.patientId}-${new Date().getTime()}.png`,
+        content: dataSend.imgBase64.split("base64,")[1],
+        encoding: "base64",
+      },
+    ],
+  });
+};
+let getBodyHTMLEmailRemedy = (dataSend) => {
+  let result = "";
+  if (dataSend.language === "vi") {
+    result = `
+    <h3>Xin chào ${dataSend.patientName}!<h3/>
+    <p>Bạn nhận được email này vì đã đặt lịch khám bệnh online trên wed của Trịnh Duy Tính</p>
+    <p>Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ cảu chúng tôi.</p>
+    <p>Thông tin đơn thuốc/hóa đơn được gửi đến bạn trong file đính kèm dưới:<p>
+    <div>Xin chân thành cảm ơn.</div>
+    <div>Chúc bạn một ngày tốt lành.</div>
+
+`;
+  }
+  if (dataSend.language === "en") {
+    result = `
+    <h3>Hello ${dataSend.patientName}!<h3/>
+    <p>You are receiving this email because you have scheduled an online medical appointment on Trinh Duy Tinh's website</p>
+    <p>Thank you for your trust and using our services.</p>
+    <p>The prescription/invoice information has been sent to you in the attached file below:<p>
+    <div>Thank you sincerely.</div>
+    <div>Wishing you a wonderful day.</div>
+`;
+  }
+  if (dataSend.language === "ja") {
+    result = `
+    <h3>${dataSend.patientName}さん、こんにちは！<h3/>
+    <p>Trinh Duy Tinhのウェブサイトでオンライン医療予約をされたため、このメールを受信しています</p>
+    <p>お信頼いただき、当サービスをご利用いただき、ありがとうございます。</p>
+    <p>処方箋/請求書の情報は、以下の添付ファイルに添付されています:<p>
+    <div>心から感謝いたします。</div>
+    <div>素晴らしい一日をお過ごしください。</div>
+`;
   }
   return result;
 };
 module.exports = {
   sendSimpleEmail: sendSimpleEmail,
+  sendAttachment: sendAttachment,
 };

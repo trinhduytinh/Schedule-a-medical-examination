@@ -36,7 +36,8 @@
       "manage-handbook": "ハンドブック管理"
     },
     "doctor": {
-      "manage-schedule": "診療予定の管理"
+      "manage-schedule": "診療予定の管理",
+      "manage-patient": "診察のための患者を管理する"
     }
   },
   "manage-user": {
