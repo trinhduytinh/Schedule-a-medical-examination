@@ -9,7 +9,10 @@
     "fee": "診療費",
     "check-health": "一般健康診断",
     "support": "サポート",
-    "welcome": "ようこそ"
+    "welcome": "ようこそ",
+    "vn": "ベトナム",
+    "ja": "日本",
+    "en": "アメリカ"
   },
   "banner": {
     "title1": "医療プラットフォーム",

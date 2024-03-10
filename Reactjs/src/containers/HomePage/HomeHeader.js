@@ -5,23 +5,29 @@ import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
 import { LANGUAGES } from "../../utils";
 import { changeLanguageApp } from "../../store/actions";
 import { withRouter } from "react-router";
+import vn from "../../assets/vietnam.png";
+import ja from "../../assets/ja.png";
+import en from "../../assets/en.png";
 class HomeHeader extends Component {
-  changeLanguage = (event) => {
+  changeLanguage = (language) => {
+    console.log(language);
     //fire redux event : actions
-    this.props.changeLanguageAppRedux(event.target.value);
+    if (language === "VN") this.props.changeLanguageAppRedux(LANGUAGES.VI);
+    if (language === "EN") this.props.changeLanguageAppRedux(LANGUAGES.EN);
+    if (language === "JA") this.props.changeLanguageAppRedux(LANGUAGES.JA);
   };
   returnToHome = () => {
     if (this.props.history) this.props.history.push(`/home`);
   };
   render() {
     let language = this.props.language;
+    console.log('check render:', language);
     return (
       <React.Fragment>
         <div className="home-header-container">
           <div className="home-header-content">
             <div className="left-content">
-              <i
-                className="fas fa-bars"></i>
+              <i className="fas fa-bars"></i>
               <div
                 className="header-logo"
                 onClick={() => this.returnToHome()}></div>
@@ -70,35 +76,86 @@ class HomeHeader extends Component {
             </div>
             <div className="right-content">
               <div className="support">
-                <i className="fas fa-question-circle"></i>{" "}
+                <i className="fas fa-question-circle"></i>
                 <FormattedMessage id={"homeheader.support"} />
               </div>
-              {/* <div
-                className={
-                  language === LANGUAGES.VI
-                    ? "language-vi active"
-                    : "language-vi"
-                }>
-                <span onClick={() => this.changeLanguage(LANGUAGES.VI)}>
-                  VN
-                </span>
-              </div>
-              <div
-                className={
-                  language === LANGUAGES.EN
-                    ? "language-japan active"
-                    : "language-japan"
-                }>
-                <span onClick={() => this.changeLanguage(LANGUAGES.EN)}>
-                  EN
-                </span>
-              </div> */}
-              <div className="language">
-                <select value={language} onChange={this.changeLanguage}>
+              <div>
+                {language === LANGUAGES.VI ? (
+                  <div className="dropdown-language">
+                    <button className="dropdown-btn">
+                      <img src={vn}></img>
+                      <span> <FormattedMessage id={"homeheader.vn"} /></span>
+                    </button>
+                    <div className="dropdown-content">
+                      <button
+                        onClick={() => {
+                          this.changeLanguage("EN");
+                        }}>
+                        <img src={en}></img>
+                        <div> <FormattedMessage id={"homeheader.en"} /></div>
+                      </button>
+                      <button
+                        onClick={() => {
+                          this.changeLanguage("JA");
+                        }}>
+                        <img src={ja}></img>
+                        <div> <FormattedMessage id={"homeheader.ja"} /></div>
+                      </button>
+                    </div>
+                  </div>
+                ) : language === LANGUAGES.EN ? (
+                  <div className="dropdown-language">
+                    <button className="dropdown-btn">
+                      <img src={en}></img>
+                      <span> <FormattedMessage id={"homeheader.en"} /></span>
+                    </button>
+                    <div className="dropdown-content">
+                      <button
+                        onClick={() => {
+                          this.changeLanguage("VN");
+                        }}>
+                        <img src={vn}></img>
+                        <div> <FormattedMessage id={"homeheader.vn"} /></div>
+                      </button>
+                      <button
+                        onClick={() => {
+                          this.changeLanguage("JA");
+                        }}>
+                        <img src={ja}></img>
+                        <div> <FormattedMessage id={"homeheader.ja"} /></div>
+                      </button>
+                    </div>
+                  </div>
+                ) : language === LANGUAGES.JA?(
+                  <div className="dropdown-language">
+                    <button className="dropdown-btn">
+                      <img src={ja}></img>
+                      <span> <FormattedMessage id={"homeheader.ja"} /></span>
+                    </button>
+                    <div className="dropdown-content">
+                      <button
+                        onClick={() => {
+                          this.changeLanguage("EN");
+                        }}>
+                        <img src={en}></img>
+                        <div> <FormattedMessage id={"homeheader.en"} /></div>
+                      </button>
+                      <button
+                        onClick={() => {
+                          this.changeLanguage("VN");
+                        }}>
+                        <img src={vn}></img>
+                        <div> <FormattedMessage id={"homeheader.vn"} /></div>
+                      </button>
+                    </div>
+
+                    {/* <select value={language} onChange={this.changeLanguage}>
                   <option value={LANGUAGES.VI}>Tiếng Việt</option>
                   <option value={LANGUAGES.EN}>English</option>
                   <option value={LANGUAGES.JA}>日本語</option>
-                </select>
+                </select> */}
+                  </div>
+                ):""}
               </div>
             </div>
           </div>

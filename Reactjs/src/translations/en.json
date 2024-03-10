@@ -9,7 +9,10 @@
     "fee": "Examination package",
     "check-health": "General health check-up",
     "support": "Support",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "vn": "VietNam",
+    "ja": "Japan",
+    "en": "America"
   },
   "banner": {
     "title1": "MEDICAL PLATFORM",
