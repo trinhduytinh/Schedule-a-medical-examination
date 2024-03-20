@@ -6,6 +6,8 @@ import { getDetailInforDoctor } from "../../../services/userService";
 import { LANGUAGES } from "../../../utils";
 import DoctorSchedule from "./DoctorSchedule";
 import DoctorExtraInfor from "./DoctorExtraInfor";
+import LikeAndShare from "../SocialPlugin/LikeAndShare";
+import Comment from "../SocialPlugin/Comment";
 class DetailDoctor extends Component {
   constructor(props) {
     super(props);
@@ -85,6 +87,10 @@ class DetailDoctor extends Component {
       default:
         break;
     }
+    let currentURL =
+      +process.env.REACT_APP_IS_LOCALHOST === 1
+        ? "https://test.com/"
+        : window.location.href;
     return (
       <>
         <HomeHeader isShowBanner={false} />
@@ -101,6 +107,9 @@ class DetailDoctor extends Component {
               <div className="up">{nameDoctor}</div>
               <div className="down">
                 <span>{description}</span>
+                <div className="like-share-plugin">
+                  <LikeAndShare dataHref={currentURL} />
+                </div>
               </div>
             </div>
           </div>
@@ -109,7 +118,9 @@ class DetailDoctor extends Component {
               <DoctorSchedule doctorIdFromParent={this.state.currentDoctorId} />
             </div>
             <div className="content-right">
-              <DoctorExtraInfor doctorIdFromParent={this.state.currentDoctorId}/>
+              <DoctorExtraInfor
+                doctorIdFromParent={this.state.currentDoctorId}
+              />
             </div>
           </div>
           <div className="detail-innfor-doctor">
@@ -119,7 +130,9 @@ class DetailDoctor extends Component {
                 __html: contentHTML,
               }}></div>
           </div>
-          <div className="comment-doctor"></div>
+          <div className="comment-doctor">
+            <Comment dataHref={currentURL} width={"100%"}/>
+          </div>
         </div>
       </>
     );
