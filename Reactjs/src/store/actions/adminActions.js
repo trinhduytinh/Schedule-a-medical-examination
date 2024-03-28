@@ -10,6 +10,7 @@ import {
   saveDetailDoctorService,
   getAllSpecialty,
   getAllClinic,
+  getAllHandbook,
 } from "../../services/userService";
 import { toast } from "react-toastify";
 //start doing end
@@ -342,3 +343,26 @@ export const fetchRequiredDoctorInFoSuccess = (allRequiredData) => ({
 export const fetchRequiredDoctorInFoFailed = () => ({
   type: actionTypes.FETCH_REQUIRED_DOCTOR_INFO_FAILED,
 });
+
+export const fetchAllHandbooks = () => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllHandbook();
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_ALL_HANDBOOK_SUCCESS,
+          data: res.data,
+        });
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_ALL_HANDBOOK_FAILED,
+        });
+      }
+    } catch (e) {
+      console.log("FETCH_ALL_HANDBOOK_FAILED: ", e);
+      dispatch({
+        type: actionTypes.FETCH_ALL_HANDBOOK_FAILED,
+      });
+    }
+  };
+};

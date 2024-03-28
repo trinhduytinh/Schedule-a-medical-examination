@@ -41,7 +41,6 @@ class Comment extends Component {
   async componentDidUpdate(prevProps, prevState, snapshot) {}
   render() {
     let { width, dataHref, numPost } = this.props;
-    console.log("check log props comment", this.props);
     return (
       <>
         <div

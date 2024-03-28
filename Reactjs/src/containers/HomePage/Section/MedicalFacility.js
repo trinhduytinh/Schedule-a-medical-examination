@@ -18,7 +18,6 @@ class MedicalFacility extends Component {
         dataClinics: res.data ? res.data : [],
       });
     }
-    console.log("check res clinics", res);
   }
   handleViewDetailClinic = (clinic) => {
     if(this.props.history){

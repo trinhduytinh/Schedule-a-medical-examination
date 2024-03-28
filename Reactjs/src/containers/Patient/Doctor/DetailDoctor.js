@@ -123,7 +123,7 @@ class DetailDoctor extends Component {
               />
             </div>
           </div>
-          <div className="detail-innfor-doctor">
+          <div className="detail-infor-doctor">
             <div
               //chuyen html sang doc
               dangerouslySetInnerHTML={{

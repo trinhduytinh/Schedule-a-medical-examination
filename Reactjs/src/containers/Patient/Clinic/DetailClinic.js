@@ -33,7 +33,6 @@ class DetailClinic extends Component {
       let res = await getAllDetailClinicById({
         id: id,
       });
-      console.log("check res clinic2", res);
       if (res && res.errCode === 0) {
         let data = res.data;
         let arrDoctorId = [];

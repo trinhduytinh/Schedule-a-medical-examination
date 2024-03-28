@@ -76,6 +76,10 @@ export const doctorMenu = [
         name: "menu.doctor.manage-patient",
         link: "/doctor/manage-patient",
       },
+      {
+        name: "Quản lý bài viết",
+        link: "/doctor/manage-handbook",
+      }
     ],
   },
 ];
