@@ -73,7 +73,6 @@ class ManageClinic extends Component {
       this.setState({
         isShowLoading: false,
       });
-      console.log(">> hoi dan it check res: ", res);
     }
   };
   render() {

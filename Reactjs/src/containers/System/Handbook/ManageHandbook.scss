@@ -1,0 +1,92 @@
+.btn-edit {
+  width: 50px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: orange;
+
+  &:hover {
+    background-color: transparent !important;
+    color: orange !important;
+  }
+}
+
+.btn-delete {
+  width: 50px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: rgb(252, 44, 12);
+
+  &:hover {
+    background-color: transparent !important;
+    color: rgb(255, 68, 0) !important;
+  }
+}
+
+.users-container {
+  .modal-user-body {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      width: 49%;
+
+      &.max-width-input {
+        width: 100%;
+      }
+
+      input {
+        border-radius: 3px;
+        border: 1px solid grey;
+        height: 30px;
+        outline: none;
+        padding: 0 10px;
+      }
+    }
+  }
+  .handbook-card {
+    display: flex;
+    justify-content: flex-start;
+    margin: 0 110px;
+    gap: 15px;
+  }
+}
+
+.bg-image {
+  height: 130px;
+  width: auto;
+  background: center center no-repeat;
+  background-size: cover;
+  background-color: #eee;
+}
+.card-body-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Đảm bảo container căn chỉnh theo chiều cao của thẻ */
+  .card-info {
+    flex: 1; /* Phần thông tin căn chỉnh đầy đủ chiều cao còn lại của container */
+  }
+  .button-handbook {
+    display: flex;
+    gap: 10px; /* Khoảng cách giữa các nút Button */
+    justify-content: center;
+    flex-wrap: wrap;
+    button {
+      width: -webkit-fill-available;
+    }
+  }
+}
+
+.button-handbook {
+  display: flex;
+  gap: 10px; /* Khoảng cách giữa các nút Button */
+}
+div._loading_overlay_wrapper {
+  position: unset !important;
+  ._loading_overlay_overlay{
+    z-index: 10000;
+  }
+}

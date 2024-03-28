@@ -46,8 +46,7 @@
       .bg-image {
         height: 170px;
         width: 315px;
-        background-position: center center;
-        background-repeat: no-repeat;
+        background: center center no-repeat;
         background-size: cover;
         background-color: #eee;
         &.section-specialty {
@@ -63,7 +62,7 @@
           border-radius: 50%;
         }
         &.section-handbook {
-          background-image: url("../../assets/handbook/handbook.jpg");
+          // background-image: url("../../assets/handbook/handbook.jpg");
         }
       }
     }

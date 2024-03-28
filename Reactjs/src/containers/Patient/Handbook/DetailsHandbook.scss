@@ -1,0 +1,30 @@
+.handbook-detail-container {
+  padding: 0 100px;
+  .posting-date {
+    padding: 15px 0;
+    line-height: 1.5;
+  }
+  .person-posting {
+    padding: 15px;
+    strong {
+      font-weight: bold;
+      padding-right: 5px;
+    }
+  }
+  .body {
+    h1,
+    h2,
+    h3 {
+      font-size: 20px;
+    }
+    img {
+      margin-left: 380px;
+      width: 600px;
+      padding: 10px 0;
+    }
+    blockquote{
+      text-align: center;
+      font-size: 14px;
+    }
+  }
+}

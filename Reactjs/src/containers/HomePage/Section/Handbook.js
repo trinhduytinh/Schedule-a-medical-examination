@@ -1,8 +1,36 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import * as actions from "../../../store/actions";
+import "./Handbook.scss"
 import Slider from "react-slick";
+import { withRouter } from "react-router"; 
+
 class Handbook extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      allHandbooks: [],
+    };
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.allHandbooks !== this.props.allHandbooks) {
+      this.setState({
+        allHandbooks: this.props.allHandbooks,
+      });
+    }
+  }
+  componentDidMount() {
+    this.props.loadHandbook();
+  }
+  handleViewDetailHandbook = (handbook) => {
+    if(this.props.history){
+      this.props.history.push(`detail-handbook/${handbook.id}`)
+    }
+  };
   render() {
+    let {allHandbooks} = this.state;
+    let { language } = this.props;
+    console.log("check handbook:", allHandbooks);
     return (
       <div className="section-share section-handbook">
         <div className="section-container">
@@ -12,26 +40,22 @@ class Handbook extends Component {
           </div>
           <div className="section-body">
             <Slider {...this.props.settings}>
-              <div className="section-customize">
-                <div className="bg-image section-handbook"></div>
-                <div>Bệnh viện Đa Khoa</div>
-              </div>
-              <div className="section-customize">
-                <div className="bg-image section-handbook"></div>
-                <div>Bệnh viện liên chiểu</div>
-              </div>
-              <div className="section-customize">
-                <div className="bg-image section-handbook"></div>
-                <div>Bệnh viện ung bứu</div>
-              </div>
-              <div className="section-customize">
-                <div className="bg-image section-handbook"></div>
-                <div>Bệnh viện chấn thương chỉnh hình</div>
-              </div>
-              <div className="section-customize">
-                <div className="bg-image section-handbook"></div>
-                <div>Bệnh viện nhi đồng</div>
-              </div>
+            {allHandbooks &&
+                allHandbooks.length > 0 &&
+                allHandbooks.map((item, index) => {
+                  return (
+                    <div
+                      className="section-customize handbook-child"
+                      key={index}
+                      onClick={() => this.handleViewDetailHandbook(item)}
+                      >
+                      <div
+                        className="bg-image section-medical-facility"
+                        style={{ backgroundImage: `url(${item.image})` }}></div>
+                      <div className="handbook-name">{item.title}</div>
+                    </div>
+                  );
+                })}
             </Slider>
           </div>
         </div>
@@ -43,11 +67,14 @@ class Handbook extends Component {
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.user.isLoggedIn,
+    allHandbooks: state.admin.allHandbooks,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    loadHandbook: () => dispatch(actions.fetchAllHandbooks()),
+  };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Handbook);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Handbook));

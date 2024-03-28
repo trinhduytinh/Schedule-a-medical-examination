@@ -148,12 +148,6 @@ class HomeHeader extends Component {
                         <div> <FormattedMessage id={"homeheader.vn"} /></div>
                       </button>
                     </div>
-
-                    {/* <select value={language} onChange={this.changeLanguage}>
-                  <option value={LANGUAGES.VI}>Tiếng Việt</option>
-                  <option value={LANGUAGES.EN}>English</option>
-                  <option value={LANGUAGES.JA}>日本語</option>
-                </select> */}
                   </div>
                 ):""}
               </div>
