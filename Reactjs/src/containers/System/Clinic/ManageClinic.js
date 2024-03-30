@@ -83,10 +83,10 @@ class ManageClinic extends Component {
           spinner
           text="Loading...">
           <div className="manage-specialty-container">
-            <div className="ms-title">Quản lý phòng khám</div>
+            <div className="ms-title"><FormattedMessage id={"manage-clinic.manage-clinic"}/></div>
             <div className="add-new-specialty row">
               <div className="col-6 form-group">
-                <label className="form-label">Tên phòng khám</label>
+                <label className="form-label"><FormattedMessage id={"manage-clinic.name-clinic"}/></label>
                 <input
                   className="form-control"
                   type="text"
@@ -95,7 +95,7 @@ class ManageClinic extends Component {
                 />
               </div>
               <div className="col-6 form-group">
-                <label className="form-label">Ảnh phòng khám</label>
+                <label className="form-label"><FormattedMessage id={"manage-clinic.image-clinic"}/></label>
                 <input
                   className="form-control"
                   type="file"
@@ -103,7 +103,7 @@ class ManageClinic extends Component {
                 />
               </div>
               <div className="col-6 form-group">
-                <label className="form-label">Địa chỉ phòng khám </label>
+                <label className="form-label"><FormattedMessage id={"manage-clinic.address-clinic"}/> </label>
                 <input
                   className="form-control"
                   type="text"
@@ -125,7 +125,7 @@ class ManageClinic extends Component {
                 <button
                   className="btn-save-specialty"
                   onClick={() => this.handleSaveNewClinic()}>
-                  Save
+                  <FormattedMessage id={"manage-clinic.save"}/>
                 </button>
               </div>
             </div>

@@ -14,7 +14,9 @@ let createSpecialty = (data) => {
           errMessage: "Missing parameter",
         });
       } else {
-        let descriptionHTMLEn = "",
+        let nameEn = "",
+          nameJa = "",
+          descriptionHTMLEn = "",
           descriptionHTMLJa = "",
           descriptionMarkdownEn = "",
           descriptionMarkdownJa = "";
@@ -47,11 +49,27 @@ let createSpecialty = (data) => {
             "ja"
           );
           descriptionMarkdownJa = translationDescja.translation;
+
+          const translationNameEn = await translate(
+            data.name,
+            null,
+            "en"
+          );
+          nameEn = translationNameEn.translation;
+
+          const translationNameJa = await translate(
+            data.name,
+            null,
+            "ja"
+          );
+          nameJa = translationNameJa.translation;
         } catch (err) {
           console.error(err);
         }
         await db.Specialty.create({
           name: data.name,
+          nameEn: nameEn,
+          nameJa: nameJa,
           image: data.imageBase64,
           descriptionHTML: data.descriptionHTML,
           descriptionHTMLEn: descriptionHTMLEn,
@@ -104,6 +122,8 @@ let getDetailSpecialtyById = (inputId, location) => {
             id: inputId,
           },
           attributes: [
+            "nameEn",
+            "nameJa",
             "descriptionHTML",
             "descriptionHTMLEn",
             "descriptionHTMLJa",

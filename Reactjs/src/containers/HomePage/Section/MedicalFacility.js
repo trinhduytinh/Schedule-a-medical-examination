@@ -4,6 +4,8 @@ import "./MedicalFacility.scss";
 import Slider from "react-slick";
 import { getAllClinic } from "../../../services/userService";
 import { withRouter } from "react-router"; //chuyen trang
+import { FormattedMessage } from "react-intl";
+import { LANGUAGES } from "../../../utils";
 class MedicalFacility extends Component {
   constructor(props) {
     super(props);
@@ -20,18 +22,23 @@ class MedicalFacility extends Component {
     }
   }
   handleViewDetailClinic = (clinic) => {
-    if(this.props.history){
-      this.props.history.push(`detail-clinic/${clinic.id}`)
+    if (this.props.history) {
+      this.props.history.push(`detail-clinic/${clinic.id}`);
     }
   };
   render() {
     let { dataClinics } = this.state;
+    let { language } = this.props;
     return (
       <div className="section-share section-medical-facility">
         <div className="section-container">
           <div className="section-header">
-            <span className="title-section">Cơ sở y tế nổi bật</span>
-            <button className="btn-section">Xem thêm</button>
+            <span className="title-section">
+              <FormattedMessage id="homepage.prominent-healthcare-facilities" />
+            </span>
+            <button className="btn-section">
+              <FormattedMessage id="homepage.more-infor" />
+            </button>
           </div>
           <div className="section-body">
             <Slider {...this.props.settings}>
@@ -46,7 +53,15 @@ class MedicalFacility extends Component {
                       <div
                         className="bg-image section-medical-facility"
                         style={{ backgroundImage: `url(${item.image})` }}></div>
-                      <div className="clinic-name">{item.name}</div>
+                      <div className="clinic-name">
+                        {language === LANGUAGES.VI
+                          ? item.name
+                          : language === LANGUAGES.EN
+                          ? item.nameEn
+                          : language === LANGUAGES.JA
+                          ? item.nameJa
+                          : ""}
+                      </div>
                     </div>
                   );
                 })}
@@ -61,6 +76,7 @@ class MedicalFacility extends Component {
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.user.isLoggedIn,
+    language: state.app.language,
   };
 };
 

@@ -57,18 +57,65 @@
     "image": "Profile image",
     "save": "Save",
     "upload-photo": "Upload photo",
-    "edit": "Save changes"
+    "edit": "Save changes",
+    "action": "Action",
+    "add-new-users": " Add new users",
+    "manage-user": "MANAGE USERS WITH TINH"
   },
   "homepage": {
     "outstanding-doctor": "Outstanding doctors of the week",
     "more-infor": "See more",
-    "specialty-popular": "Popular Specialties"
+    "specialty-popular": "Popular Specialties",
+    "prominent-healthcare-facilities": "Prominent healthcare facilities",
+    "handbook": "Handbook",
+    "media-coverage": "Media Coverage of Trịnh Duy Tính",
+    "more-information": "2023 Trinh Duy Tinh. More information",
+    "click-here": "Click here"
   },
   "manage-schedule": {
     "title": "Manage doctor's appointment schedule",
     "choose-doctor": "Choose a doctor",
     "choose-date": "Choose date",
     "save": "Save infor"
+  },
+  "manage-specialty": {
+    "specialty-management": "Specialty management",
+    "name_of_specialty": "Specialty name",
+    "specialized_image": "Specialty image",
+    "save": "Save"
+  },
+  "manage-handbook": {
+    "manage-handbook": " Handbook management",
+    "add-new-handbook": " Add new handbook",
+    "edit_handbook": "Edit handbook",
+    "title": "Title",
+    "image-handbook": "Handbook image",
+    "save-changes": "Save changes",
+    "close": "Close",
+    "create-new-handbook": "Create new handbook",
+    "add-new": "Add new",
+    "managing-articles": "Managing articles"
+  },
+  "manage-patient": {
+    "managing-medical-patients": "Managing medical patients",
+    "choose-to-explore": "Choose to explore",
+    "stt": "STT",
+    "time": "Time",
+    "name": "Name",
+    "address": "Address",
+    "sex": "Sex",
+    "birthday": "Birthday",
+    "reason": "Reason for examination",
+    "action": "Action",
+    "submit": "Submit",
+    "no-data": "No data"
+  },
+  "manage-clinic": {
+    "manage-clinic": "Clinic management",
+    "name-clinic": "Clinic name",
+    "image-clinic": "Clinic image",
+    "address-clinic": "Clinic address",
+    "save": "Save"
   },
   "patient": {
     "detail-doctor": {
@@ -97,6 +144,14 @@
       "btnCancel": "Cancel",
       "priceBooking": "Free booking",
       "price": "Examination fee: "
+    },
+    "clinic": {
+      "reduce": "Minimize",
+      "more": "See more..."
+    },
+    "handbook": {
+      "posting-date": "Posting date: ",
+      "poster": "Poster: "
     }
   },
   "admin": {

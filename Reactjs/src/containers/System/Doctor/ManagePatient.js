@@ -120,10 +120,16 @@ class ManagePatient extends Component {
           spinner
           text="Loading...">
           <div className="manage-patient-container">
-            <div className="m-p-title">Quản lý bệnh nhân khám bệnh</div>
+            <div className="m-p-title">
+              <FormattedMessage
+                id={"manage-patient.managing-medical-patients"}
+              />
+            </div>
             <div className="manage-patient-body row">
               <div className="col-4 form-group">
-                <label>Chọn phóng khám</label>
+                <label>
+                  <FormattedMessage id={"manage-patient.choose-to-explore"} />
+                </label>
                 <DatePicker
                   onChange={this.handleOnchangeDatePicker}
                   className="form-control"
@@ -134,14 +140,31 @@ class ManagePatient extends Component {
                 <table id="customers">
                   <tbody>
                     <tr>
-                      <th>STT</th>
-                      <th>Thời gian</th>
-                      <th>Họ và tên</th>
-                      <th>Địa chỉ</th>
-                      <th>Giới tính</th>
-                      <th>Ngày sinh</th>
-                      <th>Lý do</th>
-                      <th>Actions</th>
+                      <th>
+                        <FormattedMessage id={"manage-patient.stt"} />
+                      </th>
+                      <th>
+                        <FormattedMessage id={"manage-patient.time"} />
+                      </th>
+                      <th>
+                        <FormattedMessage id={"manage-patient.name"} />
+                      </th>
+                      <th>
+                        <FormattedMessage id={"manage-patient.address"} />
+                      </th>
+                      <th>
+                        <FormattedMessage id={"manage-patient.sex"} />
+                      </th>
+                      <th>
+                        <FormattedMessage id={"manage-patient.birthday"} />
+                      </th>
+                      <th>
+                        <FormattedMessage id={"manage-patient.reason"} />
+                      </th>
+                      <th>
+                        <FormattedMessage id={"manage-patient.action"} />
+                        ns
+                      </th>
                     </tr>
                     {dataPatient && dataPatient.length > 0 ? (
                       dataPatient.map((item, index) => {
@@ -173,7 +196,7 @@ class ManagePatient extends Component {
                               <button
                                 className="mp-btn-confirm"
                                 onClick={() => this.handleBtnConfirm(item)}>
-                                Xác nhận
+                                 <FormattedMessage id={"manage-patient.submit"} />
                               </button>
                             </td>
                           </tr>
@@ -182,7 +205,7 @@ class ManagePatient extends Component {
                     ) : (
                       <tr>
                         <td colSpan={8} style={{ textAlign: "center" }}>
-                          no data
+                        <FormattedMessage id={"manage-patient.no-data"} />
                         </td>
                       </tr>
                     )}

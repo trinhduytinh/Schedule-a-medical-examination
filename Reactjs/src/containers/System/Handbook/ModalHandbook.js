@@ -81,12 +81,14 @@ class ModalHandbook extends Component {
         size="lg"
         centered>
         <ModalHeader toggle={() => this.toggle()}>
-          Create a new handbook
+          <FormattedMessage id={"manage-handbook.create-new-handbook"} />
         </ModalHeader>
         <ModalBody>
           <div className="modal-user-body">
             <div className="input-container max-width-input">
-              <label className="form-label">Tiêu đề</label>
+              <label className="form-label">
+                <FormattedMessage id={"manage-handbook.title"} />
+              </label>
               <input
                 type="text"
                 onChange={(event) => {
@@ -95,7 +97,9 @@ class ModalHandbook extends Component {
                 value={this.state.title}></input>
             </div>
             <div className="input-container">
-              <label className="form-label">Ảnh bài viết</label>
+              <label className="form-label">
+                <FormattedMessage id={"manage-handbook.image-handbook"} />
+              </label>
               <input
                 className="form-control"
                 type="file"
@@ -117,13 +121,13 @@ class ModalHandbook extends Component {
             color="primary"
             className="px-3"
             onClick={() => this.handleAddNewHandbook()}>
-            Add new
+            <FormattedMessage id={"manage-handbook.add-new"} />
           </Button>
           <Button
             color="secondary"
             className="px-3"
             onClick={() => this.toggle()}>
-            Close
+            <FormattedMessage id={"manage-handbook.close"} />
           </Button>
         </ModalFooter>
       </Modal>

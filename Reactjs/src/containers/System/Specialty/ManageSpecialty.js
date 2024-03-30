@@ -69,7 +69,6 @@ class ManageSpecialty extends Component {
       this.setState({
         isShowLoading: false,
       });
-      console.log(">> hoi dan it check res: ", res);
     }
   };
   render() {
@@ -80,10 +79,10 @@ class ManageSpecialty extends Component {
           spinner
           text="Loading...">
           <div className="manage-specialty-container">
-            <div className="ms-title">Quản lý chuyên khoa</div>
+            <div className="ms-title"><FormattedMessage id="manage-specialty.specialty-management"/></div>
             <div className="add-new-specialty row">
               <div className="col-6 form-group">
-                <label className="form-label">Tên chuyên khoa</label>
+                <label className="form-label"><FormattedMessage id="manage-specialty.name_of_specialty"/></label>
                 <input
                   className="form-control"
                   type="text"
@@ -92,7 +91,7 @@ class ManageSpecialty extends Component {
                 />
               </div>
               <div className="col-6 form-group">
-                <label className="form-label">Ảnh chuyên khoa</label>
+                <label className="form-label"><FormattedMessage id="manage-specialty.specialized_image"/></label>
                 <input
                   className="form-control"
                   type="file"
@@ -111,7 +110,7 @@ class ManageSpecialty extends Component {
                 <button
                   className="btn-save-specialty"
                   onClick={() => this.handleSaveNewSpecialty()}>
-                  Save
+                  <FormattedMessage id="manage-specialty.save"/>
                 </button>
               </div>
             </div>

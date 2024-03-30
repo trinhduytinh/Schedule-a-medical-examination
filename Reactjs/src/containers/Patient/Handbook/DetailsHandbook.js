@@ -98,7 +98,7 @@ class DetailsHandbook extends Component {
         <div className="handbook-detail-container">
           <div className="title">{title}</div>
           <div className="posting-date">
-            <strong>Ngày đăng bài: </strong>
+            <strong><FormattedMessage id={"patient.handbook.posting-date"}/></strong>
             {this.convertTime(detailHandbook.updatedAt)}
           </div>
           <div className="body">
@@ -108,7 +108,7 @@ class DetailsHandbook extends Component {
               }}></div>
           </div>
           <div className="person-posting d-flex justify-content-end">
-            <strong>Người đăng bài:</strong> {name}
+            <strong><FormattedMessage id={"patient.handbook.poster"}/></strong> {name}
           </div>
           <div className="comment-handbook">
             <Comment dataHref={currentURL} width={"100%"} />
