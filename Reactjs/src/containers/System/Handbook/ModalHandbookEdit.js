@@ -98,11 +98,15 @@ class ModalHandbookEdit extends Component {
         className={"modal-user-container modal-fullscreen"}
         size="lg"
         centered>
-        <ModalHeader toggle={() => this.toggle()}>Edit handbook</ModalHeader>
+        <ModalHeader toggle={() => this.toggle()}>
+          <FormattedMessage id={"manage-handbook.edit_handbook"} />
+        </ModalHeader>
         <ModalBody>
           <div className="modal-user-body">
             <div className="input-container max-width-input">
-              <label className="form-label">Tiêu đề</label>
+              <label className="form-label">
+                <FormattedMessage id={"manage-handbook.title"} />
+              </label>
               <input
                 type="text"
                 onChange={(event) => {
@@ -111,7 +115,9 @@ class ModalHandbookEdit extends Component {
                 value={this.state.title}></input>
             </div>
             <div className="input-container">
-              <label className="form-label">Ảnh bài viết</label>
+              <label className="form-label">
+                <FormattedMessage id={"manage-handbook.image-handbook"} />
+              </label>
               <input
                 className="form-control"
                 type="file"
@@ -133,13 +139,13 @@ class ModalHandbookEdit extends Component {
             color="primary"
             className="px-3"
             onClick={() => this.handleSaveHandbook()}>
-            Save changes
+           <FormattedMessage id={"manage-handbook.save-changes"} />
           </Button>
           <Button
             color="secondary"
             className="px-3"
             onClick={() => this.toggle()}>
-            Close
+            <FormattedMessage id={"manage-handbook.close"} />
           </Button>
         </ModalFooter>
       </Modal>

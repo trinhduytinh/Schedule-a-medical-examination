@@ -57,18 +57,65 @@
     "image": "プロフィール画像",
     "save": "保存",
     "upload-photo": "写真をアップロード",
-    "edit": "変更を保存"
+    "edit": "変更を保存",
+    "action": "アクション",
+    "add-new-users": "新しいユーザーを追加",
+    "manage-user": "Tinhと共にユーザーを管理"
   },
   "homepage": {
     "outstanding-doctor": "先週の優れた医師",
     "more-infor": "詳細を見る",
-    "specialty-popular": "人気の専門分野"
+    "specialty-popular": "人気の専門分野",
+    "prominent-healthcare-facilities": "目立つ医療施設 ",
+    "handbook": "ハンドブック",
+    "media-coverage": "チン・ズイ・ティンに関するメディア報道",
+    "more-information": "2023年、チン・ズイ・ティン。詳細情報を追加",
+    "click-here": "ここをクリック"
   },
   "manage-schedule": {
     "title": "医師の診療予定の管理",
     "choose-doctor": "医師を選択",
     "choose-date": "日付を選択",
     "save": "情報の保存"
+  },
+  "manage-specialty": {
+    "specialty-management": "専門管理",
+    "name_of_specialty": "専門名",
+    "specialized_image": "専門の画像",
+    "save": "保存"
+  },
+  "manage-handbook": {
+    "manage-handbook": " ハンドブック管理",
+    "add-new-handbook": " 新しいハンドブックを追加",
+    "edit_handbook": "ハンドブックを編集",
+    "title": "タイトル",
+    "image-handbook": "ハンドブック画像",
+    "save-changes": "変更を保存",
+    "close": "閉じる",
+    "create-new-handbook": "新しいハンドブックを作成",
+    "add-new": "新規追加",
+    "managing-articles": "記事の管理"
+  },
+  "manage-patient": {
+    "managing-medical-patients": "医療患者の管理",
+    "choose-to-explore": "調査を選択する",
+    "stt": "STT",
+    "time": "時間",
+    "name": "名前",
+    "address": "住所",
+    "sex": "性別",
+    "birthday": "生年月日",
+    "reason": "受診理由",
+    "action": "アクション",
+    "submit": "提出",
+    "no-data": "データがありません"
+  },
+  "manage-clinic": {
+    "manage-clinic": "クリニック管理",
+    "name-clinic": "クリニック名",
+    "image-clinic": "クリニック画像",
+    "address-clinic": "クリニックの住所",
+    "save": "保存"
   },
   "patient": {
     "detail-doctor": {
@@ -97,6 +144,14 @@
       "btnCancel": "キャンセル",
       "priceBooking": "無料予約",
       "price": "診察料: "
+    },
+    "clinic": {
+      "reduce": "縮小",
+      "more": "もっと見る..."
+    },
+    "handbook": {
+      "posting-date": "投稿日: ",
+      "poster": "ポスター: "
     }
   },
   "admin": {

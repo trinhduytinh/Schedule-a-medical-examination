@@ -180,7 +180,7 @@ class ProfileDoctor extends Component {
         {isShowLinkDetail === true && (
           <div className="view-detail-doctor">
             {/* Dùnglink thay cho a để cho khỏi có load lại trang, tăng trải nghiệm ng dùng */}
-            <Link to={`/detail-doctor/${doctorId}`}>Xem thêm</Link>
+            <Link to={`/detail-doctor/${doctorId}`}><FormattedMessage id={"patient.clinic.more"}/></Link>
           </div>
         )}
         {isShowPrice === true && (

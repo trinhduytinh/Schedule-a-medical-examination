@@ -26,6 +26,20 @@ let getTopDoctorHome = (limit) => {
             as: "genderData",
             attributes: ["valueEn", "valueVi", "valueJa"],
           },
+          {
+            model: db.Doctor_Infor,
+            attributes: [
+              "specialtyId"
+            ],
+            //eager loading giúp load tất cả các entity trong 1 câu lệnh, tất cả các entity con sẽ được load ra trong 1 lần gọi duy nhấ
+            include: [
+              {
+                model: db.Specialty,
+                as: "specialtyTypeData",
+                attributes: ["name", "nameEn", "nameJa"],
+              },
+            ],
+          },
         ],
         raw: true,
         nest: true,

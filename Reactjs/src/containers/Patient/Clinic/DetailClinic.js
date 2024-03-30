@@ -122,13 +122,13 @@ class DetailClinic extends Component {
               <div
                 className="show-detail"
                 onClick={() => this.handleShowDetailClinic()}>
-                Thu gọn
+               <FormattedMessage id={"patient.clinic.reduce"}/>
               </div>
             ) : (
               <div
                 className="show-detail"
                 onClick={() => this.handleShowDetailClinic()}>
-                Xem thêm...
+                <FormattedMessage id={"patient.clinic.more"}/>
               </div>
             )}
           </div>

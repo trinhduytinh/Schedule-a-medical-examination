@@ -147,12 +147,12 @@ class ManageHandbook extends Component {
                 editHandbook={this.doEditHandbook}
               />
             )}
-            <div className="title text-center">Quản lý bài viết</div>
+            <div className="title text-center"><FormattedMessage id={"manage-handbook.managing-articles"}/></div>
             <div className="mx-1 my-4">
               <button
                 className="btn btn-primary px-3"
                 onClick={() => this.handleAddNewHandbook()}>
-                <i className="fas fa-plus"></i>Add new users
+                <i className="fas fa-plus"></i><FormattedMessage id={"manage-handbook.add-new-handbook"}/>
               </button>
             </div>
             <div class="handbook-card row row-cols-1 row-cols-md-4">

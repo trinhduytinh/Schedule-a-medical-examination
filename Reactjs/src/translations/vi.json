@@ -57,18 +57,65 @@
     "image": "Ảnh đại diện",
     "save": "Lưu lại",
     "upload-photo": "Tải ảnh",
-    "edit": "Lưu thay đổi"
+    "edit": "Lưu thay đổi",
+    "action": "Hành động",
+    "add-new-users": "Thêm người dùng mới",
+    "manage-user": "Quản lý người dùng với Tinh"
   },
   "homepage": {
     "outstanding-doctor": "Bác sĩ nổi bật tuần qua",
     "more-infor": "Xem thêm",
-    "specialty-popular": "Chuyên khoa phổ biến"
+    "specialty-popular": "Chuyên khoa phổ biến",
+    "prominent-healthcare-facilities": "Cơ sở y tế nổi bật",
+    "handbook": "Cẩm nang",
+    "media-coverage": "Truyền thông về Trịnh Duy Tính",
+    "more-information": "2023 Trịnh Duy Tính. Thêm thông tin",
+    "click-here": "Bấm vào đây"
   },
   "manage-schedule": {
     "title": "Quản lý kế hoạch khám bệnh của bác sĩ",
     "choose-doctor": "Chọn bác sĩ",
     "choose-date": "Chọn ngày",
     "save": "Lưu thông tin"
+  },
+  "manage-specialty": {
+    "specialty-management": "Quản lý chuyên khoa",
+    "name_of_specialty": "Tên chuyên khoa",
+    "specialized_image": "Ảnh chuyên khoa",
+    "save": "Save"
+  },
+  "manage-handbook": {
+    "manage-handbook": "Quản lý sổ tay",
+    "add-new-handbook": " Thêm mới sổ tay",
+    "edit_handbook": " Chỉnh sửa sổ tay",
+    "title": "Tiêu đề",
+    "image-handbook": "Ảnh sổ tay",
+    "save-changes": "Lưu thay đổi",
+    "close": "Đóng",
+    "create-new-handbook": "Tạo sổ tay mới",
+    "add-new": "Thêm mới",
+    "managing-articles": "Quản lý bài viết"
+  },
+  "manage-patient": {
+    "managing-medical-patients": "Quản lý bệnh nhân khám bệnh",
+    "choose-to-explore": "Chọn phóng khám",
+    "stt": "STT",
+    "time": "Thời gian",
+    "name": "Họ và tên",
+    "address": "Địa chỉ",
+    "sex": "Giới tính",
+    "birthday": " Ngày sinh",
+    "reason": "Lý do khám",
+    "action": "Hành động",
+    "submit": "Xác nhận",
+    "no-data": "Không có dữ liệu"
+  },
+  "manage-clinic": {
+    "manage-clinic": "Quản lý phòng khám",
+    "name-clinic": "Tên phòng khám",
+    "image-clinic": "Ảnh phòng khám",
+    "address-clinic": "Địa chỉ phòng khám",
+    "save": "Lưu"
   },
   "patient": {
     "detail-doctor": {
@@ -97,6 +144,14 @@
       "btnCancel": "Hủy",
       "priceBooking": "Miễn phí đặt lịch",
       "price": "Giá khám: "
+    },
+    "clinic": {
+      "reduce": "Thu gọn",
+      "more": "Xem thêm ..."
+    },
+    "handbook": {
+      "posting-date": "Ngày đăng bài: ",
+      "poster": "Người đăng bài: "
     }
   },
   "admin": {

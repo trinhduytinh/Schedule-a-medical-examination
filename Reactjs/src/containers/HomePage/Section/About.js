@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 class About extends Component {
   render() {
     return (
       <div className="section-share section-about">
         <div className="section-about-header">
-          Truyền thông về Trịnh Duy Tính
+          <FormattedMessage id="homepage.media-coverage"/>
         </div>
         <div className="section-about-content">
           <div className="content-left embed-responsive embed-responsive-16by9">
