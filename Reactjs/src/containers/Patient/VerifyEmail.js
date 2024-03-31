@@ -4,6 +4,7 @@ import "./VerifyEmail.scss";
 import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
 import { postVerifyBookAppointment } from "../../services/userService";
 import HomeHeader from "../HomePage/HomeHeader";
+import HomeFooter from "../HomePage/HomeFooter";
 class VerifyEmail extends Component {
   constructor(props) {
     super(props);
@@ -38,7 +39,7 @@ class VerifyEmail extends Component {
   async componentDidUpdate(prevProps, prevState, snapshot) {}
   render() {
     let { statusVerify, errCode } = this.state;
-    console.log('check prop: ', this.state)
+    console.log("check prop: ", this.state);
     return (
       <>
         <HomeHeader />

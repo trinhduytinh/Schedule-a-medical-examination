@@ -21,6 +21,11 @@ class MedicalFacility extends Component {
       });
     }
   }
+  handleViewMoreClinic = () => {
+    if (this.props.history) {
+      this.props.history.push(`/more-clinic`);
+    }
+  };
   handleViewDetailClinic = (clinic) => {
     if (this.props.history) {
       this.props.history.push(`detail-clinic/${clinic.id}`);
@@ -36,7 +41,9 @@ class MedicalFacility extends Component {
             <span className="title-section">
               <FormattedMessage id="homepage.prominent-healthcare-facilities" />
             </span>
-            <button className="btn-section">
+            <button
+              className="btn-section"
+              onClick={() => this.handleViewMoreClinic()}>
               <FormattedMessage id="homepage.more-infor" />
             </button>
           </div>

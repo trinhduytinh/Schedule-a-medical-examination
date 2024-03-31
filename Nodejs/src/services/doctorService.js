@@ -604,7 +604,7 @@ let sendRemedy = (data) => {
         !data.doctorId ||
         !data.patientId ||
         !data.timeType ||
-        !data.imageBase64
+        !data.imgBase64
       ) {
         resolve({
           errCode: 1,

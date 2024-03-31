@@ -29,19 +29,22 @@ class Handbook extends Component {
       this.props.history.push(`detail-handbook/${handbook.id}`);
     }
   };
+  handleViewMoreHandbook = () => {
+    if (this.props.history) {
+      this.props.history.push(`/more-handbook`);
+    }
+  };
   render() {
     let { allHandbooks } = this.state;
     let { language } = this.props;
-    console.log("check handbook1:", allHandbooks);
     return (
       <div className="section-share section-handbook">
         <div className="section-container">
           <div className="section-header">
             <span className="title-section">
-              {" "}
               <FormattedMessage id="homepage.handbook" />
             </span>
-            <button className="btn-section">
+            <button className="btn-section" onClick={()=>this.handleViewMoreHandbook()}>
               <FormattedMessage id="homepage.more-infor" />
             </button>
           </div>
@@ -50,7 +53,6 @@ class Handbook extends Component {
               {allHandbooks &&
                 allHandbooks.length > 0 &&
                 allHandbooks.map((item, index) => {
-                  console.log("check title", item.titleEn);
                   return (
                     <div
                       className="section-customize handbook-child"

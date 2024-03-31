@@ -1,0 +1,21 @@
+.more-container {
+  cursor: pointer;;
+  .more-card {
+    padding: 0 100px;
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    .card {
+      height: 180px;
+      width: 1000px;
+      .card-text{
+        padding-top: 63px;
+        font-size: 18px;
+      }
+      .bg-image{
+        height: 177px;
+      }
+    }
+  }
+}
