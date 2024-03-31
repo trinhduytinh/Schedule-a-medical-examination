@@ -26,6 +26,11 @@ class OutStandingDoctor extends Component {
     if (this.props.history)
       this.props.history.push(`/detail-doctor/${doctor.id}`);
   };
+  handleViewMoreHandbook = () => {
+    if (this.props.history) {
+      this.props.history.push(`/more-doctor`);
+    }
+  };
   render() {
     let arrDoctors = this.state.arrDoctors;
     let { language } = this.props;
@@ -36,7 +41,9 @@ class OutStandingDoctor extends Component {
             <span className="title-section">
               <FormattedMessage id="homepage.outstanding-doctor" />
             </span>
-            <button className="btn-section">
+            <button
+              className="btn-section"
+              onClick={() => this.handleViewMoreHandbook()}>
               <FormattedMessage id="homepage.more-infor" />
             </button>
           </div>
@@ -51,9 +58,6 @@ class OutStandingDoctor extends Component {
                       "binary"
                     );
                   }
-                  let nameVi = `${item.positionData.valueVi}, ${item.lastName} ${item.firstName}`;
-                  let nameEn = `${item.positionData.valueEn}, ${item.firstName} ${item.lastName}`;
-                  let nameJa = `${item.positionData.valueJa}, ${item.lastName} ${item.firstName}`;
                   return (
                     <div
                       className="section-customize"
@@ -70,18 +74,18 @@ class OutStandingDoctor extends Component {
                         <div className="position text-center">
                           <div>
                             {language === LANGUAGES.VI
-                              ? nameVi
+                              ? `${item.positionData.valueVi}, ${item.lastName} ${item.firstName}`
                               : language === LANGUAGES.EN
-                              ? nameEn
+                              ? `${item.positionData.valueEn}, ${item.firstName} ${item.lastName}`
                               : language === LANGUAGES.JA
-                              ? nameJa
+                              ? `${item.positionData.valueJa}, ${item.lastName} ${item.firstName}`
                               : ""}
                           </div>
                           <div>
                             {language === LANGUAGES.VI
                               ? item.Doctor_Infor.specialtyTypeData.name
                               : language === LANGUAGES.EN
-                              ?item.Doctor_Infor.specialtyTypeData. nameEn
+                              ? item.Doctor_Infor.specialtyTypeData.nameEn
                               : language === LANGUAGES.JA
                               ? item.Doctor_Infor.specialtyTypeData.nameJa
                               : ""}

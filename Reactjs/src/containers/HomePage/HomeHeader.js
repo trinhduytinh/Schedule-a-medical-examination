@@ -5,12 +5,29 @@ import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
 import { LANGUAGES } from "../../utils";
 import { changeLanguageApp } from "../../store/actions";
 import { withRouter } from "react-router";
+import Select from "react-select";
 import vn from "../../assets/vietnam.png";
 import ja from "../../assets/ja.png";
 import en from "../../assets/en.png";
+import { getAllSpecialty } from "../../services/userService";
 class HomeHeader extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedSpecialty: "",
+      listSpecialty: [],
+    };
+  }
+  async componentDidMount() {
+    let res = await getAllSpecialty();
+    if (res && res.errCode === 0) {
+      let dataSelect = this.buildDataInputSelect(res.data);
+      this.setState({
+        listSpecialty: dataSelect,
+      });
+    }
+  }
   changeLanguage = (language) => {
-    console.log(language);
     //fire redux event : actions
     if (language === "VN") this.props.changeLanguageAppRedux(LANGUAGES.VI);
     if (language === "EN") this.props.changeLanguageAppRedux(LANGUAGES.EN);
@@ -19,9 +36,48 @@ class HomeHeader extends Component {
   returnToHome = () => {
     if (this.props.history) this.props.history.push(`/home`);
   };
+  buildDataInputSelect = (inputData) => {
+    let result = [];
+    let { language } = this.props;
+    if (inputData && inputData.length > 0) {
+      inputData.map((item, index) => {
+        let object = {};
+        let labelVi = `${item.name}`;
+        let labelEn = `${item.nameEn}`;
+        let labelJa = `${item.nameJa}`;
+        if (language === LANGUAGES.VI) object.label = labelVi;
+        if (language === LANGUAGES.EN) object.label = labelEn;
+        if (language === LANGUAGES.JA) object.label = labelJa;
+        object.value = item.id;
+        result.push(object);
+      });
+    }
+    return result;
+  };
+  async componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.language !== this.props.language) {
+      let res = await getAllSpecialty();
+      if (res && res.errCode === 0) {
+        let dataSelect = this.buildDataInputSelect(res.data);
+        this.setState({
+          listSpecialty: dataSelect,
+        });
+      }
+    }
+  }
+  handleChangeSelectDoctorInFor = async (selectedOption, name) => {
+    let stateName = name.name;
+    let stateCopy = { ...this.state };
+    stateCopy[stateName] = selectedOption;
+    this.setState({
+      ...stateCopy,
+    });
+    if (this.props.history) {
+      this.props.history.push(`/detail-specialty/${selectedOption.value}`);
+    }
+  };
   render() {
     let language = this.props.language;
-    console.log('check render:', language);
     return (
       <React.Fragment>
         <div className="home-header-container">
@@ -84,7 +140,9 @@ class HomeHeader extends Component {
                   <div className="dropdown-language">
                     <button className="dropdown-btn">
                       <img src={vn}></img>
-                      <span> <FormattedMessage id={"homeheader.vn"} /></span>
+                      <span>
+                        <FormattedMessage id={"homeheader.vn"} />
+                      </span>
                     </button>
                     <div className="dropdown-content">
                       <button
@@ -92,14 +150,18 @@ class HomeHeader extends Component {
                           this.changeLanguage("EN");
                         }}>
                         <img src={en}></img>
-                        <div> <FormattedMessage id={"homeheader.en"} /></div>
+                        <div>
+                          <FormattedMessage id={"homeheader.en"} />
+                        </div>
                       </button>
                       <button
                         onClick={() => {
                           this.changeLanguage("JA");
                         }}>
                         <img src={ja}></img>
-                        <div> <FormattedMessage id={"homeheader.ja"} /></div>
+                        <div>
+                          <FormattedMessage id={"homeheader.ja"} />
+                        </div>
                       </button>
                     </div>
                   </div>
@@ -107,7 +169,9 @@ class HomeHeader extends Component {
                   <div className="dropdown-language">
                     <button className="dropdown-btn">
                       <img src={en}></img>
-                      <span> <FormattedMessage id={"homeheader.en"} /></span>
+                      <span>
+                        <FormattedMessage id={"homeheader.en"} />
+                      </span>
                     </button>
                     <div className="dropdown-content">
                       <button
@@ -115,22 +179,28 @@ class HomeHeader extends Component {
                           this.changeLanguage("VN");
                         }}>
                         <img src={vn}></img>
-                        <div> <FormattedMessage id={"homeheader.vn"} /></div>
+                        <div>
+                          <FormattedMessage id={"homeheader.vn"} />
+                        </div>
                       </button>
                       <button
                         onClick={() => {
                           this.changeLanguage("JA");
                         }}>
                         <img src={ja}></img>
-                        <div> <FormattedMessage id={"homeheader.ja"} /></div>
+                        <div>
+                          <FormattedMessage id={"homeheader.ja"} />
+                        </div>
                       </button>
                     </div>
                   </div>
-                ) : language === LANGUAGES.JA?(
+                ) : language === LANGUAGES.JA ? (
                   <div className="dropdown-language">
                     <button className="dropdown-btn">
                       <img src={ja}></img>
-                      <span> <FormattedMessage id={"homeheader.ja"} /></span>
+                      <span>
+                        <FormattedMessage id={"homeheader.ja"} />
+                      </span>
                     </button>
                     <div className="dropdown-content">
                       <button
@@ -138,18 +208,24 @@ class HomeHeader extends Component {
                           this.changeLanguage("EN");
                         }}>
                         <img src={en}></img>
-                        <div> <FormattedMessage id={"homeheader.en"} /></div>
+                        <div>
+                          <FormattedMessage id={"homeheader.en"} />
+                        </div>
                       </button>
                       <button
                         onClick={() => {
                           this.changeLanguage("VN");
                         }}>
                         <img src={vn}></img>
-                        <div> <FormattedMessage id={"homeheader.vn"} /></div>
+                        <div>
+                          <FormattedMessage id={"homeheader.vn"} />
+                        </div>
                       </button>
                     </div>
                   </div>
-                ):""}
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>
@@ -165,7 +241,14 @@ class HomeHeader extends Component {
               </div>
               <div className="search">
                 <i className="fas fa-search"></i>
-                <input type="text" placeholder="Tìm Chuyên khoa khám bệnh" />
+                {/* <input type="text" placeholder="Tìm Chuyên khoa khám bệnh" /> */}
+                <Select
+                  value={this.state.selectedSpecialty}
+                  onChange={this.handleChangeSelectDoctorInFor}
+                  options={this.state.listSpecialty}
+                  placeholder={<FormattedMessage id={"homepage.search"}/>}
+                  name="selectedSpecialty"
+                />
               </div>
             </div>
             <div className="content-down">

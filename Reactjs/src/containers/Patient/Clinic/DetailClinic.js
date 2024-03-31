@@ -12,6 +12,7 @@ import {
 } from "../../../services/userService";
 import { LANGUAGES } from "../../../utils";
 import _ from "lodash";
+import HomeFooter from "../../HomePage/HomeFooter";
 
 class DetailClinic extends Component {
   constructor(props) {
@@ -122,13 +123,13 @@ class DetailClinic extends Component {
               <div
                 className="show-detail"
                 onClick={() => this.handleShowDetailClinic()}>
-               <FormattedMessage id={"patient.clinic.reduce"}/>
+                <FormattedMessage id={"patient.clinic.reduce"} />
               </div>
             ) : (
               <div
                 className="show-detail"
                 onClick={() => this.handleShowDetailClinic()}>
-                <FormattedMessage id={"patient.clinic.more"}/>
+                <FormattedMessage id={"patient.clinic.more"} />
               </div>
             )}
           </div>
@@ -159,6 +160,7 @@ class DetailClinic extends Component {
               );
             })}
         </div>
+        <HomeFooter />
       </div>
     );
   }

@@ -6,6 +6,7 @@ import HomeHeader from "../../HomePage/HomeHeader";
 import Comment from "../SocialPlugin/Comment";
 import { getAllDetailHandbookById } from "../../../services/userService";
 import { LANGUAGES } from "../../../utils";
+import HomeFooter from "../../HomePage/HomeFooter";
 class DetailsHandbook extends Component {
   constructor(props) {
     super(props);
@@ -98,7 +99,9 @@ class DetailsHandbook extends Component {
         <div className="handbook-detail-container">
           <div className="title">{title}</div>
           <div className="posting-date">
-            <strong><FormattedMessage id={"patient.handbook.posting-date"}/></strong>
+            <strong>
+              <FormattedMessage id={"patient.handbook.posting-date"} />
+            </strong>
             {this.convertTime(detailHandbook.updatedAt)}
           </div>
           <div className="body">
@@ -108,12 +111,16 @@ class DetailsHandbook extends Component {
               }}></div>
           </div>
           <div className="person-posting d-flex justify-content-end">
-            <strong><FormattedMessage id={"patient.handbook.poster"}/></strong> {name}
+            <strong>
+              <FormattedMessage id={"patient.handbook.poster"} />
+            </strong>{" "}
+            {name}
           </div>
           <div className="comment-handbook">
             <Comment dataHref={currentURL} width={"100%"} />
           </div>
         </div>
+        <HomeFooter />
       </div>
     );
   }

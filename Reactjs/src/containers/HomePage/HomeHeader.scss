@@ -99,7 +99,7 @@
         border-radius: 5px;
         display: flex;
         align-items: center;
-        span{
+        span {
           padding-left: 5px;
         }
       }
@@ -178,12 +178,19 @@
       i {
         margin: 0 5px;
       }
-      input {
-        height: 30px;
+      .css-2b097c-container {
         width: 360px;
-        background: transparent;
-        border: none;
-        outline: none;
+        // background: transparent;
+        // border: none;
+        // outline: none;
+        .css-yk16xz-control {
+          background: transparent;
+          border: none;
+          outline: none;
+          .css-tlfecz-indicatorContainer {
+            color: black;
+          }
+        }
       }
     }
   }

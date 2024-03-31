@@ -26,6 +26,11 @@ class Specialty extends Component {
       this.props.history.push(`/detail-specialty/${item.id}`);
     }
   };
+  handleViewMoreHandbook = () => {
+    if (this.props.history) {
+      this.props.history.push(`/more-specialty`);
+    }
+  };
   render() {
     let { dataSpecialty } = this.state;
     let { language } = this.props;
@@ -36,7 +41,9 @@ class Specialty extends Component {
             <span className="title-section">
               <FormattedMessage id="homepage.specialty-popular" />
             </span>
-            <button className="btn-section">
+            <button
+              className="btn-section"
+              onClick={() => this.handleViewMoreHandbook()}>
               <FormattedMessage id="homepage.more-infor" />
             </button>
           </div>
