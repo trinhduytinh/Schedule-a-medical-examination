@@ -91,31 +91,69 @@ class BookingModal extends Component {
   handleChangeSelect = (selectedOption) => {
     this.setState({ selectedGender: selectedOption });
   };
+  isValidInput = (inputData) => {
+    let arrFields = [
+      "fullName",
+      "phoneNumber",
+      "email",
+      "address",
+      "reason",
+      "birthday",
+      "selectedGender",
+    ];
+    let isValid = true;
+    let element = "";
+    for (let i = 0; i < arrFields.length; i++) {
+      if (!inputData[arrFields[i]]) {
+        isValid = false;
+        element = arrFields[i];
+        break;
+      }
+    }
+    let regxEmail = /\S+@\S+\.\S+/;
+    let regxPhone = /^\d{10,11}$/; // Số điện thoại gồm 10 hoặc 11 chữ số
+    if (!regxEmail.test(inputData.email)) {
+      toast.error("Please enter a valid email address");
+      isValid = false;
+    }
+    if (!regxPhone.test(inputData.phoneNumber)) {
+      toast.error("Please enter a valid phone number");
+      isValid = false;
+    }
+    return {
+      isValid: isValid,
+      element: element,
+    };
+  };
+
   handleConfirmBooking = async () => {
     //validate input
-    let date = new Date(this.state.birthday).getTime();
-    let timeString = this.buildTimeBooking(this.props.dataTime);
-    let doctorName = this.buildDoctorName(this.props.dataTime);
-    let res = await postPatientBookAppointment({
-      fullName: this.state.fullName,
-      phoneNumber: this.state.phoneNumber,
-      email: this.state.email,
-      address: this.state.address,
-      reason: this.state.reason,
-      date: this.props.dataTime.date,
-      birthday: "" + date,
-      selectedGender: this.state.selectedGender.value,
-      doctorId: this.state.doctorId,
-      timeType: this.state.timeType,
-      language: this.props.language,
-      timeString: timeString,
-      doctorName: doctorName,
-    });
-    if (res && res.errCode === 0) {
-      toast.success("Booking a new appointment succeed!");
-      this.props.closeBookingClose();
-    } else {
-      toast.error("Booking a new appointment error!");
+    let check = this.isValidInput(this.state);
+    if (check) {
+      let date = new Date(this.state.birthday).getTime();
+      let timeString = this.buildTimeBooking(this.props.dataTime);
+      let doctorName = this.buildDoctorName(this.props.dataTime);
+      let res = await postPatientBookAppointment({
+        fullName: this.state.fullName,
+        phoneNumber: this.state.phoneNumber,
+        email: this.state.email,
+        address: this.state.address,
+        reason: this.state.reason,
+        date: this.props.dataTime.date,
+        birthday: "" + date,
+        selectedGender: this.state.selectedGender.value,
+        doctorId: this.state.doctorId,
+        timeType: this.state.timeType,
+        language: this.props.language,
+        timeString: timeString,
+        doctorName: doctorName,
+      });
+      if (res && res.errCode === 0) {
+        toast.success("Booking a new appointment succeed!");
+        this.props.closeBookingClose();
+      } else {
+        toast.error("Booking a new appointment error!");
+      }
     }
   };
   buildTimeBooking = (dataTime) => {

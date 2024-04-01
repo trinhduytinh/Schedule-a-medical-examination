@@ -93,6 +93,27 @@ let getAllUsers = (userId) => {
     }
   });
 };
+let getUserWithPagination = (page, limit) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let offset = (page - 1) * limit;
+      //js object destructuring
+      const { count, rows } = await db.User.findAndCountAll({
+        offset: offset,
+        limit: limit,
+      });
+      let totalPages = Math.ceil(count / limit);
+      let data = {
+        totalRows: count,
+        totalPages: totalPages,
+        users: rows,
+      };
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 let hashUserPassword = (password) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -224,4 +245,5 @@ module.exports = {
   deleteUser: deleteUser,
   updateUserData: updateUserData,
   getAllCodeService: getAllCodeService,
+  getUserWithPagination: getUserWithPagination,
 };

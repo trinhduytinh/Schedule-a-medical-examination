@@ -7,6 +7,8 @@ import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
 // import style manually
 import "react-markdown-editor-lite/lib/index.css";
+import ReactPaginate from "react-paginate"; // thu vien phan trang
+import { getUsersPage } from "../../../services/userService";
 
 // Register plugins if required
 // MdEditor.use(YOUR_PLUGINS_HERE);
@@ -15,35 +17,58 @@ import "react-markdown-editor-lite/lib/index.css";
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
 // Finish!
-function handleEditorChange({ html, text }) {
-  console.log("handleEditorChange", html, text);
-}
+// function handleEditorChange({ html, text }) {
+//   console.log("handleEditorChange", html, text);
+// }
 
 class TableManageUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
       usersRedux: [],
+      currentPage: 1,
+      currentLimit: 10,
+      totalPages: 0,
     };
   }
+
   componentDidMount() {
-    this.props.fetchUserRedux();
+    this.fetchUsers();
   }
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.listUsers !== this.props.listUsers) {
-      this.setState({
-        usersRedux: this.props.listUsers,
-      });
+
+  fetchUsers = async (page = this.state.currentPage) => {
+    const { currentLimit } = this.state;
+    const response = await getUsersPage(page, currentLimit);
+    if (response && response.errCode === 0) {
+      this.setState((prevState) => ({
+        usersRedux: response.users.users,
+        totalPages: response.users.totalPages,
+        currentPage: page, // Cập nhật currentPage dựa trên tham số truyền vào
+      }));
     }
-  }
-  handleDeleteUser = (user) => {
-    this.props.deleteUserRedux(user.id);
   };
-  handleEditUser = (user) => {
-    this.props.handleEditUserFromParentKey(user); //truyen tu con sang cha
+
+  handleDeleteUser = async (user) => {
+    await this.props.deleteUserRedux(user.id);
+    // Sau khi xóa thành công, cập nhật lại danh sách người dùng
+    await this.fetchUsers(this.state.currentPage);
+  };
+
+  handleEditUser = async (user) => {
+    await this.props.handleEditUserFromParentKey(user);
+    // Sau khi chỉnh sửa thành công, cập nhật lại danh sách người dùng
+    await this.fetchUsers(this.state.currentPage);
+  };
+
+  handlePageClick = async (event) => {
+    const selectedPage = +event.selected + 1;
+    this.setState({ currentPage: selectedPage }, () => {
+      this.fetchUsers(selectedPage);
+    });
   };
   render() {
     let arrUsers = this.state.usersRedux;
+    let { totalPages } = this.state;
     return (
       <React.Fragment>
         <table id="TableManageUser">
@@ -81,11 +106,30 @@ class TableManageUser extends Component {
               })}
           </tbody>
         </table>
-        <MdEditor
-          style={{ height: "500px" }}
-          renderHTML={(text) => mdParser.render(text)}
-          onChange={handleEditorChange}
-        />
+        {totalPages > 0 && (
+          <div className="user-footer">
+            <ReactPaginate
+              nextLabel="next >"
+              onPageChange={this.handlePageClick}
+              pageRangeDisplayed={3}
+              marginPagesDisplayed={2}
+              pageCount={totalPages}
+              previousLabel="< previous"
+              pageClassName="page-item"
+              pageLinkClassName="page-link"
+              previousClassName="page-item"
+              previousLinkClassName="page-link"
+              nextClassName="page-item"
+              nextLinkClassName="page-link"
+              breakLabel="..."
+              breakClassName="page-item"
+              breakLinkClassName="page-link"
+              containerClassName="pagination"
+              activeClassName="active"
+              renderOnZeroPageCount={null}
+            />
+          </div>
+        )}
       </React.Fragment>
     );
   }
