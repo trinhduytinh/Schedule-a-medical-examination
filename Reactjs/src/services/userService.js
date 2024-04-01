@@ -7,7 +7,9 @@ const handleLoginApi = (userEmail, userPassword) => {
 const getAllUsers = (inputId) => {
   return axios.get(`/api/get-all-users?id=${inputId}`);
 };
-
+const getUsersPage=(page, limit)=>{
+  return axios.get(`/api/get-all-users?page=${page}&limit=${limit}`)
+}
 const createNewUserService = (data) => {
   return axios.post("/api/create-new-user", data);
 };
@@ -138,5 +140,6 @@ export {
   getAllHandbook,
   getAllDetailHandbookById,
   deleteHandbook,
-  editHandbookService
+  editHandbookService,
+  getUsersPage
 };

@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import { getAllCodeService } from "../../../services/userService";
-import { LANGUAGES, CRUD_ACTION, CommonUtils} from "../../../utils";
+import { LANGUAGES, CRUD_ACTION, CommonUtils } from "../../../utils";
 import * as actions from "../../../store/actions";
 import "./UserRedux.scss";
 import Lightbox from "react-image-lightbox"; // thu vien review anh
 import "react-image-lightbox/style.css"; // This only needs to be imported once in your app
 import TableManageUser from "./TableManageUser";
+import { toast } from "react-toastify";
 class UserRedux extends Component {
   constructor(props) {
     super(props);
@@ -28,8 +29,7 @@ class UserRedux extends Component {
       position: "",
       role: "",
       avatar: "",
-
-      action: "",
+      action: CRUD_ACTION.CREATE,
       userEditId: "",
     };
   }
@@ -37,17 +37,6 @@ class UserRedux extends Component {
     this.props.getGenderStart();
     this.props.getPositionStart();
     this.props.getRoleStart();
-    // try {
-    //   let res = await getAllCodeService("gender");
-    //   if (res && res.errCode === 0) {
-    //     this.setState({
-    //       genderArr: res.data,
-    //     });
-    //   }
-    //   console.log("hoidanit check res: ", res);
-    // } catch (e) {
-    //   console.log(e);
-    // }
   }
   //ham nay chay lien tuc
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -80,6 +69,7 @@ class UserRedux extends Component {
       let arrGenders = this.props.genderRedux;
       let arrRoles = this.props.roleRedux;
       let arrPositions = this.props.positionRedux;
+      console.log("check vo day:", );
       this.setState({
         email: "",
         password: "",
@@ -93,7 +83,7 @@ class UserRedux extends Component {
           arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : "",
         avatar: "",
         action: CRUD_ACTION.CREATE,
-        previewImgURL: '',
+        previewImgURL: "",
       });
     }
   }
@@ -165,9 +155,19 @@ class UserRedux extends Component {
     for (let i = 0; i < arrCheck.length; i++) {
       if (!this.state[arrCheck[i]]) {
         isValid = false;
-        alert("This input is required: " + arrCheck[i]);
+        toast.error("This input is required: " + arrCheck[i]);
         break;
       }
+    }
+    let regxEmail = /\S+@\S+\.\S+/;
+    let regxPhone = /^\d{10,11}$/; // Số điện thoại gồm 10 hoặc 11 chữ số
+    if (!regxEmail.test(this.state.email)) {
+      toast.error("Please enter a valid email address");
+      isValid = false;
+    }
+    if (!regxPhone.test(this.state.phoneNumber)) {
+      toast.error("Please enter a valid phone number");
+      isValid = false;
     }
     return isValid;
   };
@@ -179,9 +179,9 @@ class UserRedux extends Component {
     });
   };
   handleEditUserFromParent = (user) => {
-    let imageBase64 = '';
-    if(user.image) {
-      imageBase64 = new Buffer(user.image, 'base64').toString('binary');
+    let imageBase64 = "";
+    if (user.image) {
+      imageBase64 = new Buffer(user.image, "base64").toString("binary");
     }
     this.setState({
       email: user.email,
@@ -221,7 +221,7 @@ class UserRedux extends Component {
 
     return (
       <div className="user-redux-container">
-        <div className="title">trinhduytinh</div>
+        <div className="title"><FormattedMessage id={"admin.manage-doctor.manage-user"}/></div>
         <div className="user-redux-body">
           <div className="container">
             <div className="row">
@@ -418,7 +418,11 @@ class UserRedux extends Component {
                       : "btn btn-primary"
                   }
                   onClick={() => this.handleSaveUser()}>
-                  {this.state.action === CRUD_ACTION.EDIT ? <FormattedMessage id='manage-user.edit' /> : <FormattedMessage id='manage-user.save' />}
+                  {this.state.action === CRUD_ACTION.EDIT ? (
+                    <FormattedMessage id="manage-user.edit" />
+                  ) : (
+                    <FormattedMessage id="manage-user.save" />
+                  )}
                 </button>
               </div>
               <div className="col-12 mb-5">

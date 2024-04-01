@@ -25,53 +25,65 @@ let handleLogin = async (req, res) => {
 };
 
 let handleGetAllUsers = async (req, res) => {
-  let id = req.query.id;
-  if (!id) {
+  if (req.query.page && req.query.limit) {
+    let page = req.query.page;
+    let limit = req.query.limit;
+    //+ chuyen sang kieu int
+    let users = await userService.getUserWithPagination(+page, +limit);
     return res.status(200).json({
-      errCode: 1,
-      errMessage: "Missing required parameters",
-      users: [],
+      errCode: 0,
+      errMessage: "OK",
+      users,
+    });
+  } else {
+    let id = req.query.id;
+    if (!id) {
+      return res.status(200).json({
+        errCode: 1,
+        errMessage: "Missing required parameters",
+        users: [],
+      });
+    }
+    let users = await userService.getAllUsers(id);
+    return res.status(200).json({
+      errCode: 0,
+      errMessage: "OK",
+      users,
     });
   }
-  let users = await userService.getAllUsers(id);
-  return res.status(200).json({
-    errCode: 0,
-    errMessage: "OK",
-    users,
-  });
 };
 let handleCreateNewUsers = async (req, res) => {
   let message = await userService.createNewUser(req.body);
   console.log(message);
   return res.status(200).json(message);
-}
+};
 let handleEditUsers = async (req, res) => {
   let data = req.body;
   let message = await userService.updateUserData(data);
-  return res.status(200).json(message)
-}
+  return res.status(200).json(message);
+};
 let handleDeleteUsers = async (req, res) => {
-  if(!req.body.id){
+  if (!req.body.id) {
     return res.status(200).json({
       errCode: 1,
-      errMessage: "Missing required parameters!"
-    })
+      errMessage: "Missing required parameters!",
+    });
   }
   let message = await userService.deleteUser(req.body.id);
   return res.status(200).json(message);
-}
+};
 let getAllCode = async (req, res) => {
   try {
     let data = await userService.getAllCodeService(req.query.type);
     return res.status(200).json(data);
   } catch (e) {
-    console.log('Get all code error: ', e);
+    console.log("Get all code error: ", e);
     return res.status(200).json({
       errCode: -1,
-      errMessage: 'Error from server'
-    })
+      errMessage: "Error from server",
+    });
   }
-}
+};
 module.exports = {
   handleLogin: handleLogin,
   handleGetAllUsers: handleGetAllUsers,

@@ -169,7 +169,8 @@
       "addressClinic": "Địa chỉ phòng khám",
       "note": "Ghi chú",
       "specialty": "Chọn chuyên khoa",
-      "select-clinic": "Chọn phòng khám"
+      "select-clinic": "Chọn phòng khám",
+      "manage-user": "Quản lý tài khoản người dùng"
     }
   }
 }

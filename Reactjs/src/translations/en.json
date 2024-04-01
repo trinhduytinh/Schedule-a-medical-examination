@@ -169,7 +169,8 @@
       "addressClinic": "Clinic Address",
       "note": "Note",
       "specialty": "Select Specialty",
-      "select-clinic": "Select Clinic"
+      "select-clinic": "Select Clinic",
+      "manage-user": "Manage user accounts"
     }
   }
 }

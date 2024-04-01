@@ -169,7 +169,8 @@
       "addressClinic": "クリニックの住所",
       "note": "備考",
       "specialty": "専門を選択",
-      "select-clinic": "クリニックを選択"
+      "select-clinic": "クリニックを選択",
+      "manage-user": "ユーザーアカウントを管理"
     }
   }
 }
