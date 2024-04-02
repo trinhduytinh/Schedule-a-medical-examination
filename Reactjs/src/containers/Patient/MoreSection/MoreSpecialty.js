@@ -34,7 +34,7 @@ class MoreSpecialty extends Component {
       <>
         <HomeHeader />
         <div className="more-container">
-          <div className="title">Phòng khám dành cho bạn</div>
+          <div className="title"><FormattedMessage id={"more.medical-facility"}/></div>
           {dataSpecialty &&
             dataSpecialty.length > 0 &&
             dataSpecialty.map((item, index) => {

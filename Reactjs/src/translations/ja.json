@@ -71,7 +71,8 @@
     "media-coverage": "チン・ズイ・ティンに関するメディア報道",
     "more-information": "2023年、チン・ズイ・ティン。詳細情報を追加",
     "click-here": "ここをクリック",
-    "search": "医療専門家を検索"
+    "search": "医療専門家を検索",
+    "number-of-bookings-per-week": "週ごとの予約数: "
   },
   "manage-schedule": {
     "title": "医師の診療予定の管理",
@@ -130,7 +131,8 @@
       "price": "診察料: ",
       "detail": "詳細を見る",
       "payment": "患者は次の方法で料金を支払うことができます: ",
-      "hide-price": "価格リストを非表示にする"
+      "hide-price": "価格リストを非表示にする",
+      "list-of-all-doctors": "すべての医師のリスト"
     },
     "booking-modal": {
       "title": "診察予約情報",
@@ -172,5 +174,10 @@
       "select-clinic": "クリニックを選択",
       "manage-user": "ユーザーアカウントを管理"
     }
+  },
+  "more": {
+    "medical-facility": "医療施設",
+    "medical-handbook": "医療ハンドブック",
+    "clinic-for-you": "あなたのためのクリニック"
   }
 }

@@ -71,7 +71,8 @@
     "media-coverage": "Truyền thông về Trịnh Duy Tính",
     "more-information": "2023 Trịnh Duy Tính. Thêm thông tin",
     "click-here": "Bấm vào đây",
-    "search": "Tìm Chuyên khoa khám bệnh"
+    "search": "Tìm Chuyên khoa khám bệnh",
+    "number-of-bookings-per-week": "Số lượng đặt khám trong tuần: "
   },
   "manage-schedule": {
     "title": "Quản lý kế hoạch khám bệnh của bác sĩ",
@@ -130,7 +131,8 @@
       "price": "Giá khám: ",
       "detail": "Xem chi tiết",
       "payment": "Người bệnh có thể thanh toán chi phí bằng các hình thức: ",
-      "hide-price": "Ẩn bảng giá"
+      "hide-price": "Ẩn bảng giá",
+      "list-of-all-doctors": "Danh sách tất cả bác sĩ"
     },
     "booking-modal": {
       "title": "Thông tin đặt lịch khám bệnh",
@@ -172,5 +174,10 @@
       "select-clinic": "Chọn phòng khám",
       "manage-user": "Quản lý tài khoản người dùng"
     }
+  },
+  "more":{
+    "medical-facility": "Cơ sở y tế",
+    "medical-handbook": "Cẩm nang y tế",
+    "clinic-for-you": "Phòng khám dành cho bạn"
   }
 }

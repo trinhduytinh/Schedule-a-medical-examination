@@ -21,18 +21,50 @@ class DoctorSchedule extends Component {
     let { language } = this.props;
     let allDays = this.getArrDays(language);
     if (this.props.doctorIdFromParent) {
+      // let res = await getScheduleDoctorByDate(
+      //   this.props.doctorIdFromParent,
+      //   allDays[0].value
+      // );
+      // this.setState({
+      //   allAvailableTime: res.data ? res.data : [],
+      // });
       let res = await getScheduleDoctorByDate(
         this.props.doctorIdFromParent,
         allDays[0].value
       );
-      this.setState({
-        allAvailableTime: res.data ? res.data : [],
-      });
+      if (res.data) {
+        // Lấy ngày và thời gian hiện tại
+        const currentTime = moment();
+        const currentTimestamp = currentTime.valueOf(); // Lấy giá trị timestamp của thời gian hiện tại
+
+        // Lọc ra các mục theo ngày
+        //filter() trong JavaScript được sử dụng để lọc các phần tử trong một mảng dựa trên một điều kiện được xác định bởi một hàm callback
+        const futureTimes = res.data.filter((item) => {
+          const itemTimestamp = parseInt(item.date);
+          if (moment(itemTimestamp).isSame(currentTime, "day")) {
+            // Nếu là ngày hiện tại, loại bỏ các mục có thời gian đã qua
+            const itemTime = moment(item.timeTypeData.valueVi, "H:mm");
+            //Phương thức isAfter() trong thư viện Moment.js được sử dụng để kiểm tra xem một đối tượng thời gian có sau một đối tượng thời gian khác không.
+            //Nó trả về true nếu thời gian đầu tiên đến sau thời gian thứ hai, và ngược lại trả về false.
+            return itemTime.isAfter(currentTime);
+          } else {
+            // Nếu không phải là ngày hiện tại, giữ lại tất cả các mục
+            return true;
+          }
+        });
+
+        this.setState({
+          allAvailableTime: futureTimes,
+        });
+      } else {
+        this.setState({
+          allAvailableTime: [],
+        });
+      }
     }
     this.setState({
       allDays: allDays,
     });
-   
   }
   getArrDays = (language) => {
     let allDays = [];
@@ -101,9 +133,34 @@ class DoctorSchedule extends Component {
         this.props.doctorIdFromParent,
         allDays[0].value
       );
-      this.setState({
-        allAvailableTime: res.data ? res.data : [],
-      });
+      console.log("check data:", res);
+      console.log("check log:", res);
+      if (res.data) {
+        // Lấy ngày và thời gian hiện tại
+        const currentTime = moment();
+        const currentTimestamp = currentTime.valueOf(); // Lấy giá trị timestamp của thời gian hiện tại
+
+        // Lọc ra các mục theo ngày
+        const futureTimes = res.data.filter((item) => {
+          const itemTimestamp = parseInt(item.date);
+          if (moment(itemTimestamp).isSame(currentTime, "day")) {
+            // Nếu là ngày hiện tại, loại bỏ các mục có thời gian đã qua
+            const itemTime = moment(item.timeTypeData.valueVi, "H:mm");
+            return itemTime.isAfter(currentTime);
+          } else {
+            // Nếu không phải là ngày hiện tại, giữ lại tất cả các mục
+            return true;
+          }
+        });
+
+        this.setState({
+          allAvailableTime: futureTimes,
+        });
+      } else {
+        this.setState({
+          allAvailableTime: [],
+        });
+      }
     }
   }
   handleOnChangeSelect = async (event) => {
@@ -112,9 +169,36 @@ class DoctorSchedule extends Component {
       let date = event.target.value;
       let res = await getScheduleDoctorByDate(doctorID, date);
       if (res && res.errCode === 0) {
-        this.setState({
-          allAvailableTime: res.data ? res.data : [],
-        });
+        // this.setState({
+        //   allAvailableTime: res.data ? res.data : [],
+        // });
+        console.log("check log:", res);
+        if (res.data) {
+          // Lấy ngày và thời gian hiện tại
+          const currentTime = moment();
+          const currentTimestamp = currentTime.valueOf(); // Lấy giá trị timestamp của thời gian hiện tại
+
+          // Lọc ra các mục theo ngày
+          const futureTimes = res.data.filter((item) => {
+            const itemTimestamp = parseInt(item.date);
+            if (moment(itemTimestamp).isSame(currentTime, "day")) {
+              // Nếu là ngày hiện tại, loại bỏ các mục có thời gian đã qua
+              const itemTime = moment(item.timeTypeData.valueVi, "H:mm");
+              return itemTime.isAfter(currentTime);
+            } else {
+              // Nếu không phải là ngày hiện tại, giữ lại tất cả các mục
+              return true;
+            }
+          });
+
+          this.setState({
+            allAvailableTime: futureTimes,
+          });
+        } else {
+          this.setState({
+            allAvailableTime: [],
+          });
+        }
       }
     }
   };
@@ -136,6 +220,7 @@ class DoctorSchedule extends Component {
       isOpenModalBooking,
       dataScheduleTimeModal,
     } = this.state;
+    console.log("check state", this.state);
     let { language } = this.props;
     return (
       <>

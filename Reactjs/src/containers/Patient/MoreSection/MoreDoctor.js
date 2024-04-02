@@ -6,6 +6,7 @@ import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
 import HomeHeader from "../../HomePage/HomeHeader";
 import HomeFooter from "../../HomePage/HomeFooter";
 import { LANGUAGES } from "../../../utils";
+import { getTopDoctorHomeService } from "../../../services/userService";
 class MoreDoctor extends Component {
   constructor(props) {
     super(props);
@@ -13,15 +14,20 @@ class MoreDoctor extends Component {
       arrDoctors: [],
     };
   }
-  componentDidMount() {
-    this.props.loadTopDoctor();
-  }
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.topDoctorsRedux !== this.props.topDoctorsRedux) {
+  async componentDidMount() {
+    let res = await getTopDoctorHomeService("ALL");
+    if (res && res.errCode === 0) {
       this.setState({
-        arrDoctors: this.props.topDoctorsRedux,
+        arrDoctors: res.data ? res.data : [],
       });
     }
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // if (prevProps.topDoctorsRedux !== this.props.topDoctorsRedux) {
+    //   this.setState({
+    //     arrDoctors: this.props.topDoctorsRedux,
+    //   });
+    // }
   }
   handleViewDetailDoctor = (doctor) => {
     if (this.props.history)
@@ -35,7 +41,7 @@ class MoreDoctor extends Component {
       <>
         <HomeHeader />
         <div className="more-container">
-          <div className="title">Danh sách bác sỹ</div>
+          <div className="title"><FormattedMessage id={"patient.extra-infor-doctor.list-of-all-doctors"}/></div>
           {arrDoctors &&
             arrDoctors.length > 0 &&
             arrDoctors.map((item, index) => {
@@ -62,24 +68,24 @@ class MoreDoctor extends Component {
                       <div className="col-md-8">
                         <div className="card-body">
                           <p className="card-text">
-                              <div>
-                                {language === LANGUAGES.VI
-                                  ? `${item.positionData.valueVi}, ${item.lastName} ${item.firstName}`
-                                  : language === LANGUAGES.EN
-                                  ? `${item.positionData.valueEn}, ${item.firstName} ${item.lastName}`
-                                  : language === LANGUAGES.JA
-                                  ? `${item.positionData.valueJa}, ${item.lastName} ${item.firstName}`
-                                  : ""}
-                              </div>
-                              <div>
-                                {language === LANGUAGES.VI
-                                  ? item.Doctor_Infor.specialtyTypeData.name
-                                  : language === LANGUAGES.EN
-                                  ? item.Doctor_Infor.specialtyTypeData.nameEn
-                                  : language === LANGUAGES.JA
-                                  ? item.Doctor_Infor.specialtyTypeData.nameJa
-                                  : ""}
-                              </div>
+                            <div>
+                              {language === LANGUAGES.VI
+                                ? `${item.positionData.valueVi}, ${item.lastName} ${item.firstName}`
+                                : language === LANGUAGES.EN
+                                ? `${item.positionData.valueEn}, ${item.firstName} ${item.lastName}`
+                                : language === LANGUAGES.JA
+                                ? `${item.positionData.valueJa}, ${item.lastName} ${item.firstName}`
+                                : ""}
+                            </div>
+                            <div>
+                              {language === LANGUAGES.VI
+                                ? item.Doctor_Infor.specialtyTypeData.name
+                                : language === LANGUAGES.EN
+                                ? item.Doctor_Infor.specialtyTypeData.nameEn
+                                : language === LANGUAGES.JA
+                                ? item.Doctor_Infor.specialtyTypeData.nameJa
+                                : ""}
+                            </div>
                           </p>
                         </div>
                       </div>
@@ -98,13 +104,13 @@ class MoreDoctor extends Component {
 const mapStateToProps = (state) => {
   return {
     language: state.app.language,
-    topDoctorsRedux: state.admin.topDoctor,
+    // topDoctorsRedux: state.admin.topDoctor,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadTopDoctor: () => dispatch(actions.fetchTopDoctor()),
+    // loadTopDoctor: () => dispatch(actions.fetchTopDoctor()),
   };
 };
 

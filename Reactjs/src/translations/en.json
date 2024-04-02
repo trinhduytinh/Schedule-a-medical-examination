@@ -71,7 +71,8 @@
     "media-coverage": "Media Coverage of Trịnh Duy Tính",
     "more-information": "2023 Trinh Duy Tinh. More information",
     "click-here": "Click here",
-    "search": "Search for Medical Specialties"
+    "search": "Search for Medical Specialties",
+    "number-of-bookings-per-week": "Number of bookings per week: "
   },
   "manage-schedule": {
     "title": "Manage doctor's appointment schedule",
@@ -130,7 +131,8 @@
       "price": "Examination fee: ",
       "detail": "View details",
       "payment": "Patients can pay the fees through the following methods: ",
-      "hide-price": "Hide price list"
+      "hide-price": "Hide price list",
+      "list-of-all-doctors": "List of all doctors"
     },
     "booking-modal": {
       "title": "Booking Information",
@@ -172,5 +174,10 @@
       "select-clinic": "Select Clinic",
       "manage-user": "Manage user accounts"
     }
-  }
+  },
+  "more": {
+    "medical-facility": "Medical facility",
+    "medical-handbook": "Medical handbook",
+    "clinic-for-you": "Clinic for you"
+    }
 }
