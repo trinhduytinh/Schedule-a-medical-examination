@@ -7,47 +7,159 @@ const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 let getTopDoctorHome = (limit) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let users = await db.User.findAll({
-        where: { roleId: "R2" },
-        limit: limit,
-        order: [["createdAt", "DESC"]], //sap xep theo ngay tao
-        attributes: {
-          //bo truong email
-          exclude: ["password"],
-        },
-        include: [
-          {
-            model: db.Allcode,
-            as: "positionData",
-            attributes: ["valueEn", "valueVi", "valueJa"],
+      if (limit === "ALL") {
+        let users = await db.User.findAll({
+          where: { roleId: "R2" },
+          order: [["createdAt", "DESC"]], //sap xep theo ngay tao
+          attributes: {
+            //bo truong email
+            exclude: ["password"],
           },
-          {
-            model: db.Allcode,
-            as: "genderData",
-            attributes: ["valueEn", "valueVi", "valueJa"],
+          include: [
+            {
+              model: db.Allcode,
+              as: "positionData",
+              attributes: ["valueEn", "valueVi", "valueJa"],
+            },
+            {
+              model: db.Allcode,
+              as: "genderData",
+              attributes: ["valueEn", "valueVi", "valueJa"],
+            },
+            {
+              model: db.Doctor_Infor,
+              attributes: ["specialtyId"],
+              //eager loading giúp load tất cả các entity trong 1 câu lệnh, tất cả các entity con sẽ được load ra trong 1 lần gọi duy nhấ
+              include: [
+                {
+                  model: db.Specialty,
+                  as: "specialtyTypeData",
+                  attributes: ["name", "nameEn", "nameJa"],
+                },
+              ],
+            },
+          ],
+          raw: true,
+          nest: true,
+        });
+        resolve({
+          errCode: 0,
+          data: users,
+        });
+      } else {
+        let endDate = Date.now(); // Timestamp của ngày hiện tại
+        let startDate = endDate - 7 * 24 * 60 * 60 * 1000; // Timestamp của ngày 7 ngày trước đó
+
+        let bookingCounts = await db.Booking.findAll({
+          where: {
+            statusId: "S3",
+            date: {
+              [db.Sequelize.Op.between]: [startDate, endDate],
+            },
           },
-          {
-            model: db.Doctor_Infor,
-            attributes: [
-              "specialtyId"
-            ],
-            //eager loading giúp load tất cả các entity trong 1 câu lệnh, tất cả các entity con sẽ được load ra trong 1 lần gọi duy nhấ
+          attributes: [
+            "doctorId",
+            [db.Sequelize.fn("COUNT", "doctorId"), "bookingCount"],
+          ],
+          group: ["doctorId"],
+          raw: true,
+        });
+
+        // Tạo một object để lưu số lần đặt lịch của mỗi bác sĩ
+        let doctorBookingCounts = {};
+
+        // Lặp qua kết quả đếm số lần đặt lịch của mỗi bác sĩ và lưu vào object doctorBookingCounts
+        bookingCounts.forEach((booking) => {
+          doctorBookingCounts[booking.doctorId] = booking.bookingCount;
+        });
+
+        let doctors;
+        if (bookingCounts.length === 0) {
+          // Nếu không có ai đặt lịch trong tuần, trả về tất cả bác sĩ
+          doctors = await db.User.findAll({
+            where: {
+              roleId: "R2",
+            },
+            order: [["firstName", "DESC"]], 
+            attributes: {
+              exclude: ["password"],
+            },
             include: [
               {
-                model: db.Specialty,
-                as: "specialtyTypeData",
-                attributes: ["name", "nameEn", "nameJa"],
+                model: db.Allcode,
+                as: "positionData",
+                attributes: ["valueEn", "valueVi", "valueJa"],
+              },
+              {
+                model: db.Allcode,
+                as: "genderData",
+                attributes: ["valueEn", "valueVi", "valueJa"],
+              },
+              {
+                model: db.Doctor_Infor,
+                attributes: ["specialtyId"],
+                include: [
+                  {
+                    model: db.Specialty,
+                    as: "specialtyTypeData",
+                    attributes: ["name", "nameEn", "nameJa"],
+                  },
+                ],
               },
             ],
-          },
-        ],
-        raw: true,
-        nest: true,
-      });
-      resolve({
-        errCode: 0,
-        data: users,
-      });
+            raw: true,
+            nest: true,
+          });
+        } else {
+          // Nếu có ai đặt lịch trong tuần, lấy chỉ các bác sĩ có đặt lịch
+          doctors = await db.User.findAll({
+            where: {
+              id: Object.keys(doctorBookingCounts), // Chỉ lấy các bác sĩ có trong danh sách doctorBookingCounts
+              roleId: "R2",
+            },
+            limit: +limit, // Sử dụng giới hạn nếu được truyền vào, ngược lại không có giới hạn
+            attributes: {
+              exclude: ["password"],
+            },
+            include: [
+              {
+                model: db.Allcode,
+                as: "positionData",
+                attributes: ["valueEn", "valueVi", "valueJa"],
+              },
+              {
+                model: db.Allcode,
+                as: "genderData",
+                attributes: ["valueEn", "valueVi", "valueJa"],
+              },
+              {
+                model: db.Doctor_Infor,
+                attributes: ["specialtyId"],
+                include: [
+                  {
+                    model: db.Specialty,
+                    as: "specialtyTypeData",
+                    attributes: ["name", "nameEn", "nameJa"],
+                  },
+                ],
+              },
+            ],
+            raw: true,
+            nest: true,
+          });
+        }
+
+        // Thêm trường số lượng đặt lịch trong tuần qua vào mỗi bác sĩ trong kết quả trả về
+        doctors.forEach((doctor) => {
+          doctor.bookingCountLastWeek = doctorBookingCounts[doctor.id] || 0;
+        });
+
+        // Trả về kết quả với trường số lượng đặt lịch trong tuần qua
+        resolve({
+          errCode: 0,
+          data: doctors,
+        });
+      }
     } catch (e) {
       reject(e);
     }

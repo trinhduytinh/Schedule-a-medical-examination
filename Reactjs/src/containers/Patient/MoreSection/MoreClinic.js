@@ -34,7 +34,7 @@ class MoreClinic extends Component {
       <>
         <HomeHeader />
         <div className="more-container">
-          <div className="title">Cơ sở y tế</div>
+          <div className="title"><FormattedMessage id={"more.medical-handbook"}/></div>
           {dataClinics &&
             dataClinics.length > 0 &&
             dataClinics.map((item, index) => {

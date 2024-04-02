@@ -90,6 +90,7 @@ class OutStandingDoctor extends Component {
                               ? item.Doctor_Infor.specialtyTypeData.nameJa
                               : ""}
                           </div>
+                          <div><FormattedMessage id={"homepage.number-of-bookings-per-week"}/> {item.bookingCountLastWeek}</div>
                         </div>
                       </div>
                     </div>
