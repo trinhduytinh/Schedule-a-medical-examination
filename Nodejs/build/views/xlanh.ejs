@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhận diện chữ viết tay</title>
+</head>
+<body>
+    <h1>Nhận diện chữ viết tay</h1>
+    <form enctype="multipart/form-data" action="/upload" method="post">
+        <input type="file" name="image" accept=".jpg, .jpeg, .png, .gif">
+        <button type="submit">Tải lên và nhận diện</button>
+    </form>
+    <div>
+        <h2>Kết quả:</h2>
+        <pre id="result"></pre>
+    </div>
+    <script>
+        const form = document.querySelector('form');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                const resultText = await response.text();
+                resultDiv.textContent = resultText;
+            } else {
+                resultDiv.textContent = 'Đã xảy ra lỗi trong quá trình xử lý.';
+            }
+        });
+    </script>
+</body>
+</html>
