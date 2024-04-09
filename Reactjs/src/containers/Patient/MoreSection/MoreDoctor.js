@@ -47,7 +47,7 @@ class MoreDoctor extends Component {
             arrDoctors.map((item, index) => {
               let imageBase64 = "";
               if (item.image) {
-                imageBase64 = new Buffer(item.image, "base64").toString(
+                imageBase64 = Buffer.from(item.image, "base64").toString(
                   "binary"
                 );
               }
