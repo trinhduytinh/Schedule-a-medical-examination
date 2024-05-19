@@ -13,6 +13,9 @@ export const path = {
   MORE_CLINIC: "/more-clinic",
   MORE_HANDBOOK: "/more-handbook",
   MORE_DOCTOR: "/more-doctor",
+  MORE_SPECIALTY_REMOTE: "/more-specialty-remote",
+  DETAIL_SPECIALTY_REMOTE: "/detail-specialty-remote/:id",
+  DETAIL_DOCTOR_REMOTE: "/detail-doctor-remote/:id",
 };
 
 export const LANGUAGES = {

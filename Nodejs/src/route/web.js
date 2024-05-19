@@ -5,7 +5,8 @@ import doctorController from "../controllers/doctorController";
 import patientController from "../controllers/patientController"
 import specialtyController from '../controllers/specialtyController'
 import clinicController from "../controllers/clinicController";
-import handbookController from "../controllers/handbookController"
+import handbookController from "../controllers/handbookController";
+import schedulesRemoteController from "../controllers/schedulesRemoteController";
 let router = express.Router();
 
 let initWebRoutes = (app) => {
@@ -52,6 +53,12 @@ let initWebRoutes = (app) => {
   router.get('/api/get-detail-handbook-by-id', handbookController.getDetailHandbookById);
   router.delete('/api/delete-handbook', handbookController.deleteHandbook);
   router.put('/api/edit-handbook', handbookController.editHandbook);
+
+  router.get("/api/get-all-doctor-remotes", schedulesRemoteController.getAllDoctorRemote);
+  router.post('/api/create-new-schedules-remote', schedulesRemoteController.bulkCreateScheduleRemote);
+  router.get('/api/get-schedule-remote-doctor-by-date', schedulesRemoteController.getScheduleRemoteByDate);
+  router.get('/api/get-detail-specialty-remote-by-id', schedulesRemoteController.getDetailSpecialtyRemoteById);
+  router.post('/api/patient-book-appointment-remote', schedulesRemoteController.postBookAppointmentRemote);
 
   return app.use("/", router);
 };

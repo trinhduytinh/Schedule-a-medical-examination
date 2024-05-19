@@ -179,7 +179,6 @@ export const editUser = (data) => {
   return async (dispatch, getState) => {
     try {
       let res = await editUserService(data);
-      console.log("chech edit:", res);
       if (res && res.errCode === 0) {
         toast.success("Update the user succeed!");
         dispatch(editUsersSuccess(res.data));
@@ -304,6 +303,7 @@ export const getRequiredDoctorInFor = () => {
       let resPrice = await getAllCodeService("PRICE");
       let resPayment = await getAllCodeService("PAYMENT");
       let resProvince = await getAllCodeService("PROVINCE");
+      let resRemote = await getAllCodeService("REMOTE");
       let resSpecialty = await getAllSpecialty();
       let resClinic = await getAllClinic();
       if (
@@ -316,7 +316,9 @@ export const getRequiredDoctorInFor = () => {
         resSpecialty &&
         resSpecialty.errCode === 0 &&
         resClinic &&
-        resClinic.errCode === 0
+        resClinic.errCode === 0 &&
+        resRemote &&
+        resRemote.errCode === 0
       ) {
         let data = {
           resPrice: resPrice.data,
@@ -324,6 +326,7 @@ export const getRequiredDoctorInFor = () => {
           resProvince: resProvince.data,
           resSpecialty: resSpecialty.data,
           resClinic: resClinic.data,
+          resRemote: resRemote.data,
         };
         dispatch(fetchRequiredDoctorInFoSuccess(data));
       } else {

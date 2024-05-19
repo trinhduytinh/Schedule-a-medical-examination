@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import "./ManageSchedule.scss";
+import "./ManageScheduleRemote.scss";
 import { FormattedMessage } from "react-intl";
 import Select from "react-select";
 import * as actions from "../../../store/actions";
@@ -9,44 +9,53 @@ import DatePicker from "../../../components/Input/DatePicker";
 import moment from "moment";
 import _, { times } from "lodash";
 import { toast } from "react-toastify";
-import { saveBulkScheduleDoctor } from "../../../services/userService";
-class ManageSchedule extends Component {
+import {
+  getAllDoctorRemote,
+  saveBulkScheduleRemoteDoctor,
+} from "../../../services/userService";
+
+class ManageScheduleRemote extends Component {
   constructor(props) {
     super(props);
     this.state = {
       listDoctors: [],
       selectedDoctor: {},
-      currentDate: moment(new Date()).startOf("day").valueOf(), //lay ngay ko lay gio de phu hop vs thu vien lich
-      rangetime: [],
+      currentDate: moment(new Date()).startOf("day").valueOf(),
+      rangetime: [""], // khởi tạo với một phần tử trống
     };
   }
-  componentDidMount() {
-    this.props.fetchAllDoctors();
-    this.props.fetchAllsScheduleTime();
-  }
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.allDoctors !== this.props.allDoctors) {
-      let dataSelect = this.buildDataInputSelect(this.props.allDoctors);
+
+  async componentDidMount() {
+    // this.props.fetchAllDoctors();
+    let res = await getAllDoctorRemote();
+    if (res && res.errCode === 0) {
+      let dataSelect = this.buildDataInputSelect(res.data);
       this.setState({
         listDoctors: dataSelect,
       });
     }
-    if (prevProps.allScheduleTime !== this.props.allScheduleTime) {
-      let data = this.props.allScheduleTime;
-      if (data && data.length > 0) {
-        data = data.map((item) => ({ ...item, isSelected: false }));
-      }
-      this.setState({
-        rangetime: data,
-      });
-    }
+    // this.props.fetchAllsScheduleTime();
+  }
+
+  async componentDidUpdate(prevProps, prevState, snapshot) {
+    // if (prevProps.allDoctors !== this.props.allDoctors) {
+    //   let dataSelect = this.buildDataInputSelect(this.props.allDoctors);
+    //   this.setState({
+    //     listDoctors: dataSelect,
+    //   });
+    // }
+
     if (prevProps.language !== this.props.language) {
-      let dataSelect = this.buildDataInputSelect(this.props.allDoctors);
-      this.setState({
-        listDoctors: dataSelect,
-      });
+      let res = await getAllDoctorRemote();
+      if (res && res.errCode === 0) {
+        let dataSelect = this.buildDataInputSelect(res.data);
+        this.setState({
+          listDoctors: dataSelect,
+        });
+      }
     }
   }
+
   buildDataInputSelect = (inputData) => {
     let result = [];
     let { language } = this.props;
@@ -62,30 +71,43 @@ class ManageSchedule extends Component {
     }
     return result;
   };
+
   handleChangeSelect = async (selectedOption) => {
     this.setState({ selectedDoctor: selectedOption });
   };
+
   handleOnchangeDatePicker = (data) => {
     this.setState({
       currentDate: data[0],
     });
   };
-  handleClickBtnTime = (time) => {
-    let { rangetime } = this.state;
-    if (rangetime && rangetime.length > 0) {
-      rangetime = rangetime.map((item) => {
-        if (item.id === time.id) item.isSelected = !item.isSelected;
-        return item;
-      });
-      this.setState({
-        rangetime: rangetime,
-      });
-    }
+
+  handleTimeChange = (index, event) => {
+    const newTimes = [...this.state.rangetime];
+    newTimes[index] = event.target.value;
+    this.setState({
+      rangetime: newTimes,
+    });
   };
+
+  handleAddTimeInput = () => {
+    this.setState((prevState) => ({
+      rangetime: [...prevState.rangetime, ""],
+    }));
+  };
+
+  handleRemoveTimeInput = (index) => {
+    this.setState((prevState) => {
+      const newTimes = [...prevState.rangetime];
+      newTimes.splice(index, 1);
+      return { rangetime: newTimes };
+    });
+  };
+
   handleSaveSchedule = async () => {
     let { rangetime, selectedDoctor, currentDate } = this.state;
     let result = [];
-    if (selectedDoctor && _.isEmpty(selectedDoctor)) {
+    if (!selectedDoctor || _.isEmpty(selectedDoctor)) {
       toast.error("Invalid selected doctor!");
       return;
     }
@@ -93,37 +115,35 @@ class ManageSchedule extends Component {
       toast.error("Invalid date!");
       return;
     }
-    // let formateDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
-    // let formateDate = moment(currentDate).unix();
     let formateDate = new Date(currentDate).getTime();
     if (rangetime && rangetime.length > 0) {
-      let selectedTime = rangetime.filter((item) => item.isSelected === true);
-      if (selectedTime && selectedTime.length > 0) {
-        selectedTime.map((schedule) => {
+      rangetime.forEach((time) => {
+        if (time) {
           let object = {};
           object.doctorID = selectedDoctor.value;
           object.date = formateDate;
-          object.timeType = schedule.keyMap;
+          object.timeType = time; // Giả định time là keyMap hoặc một định danh nào đó
           result.push(object);
-        });
-      } else {
-        toast.error("Invalid selected time!");
-        return;
-      }
+        }
+      });
+    } else {
+      toast.error("Invalid selected time!");
+      return;
     }
-    let res = await saveBulkScheduleDoctor({
-      arrSchedule: result,
+    let res = await saveBulkScheduleRemoteDoctor({
+      arrScheduleRemote: result,
       doctorID: selectedDoctor.value,
       formateDate: formateDate,
     });
 
     if (res && res.errCode === 0) {
-      toast.success("Save InFor succeed!");
+      toast.success("Lưu thông tin thành công!");
     } else {
-      toast.error("Error SaveBulkScheduleDoctor!");
+      toast.error("Lỗi khi lưu thông tin!");
       console.log("error saveBulkScheduleDoctor: ", res);
     }
   };
+
   render() {
     let { language } = this.props;
     let { rangetime } = this.state;
@@ -157,28 +177,34 @@ class ManageSchedule extends Component {
               />
             </div>
             <div className="col-12 pick-hour-container">
-              {rangetime &&
-                rangetime.length > 0 &&
-                rangetime.map((item, index) => {
-                  return (
+              {rangetime.map((time, index) => (
+                <div key={index} className="d-flex align-items-center mb-2">
+                  <input
+                    type="time"
+                    className="form-control"
+                    value={time}
+                    onChange={(event) => this.handleTimeChange(index, event)}
+                  />
+                  <button
+                    className="btn btn-danger ml-2"
+                    onClick={() => this.handleRemoveTimeInput(index)}>
+                    X
+                  </button>
+                  {index === rangetime.length - 1 && (
                     <button
-                      className={
-                        item.isSelected === true
-                          ? "btn btn-schedule active"
-                          : "btn btn-schedule"
-                      }
-                      key={index}
-                      onClick={() => this.handleClickBtnTime(item)}>
-                      {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
+                      className="btn btn-primary ml-2"
+                      onClick={this.handleAddTimeInput}>
+                      +
                     </button>
-                  );
-                })}
+                  )}
+                </div>
+              ))}
             </div>
           </div>
           <div>
             <button
               className="btn btn-primary btn-save-schedule"
-              onClick={() => this.handleSaveSchedule()}>
+              onClick={this.handleSaveSchedule}>
               <FormattedMessage id="manage-schedule.save" />
             </button>
           </div>
@@ -204,4 +230,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageSchedule);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ManageScheduleRemote);

@@ -110,6 +110,22 @@ const deleteHandbook = (handbookId)=>{
 const editHandbookService = (inputData) => {
   return axios.put("/api/edit-handbook", inputData);
 };
+const saveBulkScheduleRemoteDoctor = (data) => {
+  return axios.post("/api/create-new-schedules-remote", data);
+};
+const getAllDoctorRemote = () => {
+  return axios.get(`/api/get-all-doctor-remotes`);
+};
+const getAllDetailSpecialtyRemoteById = (data) => {
+  return axios.get(
+    `/api/get-detail-specialty-remote-by-id?id=${data.id}&location=${data.location}`
+  );
+};
+const getScheduleRemoteByDate = (doctorID, date) => {
+  return axios.get(
+    `/api/get-schedule-remote-doctor-by-date?doctorID=${doctorID}&date=${date}`
+  );
+};
 
 export {
   handleLoginApi,
@@ -141,5 +157,9 @@ export {
   getAllDetailHandbookById,
   deleteHandbook,
   editHandbookService,
-  getUsersPage
+  getUsersPage,
+  saveBulkScheduleRemoteDoctor,
+  getAllDoctorRemote,
+  getAllDetailSpecialtyRemoteById,
+  getScheduleRemoteByDate
 };

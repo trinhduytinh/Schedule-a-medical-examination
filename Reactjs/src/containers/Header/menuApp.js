@@ -28,6 +28,10 @@ export const adminMenu = [
         name: "menu.doctor.manage-schedule",
         link: "/doctor/manage-schedule",
       },
+      {
+        name: "quản lí lịch khám từ xa",
+        link: "/doctor/manage-schedule-remote",
+      }
     ],
   },
   {

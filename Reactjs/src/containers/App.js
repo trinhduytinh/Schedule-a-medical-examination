@@ -31,6 +31,9 @@ import MoreSpecialty from "./Patient/MoreSection/MoreSpecialty";
 import MoreClinic from "./Patient/MoreSection/MoreClinic";
 import MoreHandbook from "./Patient/MoreSection/MoreHandbook";
 import MoreDoctor from "./Patient/MoreSection/MoreDoctor";
+import SpecialtyRemote from "./HomePage/Section/SpecialtyRemote";
+import DetailSpecialtyRemote from "./Patient/Specialty/DetailSpecialtyRemote";
+import DetailDoctorRemote from "./Patient/Doctor/DetailDoctorRemote";
 
 class App extends Component {
   handlePersistorState = () => {
@@ -82,6 +85,9 @@ class App extends Component {
                   <Route path={path.MORE_CLINIC} component={MoreClinic}/>
                   <Route path={path.MORE_HANDBOOK} component={MoreHandbook}/>
                   <Route path={path.MORE_DOCTOR} component={MoreDoctor}/>
+                  <Route path={path.MORE_SPECIALTY_REMOTE} component={SpecialtyRemote}/>
+                  <Route path={path.DETAIL_SPECIALTY_REMOTE} component={DetailSpecialtyRemote} />
+                  <Route path={path.DETAIL_DOCTOR_REMOTE} component={DetailDoctorRemote} />
                 </Switch>
               </CustomScrollbars>
             </div>

@@ -7,18 +7,20 @@ import { LANGUAGES } from "../../../utils";
 import { NumericFormat } from "react-number-format";
 import _ from "lodash";
 import moment from "moment";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 class ProfileDoctor extends Component {
   constructor(props) {
     super(props);
     this.state = {
       dataProfile: {},
+      isRemote1: "",
     };
   }
   async componentDidMount() {
     let data = await this.getInforDoctor(this.props.doctorId);
     this.setState({
       dataProfile: data,
+      isRemote1: this.props.isRemote,
     });
   }
   getInforDoctor = async (id) => {
@@ -47,14 +49,25 @@ class ProfileDoctor extends Component {
           .format("dddd - DD/MM/YYYY")
           .replace(/^t/g, "T")
           .replace("chủ nhật", "Chủ Nhật");
-        time = dataTime.timeTypeData.valueVi;
+        //kiem tra co ton tai ton tai du lieu trong object
+        if (
+          ("timeTypeData" in dataTime && "valueVi" in dataTime.timeTypeData) ===
+          true
+        )
+          time = dataTime.timeTypeData.valueVi;
+        else time = dataTime.timeType;
       }
       if (language === LANGUAGES.EN) {
         date = moment
           .unix(+dataTime.date / 1000)
           .locale("en")
           .format("ddd - MM/DD/YYYY");
-        time = dataTime.timeTypeData.valueEn;
+        if (
+          ("timeTypeData" in dataTime && "valueEn" in dataTime.timeTypeData) ===
+          true
+        )
+          time = dataTime.timeTypeData.valueEn;
+        else time = dataTime.timeType;
       }
       if (language === LANGUAGES.JA) {
         date = moment
@@ -68,16 +81,30 @@ class ProfileDoctor extends Component {
           .replace("T5", "木")
           .replace("T6", "金")
           .replace("T7", "土");
-        time = dataTime.timeTypeData.valueVi;
+        if (
+          ("timeTypeData" in dataTime && "valueVi" in dataTime.timeTypeData) ===
+          true
+        )
+          time = dataTime.timeTypeData.valueVi;
+        else time = dataTime.timeType;
       }
       return (
         <>
           <div>
             {time} - {date}
           </div>
-          <div>
-            <FormattedMessage id={"patient.booking-modal.priceBooking"} />
-          </div>
+          {dataTime &&
+            !_.isEmpty(dataTime) &&
+            ("timeTypeData" in dataTime && "valueEn" in dataTime.timeTypeData) === false && (
+              <div>Thanh toán khi đặt lịch</div>
+            )}
+          {dataTime &&
+            !_.isEmpty(dataTime) &&
+            ("timeTypeData" in dataTime && "valueEn" in dataTime.timeTypeData) === true && (
+              <div>
+                <FormattedMessage id={"patient.booking-modal.priceBooking"} />
+              </div>
+            )}
         </>
       );
     }
@@ -90,6 +117,7 @@ class ProfileDoctor extends Component {
       dataTime,
       isShowPrice,
       isShowLinkDetail,
+      isRemote,
       doctorId,
     } = this.props;
     let nameVi = "",
@@ -177,10 +205,20 @@ class ProfileDoctor extends Component {
             )}
           </div>
         </div>
-        {isShowLinkDetail === true && (
+        {isRemote === false && isShowLinkDetail === true && (
           <div className="view-detail-doctor">
             {/* Dùnglink thay cho a để cho khỏi có load lại trang, tăng trải nghiệm ng dùng */}
-            <Link to={`/detail-doctor/${doctorId}`}><FormattedMessage id={"patient.clinic.more"}/></Link>
+            <Link to={`/detail-doctor/${doctorId}`}>
+              <FormattedMessage id={"patient.clinic.more"} />
+            </Link>
+          </div>
+        )}
+        {isRemote === true && isShowLinkDetail === true && (
+          <div className="view-detail-doctor">
+            {/* Dùnglink thay cho a để cho khỏi có load lại trang, tăng trải nghiệm ng dùng */}
+            <Link to={`/detail-doctor-remote/${doctorId}`}>
+              <FormattedMessage id={"patient.clinic.more"} />
+            </Link>
           </div>
         )}
         {isShowPrice === true && (

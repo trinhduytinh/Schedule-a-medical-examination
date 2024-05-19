@@ -76,6 +76,11 @@ class HomeHeader extends Component {
       this.props.history.push(`/detail-specialty/${selectedOption.value}`);
     }
   };
+  handleViewMoreSpecialtyRemote = () => {
+    if (this.props.history) {
+      this.props.history.push(`/more-specialty-remote`);
+    }
+  };
   render() {
     let language = this.props.language;
     return (
@@ -246,7 +251,7 @@ class HomeHeader extends Component {
                   value={this.state.selectedSpecialty}
                   onChange={this.handleChangeSelectDoctorInFor}
                   options={this.state.listSpecialty}
-                  placeholder={<FormattedMessage id={"homepage.search"}/>}
+                  placeholder={<FormattedMessage id={"homepage.search"} />}
                   name="selectedSpecialty"
                 />
               </div>
@@ -255,50 +260,12 @@ class HomeHeader extends Component {
               <div className="options">
                 <div className="option-child">
                   <div className="icon-child">
-                    <i className="far fa-hospital"></i>
-                  </div>
-                  <div className="text-child">
-                    <FormattedMessage id={"banner.specialized-examination"} />
-                  </div>
-                </div>
-                <div className="option-child">
-                  <div className="icon-child">
                     <i className="fas fa-mobile-alt"></i>
                   </div>
-                  <div className="text-child">
+                  <div
+                    className="text-child"
+                    onClick={() => this.handleViewMoreSpecialtyRemote()}>
                     <FormattedMessage id={"banner.remote-examination"} />
-                  </div>
-                </div>
-                <div className="option-child">
-                  <div className="icon-child">
-                    <i className="fas fa-stethoscope"></i>
-                  </div>
-                  <div className="text-child">
-                    <FormattedMessage id={"banner.general-examination"} />
-                  </div>
-                </div>
-                <div className="option-child">
-                  <div className="icon-child">
-                    <i className="fas fa-flask"></i>
-                  </div>
-                  <div className="text-child">
-                    <FormattedMessage id={"banner.medical-tests"} />
-                  </div>
-                </div>
-                <div className="option-child">
-                  <div className="icon-child">
-                    <i className="fas fa-user-md"></i>
-                  </div>
-                  <div className="text-child">
-                    <FormattedMessage id={"banner.mental-health"} />
-                  </div>
-                </div>
-                <div className="option-child">
-                  <div className="icon-child">
-                    <i className="fas fa-briefcase-medical"></i>
-                  </div>
-                  <div className="text-child">
-                    <FormattedMessage id={"banner.dental-examination"} />
                   </div>
                 </div>
               </div>

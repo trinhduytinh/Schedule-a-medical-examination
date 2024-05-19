@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import "./DetailSpecialty.scss";
+import "./DetailSpecialtyRemote.scss";
 import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
 import HomeHeader from "../../HomePage/HomeHeader";
 import DoctorSchedule from "../Doctor/DoctorSchedule";
@@ -8,13 +8,14 @@ import DoctorExtraInfor from "../Doctor/DoctorExtraInfor";
 import ProfileDoctor from "../Doctor/ProfileDoctor";
 import {
   getAllCodeService,
-  getAllDetailSpecialtyById,
+  getAllDetailSpecialtyRemoteById,
 } from "../../../services/userService";
 import { LANGUAGES } from "../../../utils";
 import _ from "lodash";
 import HomeFooter from "../../HomePage/HomeFooter";
+import DoctorScheduleRemote from "../Doctor/DoctorScheduleRemote";
 
-class DetailSpecialty extends Component {
+class DetailSpecialtyRemote extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,10 +32,11 @@ class DetailSpecialty extends Component {
       this.props.match.params.id
     ) {
       let id = this.props.match.params.id;
-      let res = await getAllDetailSpecialtyById({
+      let res = await getAllDetailSpecialtyRemoteById({
         id: id,
         location: "ALL",
       });
+      console.log("check", res);
       let resProvince = await getAllCodeService("PROVINCE");
       if (
         res &&
@@ -79,7 +81,7 @@ class DetailSpecialty extends Component {
     ) {
       let id = this.props.match.params.id;
       let location = event.target.value;
-      let res = await getAllDetailSpecialtyById({
+      let res = await getAllDetailSpecialtyRemoteById({
         id: id,
         location: location,
       });
@@ -172,6 +174,7 @@ class DetailSpecialty extends Component {
               let doctorLocation = dataDetailSpecialty.doctorSpecialty.find(
                 (doctor) => doctor.doctorId === item
               ).provinceId;
+              console.log("isRemote for doctorId", item, "is", true); // Thêm dòng này
               return (
                 <div className="each-doctor" key={index}>
                   <div className="dt-content-left">
@@ -180,7 +183,7 @@ class DetailSpecialty extends Component {
                       isShowDescriptionDoctor={true}
                       isShowLinkDetail={true}
                       isShowPrice={false}
-                      isRemote={false}
+                      isRemote={true}
                       // dataTime={dataTime}
                     />
                     <div className="location">
@@ -191,7 +194,7 @@ class DetailSpecialty extends Component {
                   </div>
                   <div className="dt-content-right">
                     <div className="doctor-schedule">
-                      <DoctorSchedule doctorIdFromParent={item} />
+                      <DoctorScheduleRemote doctorIdFromParent={item} />
                     </div>
                     <div className="doctor-extra-infor">
                       <DoctorExtraInfor doctorIdFromParent={item} />
@@ -217,4 +220,7 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DetailSpecialty);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DetailSpecialtyRemote);

@@ -32,11 +32,13 @@ class ManageDoctor extends Component {
       listProvince: [],
       listClinic: [],
       listSpecialty: [],
+      listRemote: [],
       selectedPrice: "",
       selectedPayment: "",
       selectedProvince: "",
       selectedClinic: "",
       selectedSpecialty: "",
+      selectedRemote: "",
       nameClinic: "",
       addressClinic: "",
       note: "",
@@ -75,7 +77,7 @@ class ManageDoctor extends Component {
           object.value = item.keyMap;
           result.push(object);
         }
-        if (type === "PAYMENT" || type === "PROVINCE") {
+        if (type === "PAYMENT" || type === "PROVINCE" || type === "REMOTE") {
           let object = {};
           let labelVi = `${item.valueVi}`;
           let labelEn = `${item.valueEn}`;
@@ -127,8 +129,13 @@ class ManageDoctor extends Component {
         this.props.allDoctors,
         "USERS"
       );
-      let { resPayment, resPrice, resProvince, resClinic, resSpecialty } =
-        this.props.allRequiredDoctorInFo;
+      let {
+        resPayment,
+        resPrice,
+        resProvince,
+        resClinic,
+        resRemote,
+      } = this.props.allRequiredDoctorInFo;
       let dataSelectPrice = this.buildDataInputSelect(resPrice, "PRICE");
       let dataSelectPayment = this.buildDataInputSelect(resPayment, "PAYMENT");
       let dataSelectProvince = this.buildDataInputSelect(
@@ -136,17 +143,25 @@ class ManageDoctor extends Component {
         "PROVINCE"
       );
       let dataSelectClinic = this.buildDataInputSelect(resClinic, "CLINIC");
+      let dataSelectRemote = this.buildDataInputSelect(resRemote, "REMOTE");
       this.setState({
         listDoctors: dataSelect,
         listPrice: dataSelectPrice,
         listPayment: dataSelectPayment,
         listProvince: dataSelectProvince,
         listClinic: dataSelectClinic,
+        listRemote: dataSelectRemote,
       });
     }
     if (prevProps.allRequiredDoctorInFo !== this.props.allRequiredDoctorInFo) {
-      let { resPayment, resPrice, resProvince, resSpecialty, resClinic } =
-        this.props.allRequiredDoctorInFo;
+      let {
+        resPayment,
+        resPrice,
+        resProvince,
+        resSpecialty,
+        resClinic,
+        resRemote,
+      } = this.props.allRequiredDoctorInFo;
       let dataSelectPrice = this.buildDataInputSelect(resPrice, "PRICE");
       let dataSelectPayment = this.buildDataInputSelect(resPayment, "PAYMENT");
       let dataSelectProvince = this.buildDataInputSelect(
@@ -158,12 +173,14 @@ class ManageDoctor extends Component {
         "SPECIALTY"
       );
       let dataSelectClinic = this.buildDataInputSelect(resClinic, "CLINIC");
+      let dataSelectRemote = this.buildDataInputSelect(resRemote, "REMOTE");
       this.setState({
         listPrice: dataSelectPrice,
         listPayment: dataSelectPayment,
         listProvince: dataSelectProvince,
         listSpecialty: dataSelectSpecialty,
         listClinic: dataSelectClinic,
+        listRemote: dataSelectRemote,
       });
     }
   }
@@ -196,6 +213,7 @@ class ManageDoctor extends Component {
           ? this.state.selectedClinic.value
           : "",
       specialtyId: this.state.selectedSpecialty.value,
+      remote: this.state.selectedRemote.value,
     });
     this.setState({
       isShowLoading: false,
@@ -203,8 +221,14 @@ class ManageDoctor extends Component {
   };
   handleChangeSelect = async (selectedDoctor) => {
     this.setState({ selectedDoctor });
-    let { listPayment, listPrice, listProvince, listSpecialty, listClinic } =
-      this.state;
+    let {
+      listPayment,
+      listPrice,
+      listProvince,
+      listSpecialty,
+      listClinic,
+      listRemote,
+    } = this.state;
     let res = await getDetailInforDoctor(selectedDoctor.value);
     if (res && res.errCode === 0 && res.data && res.data.Markdown) {
       let markdown = res.data.Markdown;
@@ -216,12 +240,13 @@ class ManageDoctor extends Component {
         provinceId = "",
         specialtyId = "",
         clinicId = "",
+        remote = "",
         selectedPayment = "",
         selectedPrice = "",
         selectedProvince = "",
         selectedSpecialty = "",
-        selectedClinic = "";
-
+        selectedClinic = "",
+        selectedRemote = "";
       if (res.data.Doctor_Infor) {
         addressClinic = res.data.Doctor_Infor.addressClinic;
         nameClinic = res.data.Doctor_Infor.nameClinic;
@@ -231,6 +256,7 @@ class ManageDoctor extends Component {
         provinceId = res.data.Doctor_Infor.provinceId;
         specialtyId = res.data.Doctor_Infor.specialtyId;
         clinicId = res.data.Doctor_Infor.clinicId;
+        remote = res.data.Doctor_Infor.remote;
         selectedPayment = listPayment.find((item) => {
           return item && item.value === paymentId;
         });
@@ -246,6 +272,9 @@ class ManageDoctor extends Component {
         selectedClinic = listClinic.find((item) => {
           return item && item.value === clinicId;
         });
+        selectedRemote = listRemote.find((item) => {
+          return item && item.value === remote;
+        });
       }
       this.setState({
         contentHTML: markdown.contentHTML,
@@ -260,6 +289,7 @@ class ManageDoctor extends Component {
         selectedProvince: selectedProvince,
         selectedSpecialty: selectedSpecialty,
         selectedClinic: selectedClinic,
+        selectedRemote: selectedRemote,
       });
     } else {
       this.setState({
@@ -275,6 +305,7 @@ class ManageDoctor extends Component {
         selectedProvince: "",
         selectedSpecialty: "",
         selectedClinic: "",
+        selectedRemote: "",
       });
     }
   };
@@ -411,7 +442,7 @@ class ManageDoctor extends Component {
                   value={this.state.note}
                 />
               </div>
-              <div className="col-6 form-group">
+              <div className="col-4 form-group">
                 <label className="form-label">
                   <FormattedMessage id={"admin.manage-doctor.specialty"} />
                 </label>
@@ -425,7 +456,7 @@ class ManageDoctor extends Component {
                   name="selectedSpecialty"
                 />
               </div>
-              <div className="col-6 form-group">
+              <div className="col-4 form-group">
                 <label className="form-label">
                   <FormattedMessage id={"admin.manage-doctor.select-clinic"} />
                 </label>
@@ -439,6 +470,23 @@ class ManageDoctor extends Component {
                     />
                   }
                   name="selectedClinic"
+                />
+              </div>
+              <div className="col-4 form-group">
+                <label className="form-label">
+                  {/* <FormattedMessage id={"admin.manage-doctor.select-clinic"} /> */}
+                  Khám từ xa
+                </label>
+                <Select
+                  value={this.state.selectedRemote}
+                  onChange={this.handleChangeSelectDoctorInFor}
+                  options={this.state.listRemote}
+                  placeholder={
+                    <FormattedMessage
+                      id={"admin.manage-doctor.select-clinic"}
+                    />
+                  }
+                  name="selectedRemote"
                 />
               </div>
             </div>
