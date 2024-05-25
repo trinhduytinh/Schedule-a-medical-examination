@@ -126,6 +126,14 @@ const getScheduleRemoteByDate = (doctorID, date) => {
     `/api/get-schedule-remote-doctor-by-date?doctorID=${doctorID}&date=${date}`
   );
 };
+const postPatientBookAppointmentRemote = (data) => {
+  return axios.post("/api/patient-book-appointment-remote", data);
+};
+const getAllPatientForDoctorRemote = (data) => {
+  return axios.get(
+    `/api/get-list-patient-remote-for-doctor?doctorId=${data.doctorId}&date=${data.date}`
+  );
+};
 
 export {
   handleLoginApi,
@@ -161,5 +169,7 @@ export {
   saveBulkScheduleRemoteDoctor,
   getAllDoctorRemote,
   getAllDetailSpecialtyRemoteById,
-  getScheduleRemoteByDate
+  getScheduleRemoteByDate,
+  postPatientBookAppointmentRemote,
+  getAllPatientForDoctorRemote
 };

@@ -89,6 +89,21 @@ let postVerifyBookAppointmentRemote = async (req, res) => {
     });
   }
 };
+let getListPatientRemoteForDoctor = async (req, res) => {
+  try {
+    let infor = await schedulesRemoteService.getListPatientRemoteForDoctor(
+      req.query.doctorId,
+      req.query.date
+    );
+    return res.status(200).json(infor);
+  } catch (e) {
+    console.log(e);
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from the server",
+    });
+  }
+};
 module.exports = {
   getAllDoctorRemote: getAllDoctorRemote,
   bulkCreateScheduleRemote: bulkCreateScheduleRemote,
@@ -96,4 +111,5 @@ module.exports = {
   getDetailSpecialtyRemoteById: getDetailSpecialtyRemoteById,
   postBookAppointmentRemote: postBookAppointmentRemote,
   postVerifyBookAppointmentRemote: postVerifyBookAppointmentRemote,
+  getListPatientRemoteForDoctor: getListPatientRemoteForDoctor
 };

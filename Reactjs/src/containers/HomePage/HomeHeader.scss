@@ -136,6 +136,22 @@
     }
   }
 }
+.offcanvas-start {
+  width: 300px !important;
+}
+.item {
+  font-size: 14px;
+  padding: 10px;
+  cursor: pointer;
+  &.active {
+    span {
+      color: blue;
+    }
+  }
+  &:hover {
+    color: rgba(69, 195, 210, 1.00);
+  }
+}
 .home-header-banner {
   background: url("../../assets/gia-dinh-hanh-phuc-22.jpg");
   height: 485px;

@@ -10,12 +10,17 @@ import vn from "../../assets/vietnam.png";
 import ja from "../../assets/ja.png";
 import en from "../../assets/en.png";
 import { getAllSpecialty } from "../../services/userService";
+import { Button, Offcanvas, OffcanvasHeader, OffcanvasBody } from "reactstrap";
+import CheckBookingModal from "./Section/CheckBookingModal";
+
 class HomeHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedSpecialty: "",
       listSpecialty: [],
+      isOffcanvasOpen: false, // new state to handle Offcanvas visibility
+      isOpenModalBooking: false,
     };
   }
   async componentDidMount() {
@@ -35,6 +40,9 @@ class HomeHeader extends Component {
   };
   returnToHome = () => {
     if (this.props.history) this.props.history.push(`/home`);
+  };
+  returnToLogin = () => {
+    if (this.props.history) this.props.history.push(`/login`);
   };
   buildDataInputSelect = (inputData) => {
     let result = [];
@@ -81,14 +89,53 @@ class HomeHeader extends Component {
       this.props.history.push(`/more-specialty-remote`);
     }
   };
+  toggleOffcanvas = () => {
+    this.setState((prevState) => ({
+      isOffcanvasOpen: !prevState.isOffcanvasOpen,
+    }));
+  };
+  handleClickScheduleTime = (time) => {
+    this.setState({
+      isOpenModalBooking: true,
+      dataScheduleTimeModal: time,
+    });
+  };
+  closeBookingClose = () => {
+    this.setState({
+      isOpenModalBooking: false,
+    });
+  };
+  handleClickCheckBooking = () => {
+    this.setState({
+      isOpenModalBooking: true,
+    });
+  };
   render() {
     let language = this.props.language;
+    let { isOpenModalBooking } = this.state;
     return (
       <React.Fragment>
         <div className="home-header-container">
           <div className="home-header-content">
             <div className="left-content">
-              <i className="fas fa-bars"></i>
+              <i className="fas fa-bars" onClick={this.toggleOffcanvas}></i>
+              <Offcanvas
+                isOpen={this.state.isOffcanvasOpen}
+                toggle={this.toggleOffcanvas}>
+                <OffcanvasHeader toggle={this.toggleOffcanvas}>
+                  Menu
+                </OffcanvasHeader>
+                <OffcanvasBody>
+                  <div
+                    className="item"
+                    onClick={() => this.handleClickCheckBooking()}>
+                    Kiểm tra lịch hẹn
+                  </div>
+                  <div className="item" onClick={() => this.returnToLogin()}>
+                    Dành cho bác sĩ
+                  </div>
+                </OffcanvasBody>
+              </Offcanvas>
               <div
                 className="header-logo"
                 onClick={() => this.returnToHome()}></div>
@@ -272,6 +319,11 @@ class HomeHeader extends Component {
             </div>
           </div>
         )}
+        <CheckBookingModal
+          isOpenModal={isOpenModalBooking}
+          closeBookingClose={this.closeBookingClose}
+          // dataTime={dataScheduleTimeModal}
+        />
       </React.Fragment>
     );
   }

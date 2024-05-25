@@ -83,7 +83,11 @@ export const doctorMenu = [
       {
         name: "Quản lý bài viết",
         link: "/doctor/manage-handbook",
-      }
+      },
+      {
+        name: "Quản lý lịch khám bệnh từ xa",
+        link: "/doctor/manage-patient-remote",
+      },
     ],
   },
 ];

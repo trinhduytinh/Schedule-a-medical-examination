@@ -34,6 +34,10 @@ import MoreDoctor from "./Patient/MoreSection/MoreDoctor";
 import SpecialtyRemote from "./HomePage/Section/SpecialtyRemote";
 import DetailSpecialtyRemote from "./Patient/Specialty/DetailSpecialtyRemote";
 import DetailDoctorRemote from "./Patient/Doctor/DetailDoctorRemote";
+import CallVideo from "./CallVideo/CallVideo";
+import DoctorCall from "./CallVideo/DoctorCall";
+import ManagePatientRemote from "./System/Doctor/ManagePatientRemote";
+
 
 class App extends Component {
   handlePersistorState = () => {
@@ -88,6 +92,9 @@ class App extends Component {
                   <Route path={path.MORE_SPECIALTY_REMOTE} component={SpecialtyRemote}/>
                   <Route path={path.DETAIL_SPECIALTY_REMOTE} component={DetailSpecialtyRemote} />
                   <Route path={path.DETAIL_DOCTOR_REMOTE} component={DetailDoctorRemote} />
+                  <Route path={path.VERIFY_EMAIL_BOOKING_REMOTE} component={CallVideo} />
+                  <Route path="/doctor-call" component={DoctorCall} />
+                  <Route path="/manage-patient-remote" component={ManagePatientRemote} />
                 </Switch>
               </CustomScrollbars>
             </div>

@@ -9,7 +9,7 @@ import DatePicker from "../../../../components/Input/DatePicker";
 import * as actions from "../../../../store/actions";
 import { LANGUAGES } from "../../../../utils";
 import Select from "react-select";
-import { postPatientBookAppointment } from "../../../../services/userService";
+import { postPatientBookAppointment, postPatientBookAppointmentRemote } from "../../../../services/userService";
 import { toast } from "react-toastify";
 import moment from "moment";
 import LoadingOverlay from "react-loading-overlay";
@@ -139,33 +139,33 @@ class BookingModalRemote extends Component {
       let timeString = this.buildTimeBooking(this.props.dataTime);
       let doctorName = this.buildDoctorName(this.props.dataTime);
       console.log("check all state", this.state);
-      // let res = await postPatientBookAppointment({
-      //   fullName: this.state.fullName,
-      //   phoneNumber: this.state.phoneNumber,
-      //   email: this.state.email,
-      //   address: this.state.address,
-      //   reason: this.state.reason,
-      //   date: this.props.dataTime.date,
-      //   birthday: "" + date,
-      //   selectedGender: this.state.selectedGender.value,
-      //   doctorId: this.state.doctorId,
-      //   timeType: this.state.timeType,
-      //   language: this.props.language,
-      //   timeString: timeString,
-      //   doctorName: doctorName,
-      // });
-      // if (res && res.errCode === 0) {
-      //   toast.success("Booking a new appointment succeed!");
-      //   this.setState({
-      //     isShowLoading: false,
-      //   });
-      //   this.props.closeBookingClose();
-      // } else {
-      //   this.setState({
-      //     isShowLoading: false,
-      //   });
-      //   toast.error("Booking a new appointment error!");
-      // }
+      let res = await postPatientBookAppointmentRemote({
+        fullName: this.state.fullName,
+        phoneNumber: this.state.phoneNumber,
+        email: this.state.email,
+        address: this.state.address,
+        reason: this.state.reason,
+        date: this.props.dataTime.date,
+        birthday: "" + date,
+        selectedGender: this.state.selectedGender.value,
+        doctorId: this.state.doctorId,
+        timeType: this.state.timeType,
+        language: this.props.language,
+        timeString: timeString,
+        doctorName: doctorName,
+      });
+      if (res && res.errCode === 0) {
+        toast.success("Booking a new appointment succeed!");
+        this.setState({
+          isShowLoading: false,
+        });
+        this.props.closeBookingClose();
+      } else {
+        this.setState({
+          isShowLoading: false,
+        });
+        toast.error("Booking a new appointment error!");
+      }
     }
   };
   buildTimeBooking = (dataTime) => {

@@ -59,6 +59,7 @@ let initWebRoutes = (app) => {
   router.get('/api/get-schedule-remote-doctor-by-date', schedulesRemoteController.getScheduleRemoteByDate);
   router.get('/api/get-detail-specialty-remote-by-id', schedulesRemoteController.getDetailSpecialtyRemoteById);
   router.post('/api/patient-book-appointment-remote', schedulesRemoteController.postBookAppointmentRemote);
+  router.get('/api/get-list-patient-remote-for-doctor',schedulesRemoteController.getListPatientRemoteForDoctor);
 
   return app.use("/", router);
 };

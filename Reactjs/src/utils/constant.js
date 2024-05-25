@@ -16,6 +16,8 @@ export const path = {
   MORE_SPECIALTY_REMOTE: "/more-specialty-remote",
   DETAIL_SPECIALTY_REMOTE: "/detail-specialty-remote/:id",
   DETAIL_DOCTOR_REMOTE: "/detail-doctor-remote/:id",
+  CALL_VIDEO: "/call-video",
+  VERIFY_EMAIL_BOOKING_REMOTE: "/verify-booking-remote",
 };
 
 export const LANGUAGES = {

@@ -146,7 +146,11 @@ let getDetailSpecialtyRemoteById = (inputId, location) => {
           } else {
             //find by location
             doctorSpecialty = await db.Doctor_Infor.findAll({
-              where: { specialtyId: inputId, provinceId: location, remote: "RM" },
+              where: {
+                specialtyId: inputId,
+                provinceId: location,
+                remote: "RM",
+              },
               attributes: ["doctorId", "provinceId"],
             });
           }
@@ -168,7 +172,7 @@ let getDetailSpecialtyRemoteById = (inputId, location) => {
 let buildUrlEmail = (doctorId, token) => {
   let result = "";
   // let id = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
-  result = `${process.env.URL_REACT}/verify-booking?token=${token}&doctorId=${doctorId}`;
+  result = `${process.env.URL_REACT}/verify-booking-remote?token=${token}&doctorId=${doctorId}`;
   return result;
 };
 let postBookAppointmentRemote = (data) => {
@@ -192,7 +196,7 @@ let postBookAppointmentRemote = (data) => {
         });
       } else {
         let token = uuidv4();
-        await emailService.sendSimpleEmail({
+        await emailService.sendSimpleEmailRemote({
           receiverEmail: data.email,
           patientName: data.fullName,
           time: data.timeString,
@@ -217,7 +221,7 @@ let postBookAppointmentRemote = (data) => {
           await db.Booking.findOrCreate({
             where: { patientID: user[0].id },
             defaults: {
-              statusId: "S1",
+              statusId: "RM",
               doctorId: data.doctorId,
               patientID: user[0].id,
               date: data.date,
@@ -274,11 +278,59 @@ let postVerifyBookAppointmentRemote = (data) => {
     }
   });
 };
+let getListPatientRemoteForDoctor = (doctorId, date) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!doctorId || !date) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required parameter",
+        });
+      } else {
+        let data = await db.Booking.findAll({
+          where: {
+            statusId: "RM",
+            doctorId: doctorId,
+            date: date,
+          },
+          include: [
+            {
+              model: db.User,
+              as: "patientData",
+              attributes: ["email", "firstName", "address", "gender"],
+              include: [
+                {
+                  model: db.Allcode,
+                  as: "genderData",
+                  attributes: ["valueEn", "valueJa", "valueVi"],
+                },
+              ],
+            },
+            // {
+            //   model: db.Allcode,
+            //   as: "timeTypeDataPatient",
+            //   attributes: ["valueEn", "valueJa", "valueVi"],
+            // },
+          ],
+          raw: false,
+          nest: true,
+        });
+        resolve({
+          errCode: 0,
+          data: data,
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 module.exports = {
   getAllDoctorRemote: getAllDoctorRemote,
   bulkCreateScheduleRemote: bulkCreateScheduleRemote,
   getScheduleRemoteByDate: getScheduleRemoteByDate,
   getDetailSpecialtyRemoteById: getDetailSpecialtyRemoteById,
   postBookAppointmentRemote: postBookAppointmentRemote,
-  postVerifyBookAppointmentRemote: postVerifyBookAppointmentRemote
+  postVerifyBookAppointmentRemote: postVerifyBookAppointmentRemote,
+  getListPatientRemoteForDoctor: getListPatientRemoteForDoctor,
 };
