@@ -10,12 +10,17 @@ import vn from "../../assets/vietnam.png";
 import ja from "../../assets/ja.png";
 import en from "../../assets/en.png";
 import { getAllSpecialty } from "../../services/userService";
+import { Button, Offcanvas, OffcanvasHeader, OffcanvasBody } from "reactstrap";
+import CheckBookingModal from "./Section/CheckBookingModal";
+
 class HomeHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedSpecialty: "",
       listSpecialty: [],
+      isOffcanvasOpen: false, // new state to handle Offcanvas visibility
+      isOpenModalBooking: false,
     };
   }
   async componentDidMount() {
@@ -35,6 +40,9 @@ class HomeHeader extends Component {
   };
   returnToHome = () => {
     if (this.props.history) this.props.history.push(`/home`);
+  };
+  returnToLogin = () => {
+    if (this.props.history) this.props.history.push(`/login`);
   };
   buildDataInputSelect = (inputData) => {
     let result = [];
@@ -76,14 +84,60 @@ class HomeHeader extends Component {
       this.props.history.push(`/detail-specialty/${selectedOption.value}`);
     }
   };
+  handleViewMoreSpecialtyRemote = () => {
+    if (this.props.history) {
+      this.props.history.push(`/more-specialty-remote`);
+    }
+  };
+  toggleOffcanvas = () => {
+    this.setState((prevState) => ({
+      isOffcanvasOpen: !prevState.isOffcanvasOpen,
+    }));
+  };
+  handleClickScheduleTime = (time) => {
+    this.setState({
+      isOpenModalBooking: true,
+      dataScheduleTimeModal: time,
+    });
+  };
+  closeBookingClose = () => {
+    this.setState({
+      isOpenModalBooking: false,
+    });
+  };
+  handleClickCheckBooking = () => {
+    this.setState({
+      isOpenModalBooking: true,
+    });
+  };
   render() {
     let language = this.props.language;
+    let { isOpenModalBooking } = this.state;
     return (
       <React.Fragment>
         <div className="home-header-container">
           <div className="home-header-content">
             <div className="left-content">
-              <i className="fas fa-bars"></i>
+              <i className="fas fa-bars" onClick={this.toggleOffcanvas}></i>
+              <Offcanvas
+                isOpen={this.state.isOffcanvasOpen}
+                toggle={this.toggleOffcanvas}>
+                <OffcanvasHeader toggle={this.toggleOffcanvas}>
+                  <FormattedMessage id={"menu.patient.menu"} />
+                </OffcanvasHeader>
+                <OffcanvasBody>
+                  <div
+                    className="item"
+                    onClick={() => this.handleClickCheckBooking()}>
+                    <FormattedMessage
+                      id={"menu.patient.check-appointment-schedule"}
+                    />
+                  </div>
+                  <div className="item" onClick={() => this.returnToLogin()}>
+                    <FormattedMessage id={"menu.patient.for-doctors"} />
+                  </div>
+                </OffcanvasBody>
+              </Offcanvas>
               <div
                 className="header-logo"
                 onClick={() => this.returnToHome()}></div>
@@ -246,7 +300,7 @@ class HomeHeader extends Component {
                   value={this.state.selectedSpecialty}
                   onChange={this.handleChangeSelectDoctorInFor}
                   options={this.state.listSpecialty}
-                  placeholder={<FormattedMessage id={"homepage.search"}/>}
+                  placeholder={<FormattedMessage id={"homepage.search"} />}
                   name="selectedSpecialty"
                 />
               </div>
@@ -255,56 +309,22 @@ class HomeHeader extends Component {
               <div className="options">
                 <div className="option-child">
                   <div className="icon-child">
-                    <i className="far fa-hospital"></i>
-                  </div>
-                  <div className="text-child">
-                    <FormattedMessage id={"banner.specialized-examination"} />
-                  </div>
-                </div>
-                <div className="option-child">
-                  <div className="icon-child">
                     <i className="fas fa-mobile-alt"></i>
                   </div>
-                  <div className="text-child">
+                  <div
+                    className="text-child"
+                    onClick={() => this.handleViewMoreSpecialtyRemote()}>
                     <FormattedMessage id={"banner.remote-examination"} />
-                  </div>
-                </div>
-                <div className="option-child">
-                  <div className="icon-child">
-                    <i className="fas fa-stethoscope"></i>
-                  </div>
-                  <div className="text-child">
-                    <FormattedMessage id={"banner.general-examination"} />
-                  </div>
-                </div>
-                <div className="option-child">
-                  <div className="icon-child">
-                    <i className="fas fa-flask"></i>
-                  </div>
-                  <div className="text-child">
-                    <FormattedMessage id={"banner.medical-tests"} />
-                  </div>
-                </div>
-                <div className="option-child">
-                  <div className="icon-child">
-                    <i className="fas fa-user-md"></i>
-                  </div>
-                  <div className="text-child">
-                    <FormattedMessage id={"banner.mental-health"} />
-                  </div>
-                </div>
-                <div className="option-child">
-                  <div className="icon-child">
-                    <i className="fas fa-briefcase-medical"></i>
-                  </div>
-                  <div className="text-child">
-                    <FormattedMessage id={"banner.dental-examination"} />
                   </div>
                 </div>
               </div>
             </div>
           </div>
         )}
+        <CheckBookingModal
+          isOpenModal={isOpenModalBooking}
+          closeBookingClose={this.closeBookingClose}
+        />
       </React.Fragment>
     );
   }

@@ -28,6 +28,10 @@ export const adminMenu = [
         name: "menu.doctor.manage-schedule",
         link: "/doctor/manage-schedule",
       },
+      {
+        name: "quản lí lịch khám từ xa",
+        link: "/doctor/manage-schedule-remote",
+      }
     ],
   },
   {
@@ -79,7 +83,11 @@ export const doctorMenu = [
       {
         name: "Quản lý bài viết",
         link: "/doctor/manage-handbook",
-      }
+      },
+      {
+        name: "Quản lý lịch khám bệnh từ xa",
+        link: "/doctor/manage-patient-remote",
+      },
     ],
   },
 ];

@@ -13,6 +13,15 @@ export const path = {
   MORE_CLINIC: "/more-clinic",
   MORE_HANDBOOK: "/more-handbook",
   MORE_DOCTOR: "/more-doctor",
+  MORE_SPECIALTY_REMOTE: "/more-specialty-remote",
+  DETAIL_SPECIALTY_REMOTE: "/detail-specialty-remote/:id",
+  DETAIL_DOCTOR_REMOTE: "/detail-doctor-remote/:id",
+  CALL_VIDEO: "/call-video",
+  VERIFY_EMAIL_BOOKING_REMOTE: "/verify-booking-remote",
+  DOCTOR_CALL: "/doctor-call",
+  MANAGE_PATIENT_REMOTE: "/manage-patient-remote",
+  PAY_SUCCESS: "/pay-success",
+  PAY_CANCEL: "/pay-cancel",
 };
 
 export const LANGUAGES = {

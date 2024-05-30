@@ -180,6 +180,7 @@ class DetailSpecialty extends Component {
                       isShowDescriptionDoctor={true}
                       isShowLinkDetail={true}
                       isShowPrice={false}
+                      isRemote={false}
                       // dataTime={dataTime}
                     />
                     <div className="location">

@@ -52,7 +52,7 @@ class DoctorSchedule extends Component {
             return true;
           }
         });
-
+        console.log("check time", futureTimes);
         this.setState({
           allAvailableTime: futureTimes,
         });
@@ -220,7 +220,6 @@ class DoctorSchedule extends Component {
       isOpenModalBooking,
       dataScheduleTimeModal,
     } = this.state;
-    console.log("check state", this.state);
     let { language } = this.props;
     return (
       <>

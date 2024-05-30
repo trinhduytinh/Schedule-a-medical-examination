@@ -41,6 +41,13 @@
     "doctor": {
       "manage-schedule": "Manage doctor's schedule",
       "manage-patient": "Manage Patients for Medical Examination"
+    },
+    "patient": {
+      "scheduling-information": "Appointment Information",
+      "delete-the-appointment": "Cancel Appointment",
+      "menu": "Menu",
+      "check-appointment-schedule": "Check Appointment Schedule",
+      "for-doctors": "For Doctors"
     }
   },
   "manage-user": {
@@ -179,5 +186,15 @@
     "medical-facility": "Medical facility",
     "medical-handbook": "Medical handbook",
     "clinic-for-you": "Clinic for you"
-    }
+  },
+  "pay": {
+    "payment-failed": "Payment Failed!",
+    "return-to-home-page": "Return to Home Page",
+    "payment-success": "Payment Successful.",
+    "check-mail": "Please check your email!",
+    "telemedicine-schedule": "Telemedicine Schedule",
+    "information-remote": "Telemedicine Appointment Information",
+    "pay-when-booking": "Pay When Booking",
+    "check-medical-schedule": "Check Medical Schedule"
+  }
 }

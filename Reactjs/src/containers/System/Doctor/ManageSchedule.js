@@ -16,7 +16,7 @@ class ManageSchedule extends Component {
     this.state = {
       listDoctors: [],
       selectedDoctor: {},
-      currentDate: moment(new Date()).startOf('day').valueOf(),//lay ngay ko lay gio de phu hop vs thu vien lich
+      currentDate: moment(new Date()).startOf("day").valueOf(), //lay ngay ko lay gio de phu hop vs thu vien lich
       rangetime: [],
     };
   }
@@ -116,6 +116,7 @@ class ManageSchedule extends Component {
       doctorID: selectedDoctor.value,
       formateDate: formateDate,
     });
+
     if (res && res.errCode === 0) {
       toast.success("Save InFor succeed!");
     } else {

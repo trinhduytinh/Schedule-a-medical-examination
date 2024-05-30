@@ -1,0 +1,92 @@
+.container-call-video {
+    .tilte {
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 15px;
+      color: #0071ba;
+    }
+    // display: grid;
+    // grid-template-columns: 7fr 3fr;
+    // background: #f5f5f5;
+    // height: -webkit-fill-available;
+  }
+  
+  .myId {
+    // margin-top: 80px;
+    // margin-right: 5rem;
+    border-radius: 5px;
+    background: #c9d6ff; /* fallback for old browsers */
+    background: -webkit-linear-gradient(
+      to right,
+      #e2e2e2,
+      #c9d6ff
+    ); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+      to right,
+      #e2e2e2,
+      #c9d6ff
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+    padding: 2rem;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    height: 365px;
+    margin-right: 15px;
+    margin-top: 22px;
+  }
+  
+  .call-button {
+    // display: flex;
+    // flex-direction: column-reverse;
+    // gap: 10px;
+    // text-align: center;
+    // margin-top: 2rem;
+    text-align: center;
+    height: 53.63px;
+    width: 198.4px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .video-container {
+    // display: grid;
+    // grid-template-columns: 1fr 1fr;
+    // justify-content: center;
+    // align-content: center;
+    // margin-top: 10rem;
+    // margin-left: 10rem;
+    text-align: center;
+  }
+  .video {
+    height: 400px;
+    width: 300px;
+    .title-video{
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 15px;
+      margin-top: 15px;
+    }
+  }
+  .caller {
+    text-align: center;
+    color: #fff;
+  }
+  
+  // body {
+  //   background: #4776e6; /* fallback for old browsers */
+  //   background: -webkit-linear-gradient(
+  //     to right,
+  //     #8e54e9,
+  //     #4776e6
+  //   ); /* Chrome 10-25, Safari 5.1-6 */
+  //   background: linear-gradient(
+  //     to right,
+  //     #8e54e9,
+  //     #4776e6
+  //   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  // }
+  

@@ -41,6 +41,13 @@
     "doctor": {
       "manage-schedule": "診療予定の管理",
       "manage-patient": "診察のための患者を管理する"
+    },
+    "patient": {
+      "scheduling-information": "予約情報",
+      "delete-the-appointment": "予約を削除",
+      "menu": "メニュー",
+      "check-appointment-schedule": "予約スケジュールを確認",
+      "for-doctors": "医師向け"
     }
   },
   "manage-user": {
@@ -179,5 +186,15 @@
     "medical-facility": "医療施設",
     "medical-handbook": "医療ハンドブック",
     "clinic-for-you": "あなたのためのクリニック"
+  },
+  "pay": {
+    "payment-failed": "お支払い失敗！",
+    "return-to-home-page": "ホームページに戻る",
+    "payment-success": "お支払い完了しました。",
+    "check-mail": "メールをご確認ください！",
+    "telemedicine-schedule": "遠隔診療予約",
+    "information-remote": "遠隔診療予約情報",
+    "pay-when-booking": "予約時に支払い",
+    "check-medical-schedule": "診療スケジュール確認"
   }
 }
