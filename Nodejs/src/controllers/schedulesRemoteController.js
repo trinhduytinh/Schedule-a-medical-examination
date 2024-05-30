@@ -67,7 +67,9 @@ let getDetailSpecialtyRemoteById = async (req, res) => {
 };
 let postBookAppointmentRemote = async (req, res) => {
   try {
-    let infor = await schedulesRemoteService.postBookAppointmentRemote(req.body);
+    let infor = await schedulesRemoteService.postBookAppointmentRemote(
+      req.body
+    );
     return res.status(200).json(infor);
   } catch (e) {
     console.log(e);
@@ -79,7 +81,9 @@ let postBookAppointmentRemote = async (req, res) => {
 };
 let postVerifyBookAppointmentRemote = async (req, res) => {
   try {
-    let infor = await schedulesRemoteService.postVerifyBookAppointmentRemote(req.body);
+    let infor = await schedulesRemoteService.postVerifyBookAppointmentRemote(
+      req.body
+    );
     return res.status(200).json(infor);
   } catch (e) {
     console.log(e);
@@ -97,8 +101,21 @@ let getListPatientRemoteForDoctor = async (req, res) => {
     );
     return res.status(200).json(infor);
   } catch (e) {
-    console.log(e);
     return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from the server",
+    });
+  }
+};
+let createPaymentBookingRemote = async (req, res) => {
+  try {
+    let infor = await schedulesRemoteService.createPaymentBookingRemote(
+      req.body
+    );
+    return res.status(200).json(infor);
+  } catch (e) {
+    console.error("Error in createPaymentBookingRemote:", e);
+    return res.status(500).json({
       errCode: -1,
       errMessage: "Error from the server",
     });
@@ -111,5 +128,6 @@ module.exports = {
   getDetailSpecialtyRemoteById: getDetailSpecialtyRemoteById,
   postBookAppointmentRemote: postBookAppointmentRemote,
   postVerifyBookAppointmentRemote: postVerifyBookAppointmentRemote,
-  getListPatientRemoteForDoctor: getListPatientRemoteForDoctor
+  getListPatientRemoteForDoctor: getListPatientRemoteForDoctor,
+  createPaymentBookingRemote: createPaymentBookingRemote,
 };

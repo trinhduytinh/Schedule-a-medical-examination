@@ -52,6 +52,7 @@ class MedicalFacility extends Component {
               {dataClinics &&
                 dataClinics.length > 0 &&
                 dataClinics.map((item, index) => {
+                  console.log("check item", item);
                   return (
                     <div
                       className="section-customize clinic-child"

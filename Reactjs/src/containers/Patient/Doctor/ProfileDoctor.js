@@ -96,7 +96,7 @@ class ProfileDoctor extends Component {
           {dataTime &&
             !_.isEmpty(dataTime) &&
             ("timeTypeData" in dataTime && "valueEn" in dataTime.timeTypeData) === false && (
-              <div>Thanh toán khi đặt lịch</div>
+              <div><FormattedMessage id={"pay.pay-when-booking"}/></div>
             )}
           {dataTime &&
             !_.isEmpty(dataTime) &&

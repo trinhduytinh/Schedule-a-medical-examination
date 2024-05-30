@@ -18,6 +18,10 @@ export const path = {
   DETAIL_DOCTOR_REMOTE: "/detail-doctor-remote/:id",
   CALL_VIDEO: "/call-video",
   VERIFY_EMAIL_BOOKING_REMOTE: "/verify-booking-remote",
+  DOCTOR_CALL: "/doctor-call",
+  MANAGE_PATIENT_REMOTE: "/manage-patient-remote",
+  PAY_SUCCESS: "/pay-success",
+  PAY_CANCEL: "/pay-cancel",
 };
 
 export const LANGUAGES = {

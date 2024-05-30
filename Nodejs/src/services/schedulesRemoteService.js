@@ -1,9 +1,15 @@
 const db = require("../models");
 import { translate } from "bing-translate-api";
-import _, { includes } from "lodash";
+import _, { includes, orderBy } from "lodash";
 import emailService from "./emailService";
 import { v4 as uuidv4 } from "uuid";
+const PayOS = require("@payos/node"); // thanh toan hoa don
 require("dotenv").config();
+const payOS = new PayOS(
+  process.env.PAYOS_CLIENT_ID,
+  process.env.PAYOS_API_KEY,
+  process.env.CHECKSUM_KEY
+);
 let getAllDoctorRemote = () => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -306,11 +312,6 @@ let getListPatientRemoteForDoctor = (doctorId, date) => {
                 },
               ],
             },
-            // {
-            //   model: db.Allcode,
-            //   as: "timeTypeDataPatient",
-            //   attributes: ["valueEn", "valueJa", "valueVi"],
-            // },
           ],
           raw: false,
           nest: true,
@@ -325,6 +326,78 @@ let getListPatientRemoteForDoctor = (doctorId, date) => {
     }
   });
 };
+let createPaymentBookingRemote = async (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (
+        !data.fullName ||
+        !data.email ||
+        !data.phoneNumber ||
+        !data.address ||
+        !data.doctorId ||
+        !data.timeType
+      ) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required parameter",
+        });
+      } else {
+        let inforDoctor = await db.Doctor_Infor.findOne({
+          where: { doctorId: data.doctorId },
+          include: [
+            {
+              model: db.Allcode,
+              as: "priceTypeData",
+              attributes: ["valueEn", "valueJa", "valueVi"],
+            },
+          ],
+          raw: true,
+        });
+
+        if (!inforDoctor) {
+          return resolve({
+            errCode: 2,
+            errMessage: "Doctor not found",
+          });
+        }
+        const encodedData = encodeURIComponent(JSON.stringify(data));
+        console.log("check encodeData", encodedData);
+        const body = {
+          orderCode: Date.now(),
+          // amount: inforDoctor["priceTypeData.valueVi"],
+          amount: 1,
+          description: "Thanh toán hóa đơn",
+          buyerName: data.fullName,
+          buyerEmail: data.email,
+          buyerPhone: data.phoneNumber,
+          buyerAddress: data.address,
+          items: [
+            {
+              name: `Bác sĩ: ${data.doctorName}`,
+              quantity: 1,
+              price: 10000,
+            },
+          ],
+          returnUrl: `${process.env.URL_REACT}/pay-cancel`,
+          cancelUrl: `${process.env.URL_REACT}/pay-success?data=${encodedData}`,
+        };
+
+        const paymentLink = await payOS.createPaymentLink(body);
+        resolve({
+          errCode: 0,
+          paymentLink: paymentLink,
+        });
+      }
+    } catch (e) {
+      console.error("Error in createPaymentBookingRemote:", e);
+      reject({
+        errCode: -1,
+        errMessage: "Error from the server",
+      });
+    }
+  });
+};
+
 module.exports = {
   getAllDoctorRemote: getAllDoctorRemote,
   bulkCreateScheduleRemote: bulkCreateScheduleRemote,
@@ -333,4 +406,5 @@ module.exports = {
   postBookAppointmentRemote: postBookAppointmentRemote,
   postVerifyBookAppointmentRemote: postVerifyBookAppointmentRemote,
   getListPatientRemoteForDoctor: getListPatientRemoteForDoctor,
+  createPaymentBookingRemote: createPaymentBookingRemote,
 };

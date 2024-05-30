@@ -41,6 +41,13 @@
     "doctor": {
       "manage-schedule": "Quản lý kế hoạch khám bệnh",
       "manage-patient": "Quản lý bệnh nhân khám bệnh"
+    },
+    "patient":{
+      "scheduling-information": "Thông tin đặt lịch",
+      "delete-the-appointment": "Xóa lịch hẹn",
+      "menu": "Menu",
+      "check-appointment-schedule": "Kiểm tra lịch hẹn",
+      "for-doctors": "Dành cho bác sĩ"
     }
   },
   "manage-user": {
@@ -179,5 +186,15 @@
     "medical-facility": "Cơ sở y tế",
     "medical-handbook": "Cẩm nang y tế",
     "clinic-for-you": "Phòng khám dành cho bạn"
+  },
+  "pay":{
+    "payment-failed": "Thanh toán thất bại!",
+    "return-to-home-page": "Quay về trang chủ",
+    "payment-success": "Thanh toán thành công.",
+    "check-mail": "Vui lòng kiểm tra mail của mình!",
+    "telemedicine-schedule": "Lịch Khám Từ Xa",
+    "information-remote": "Thông tin đặt lịch khám bệnh từ xa",
+    "pay-when-booking": "Thanh toán khi đặt lịch",
+    "check-medical-schedule": "Kiểm tra lịch khám"
   }
 }

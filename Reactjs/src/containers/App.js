@@ -37,6 +37,8 @@ import DetailDoctorRemote from "./Patient/Doctor/DetailDoctorRemote";
 import CallVideo from "./CallVideo/CallVideo";
 import DoctorCall from "./CallVideo/DoctorCall";
 import ManagePatientRemote from "./System/Doctor/ManagePatientRemote";
+import PaySuccess from "./Patient/Pay/PaySuccess";
+import PayCancellation from "./Patient/Pay/PayCancellation";
 
 
 class App extends Component {
@@ -93,8 +95,10 @@ class App extends Component {
                   <Route path={path.DETAIL_SPECIALTY_REMOTE} component={DetailSpecialtyRemote} />
                   <Route path={path.DETAIL_DOCTOR_REMOTE} component={DetailDoctorRemote} />
                   <Route path={path.VERIFY_EMAIL_BOOKING_REMOTE} component={CallVideo} />
-                  <Route path="/doctor-call" component={DoctorCall} />
-                  <Route path="/manage-patient-remote" component={ManagePatientRemote} />
+                  <Route path={path.DOCTOR_CALL} component={DoctorCall} />
+                  <Route path={path.MANAGE_PATIENT_REMOTE} component={ManagePatientRemote} />
+                  <Route path={path.PAY_SUCCESS} component = {PaySuccess}/>
+                  <Route path={path.PAY_CANCEL} component = {PayCancellation}/>
                 </Switch>
               </CustomScrollbars>
             </div>

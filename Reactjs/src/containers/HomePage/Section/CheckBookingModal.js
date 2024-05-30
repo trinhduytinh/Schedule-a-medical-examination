@@ -10,188 +10,162 @@ import Select from "react-select";
 import { toast } from "react-toastify";
 import moment from "moment";
 import LoadingOverlay from "react-loading-overlay";
+import DatePicker from "../../../components/Input/DatePicker";
+import ViewBookingModal from "./ViewBookingModal";
+import { getListPatientBooking } from "../../../services/userService";
 
 class CheckBookingModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fullName: "",
-      phoneNumber: "",
       email: "",
-      address: "",
-      reason: "",
-      birthday: "",
-      selectedGender: "",
-      doctorId: "",
-      genders: "",
-      timeType: "",
+      day: "",
+      data: [],
       isShowLoading: false,
+      isOpenModalCheckBooking: false,
     };
   }
+
   async componentDidMount() {}
-  // buildDataGender = (data) => {
-  //   let result = [];
-  //   let language = this.props.language;
-  //   if (data && data.length > 0) {
-  //     data.map((item) => {
-  //       let object = {};
-  //       if (language === LANGUAGES.VI) {
-  //         object.label = item.valueVi;
-  //       }
-  //       if (language === LANGUAGES.EN) {
-  //         object.label = item.valueEn;
-  //       }
-  //       if (language === LANGUAGES.JA) {
-  //         object.label = item.valueJa;
-  //       }
-  //       object.value = item.keyMap;
-  //       result.push(object);
-  //     });
-  //   }
-  //   return result;
-  // };
+
   async componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.language !== prevProps.language) {
     }
   }
-  isValidInput = (inputData) => {
-    let arrFields = [
-      "fullName",
-      "phoneNumber",
-      "email",
-      "address",
-      "reason",
-      "birthday",
-      "selectedGender",
-    ];
-    let isValid = true;
-    let element = "";
-    for (let i = 0; i < arrFields.length; i++) {
-      if (!inputData[arrFields[i]]) {
-        isValid = false;
-        element = arrFields[i];
-        break;
-      }
-    }
-    let regxEmail = /\S+@\S+\.\S+/;
-    let regxPhone = /^\d{10,11}$/; // Số điện thoại gồm 10 hoặc 11 chữ số
-    if (!regxEmail.test(inputData.email)) {
-      toast.error("Please enter a valid email address");
-      isValid = false;
-    }
-    if (!regxPhone.test(inputData.phoneNumber)) {
-      toast.error("Please enter a valid phone number");
-      isValid = false;
-    }
-    return {
-      isValid: isValid,
-      element: element,
-    };
+
+  handleOnChangeDatePicker = (date) => {
+    this.setState({
+      day: date[0],
+    });
   };
 
-  buildTimeBooking = (dataTime) => {
-    let { language } = this.props;
-    let date = "",
-      time = "";
-    if (dataTime && !_.isEmpty(dataTime)) {
-      if (language === LANGUAGES.VI) {
-        date = moment
-          .unix(+dataTime.date / 1000)
-          .format("dddd - DD/MM/YYYY")
-          .replace(/^t/g, "T")
-          .replace("chủ nhật", "Chủ Nhật");
-        time = dataTime.timeTypeData.valueVi;
-      }
-      if (language === LANGUAGES.EN) {
-        date = moment
-          .unix(+dataTime.date / 1000)
-          .locale("en")
-          .format("ddd - MM/DD/YYYY");
-        time = dataTime.timeTypeData.valueEn;
-      }
-      if (language === LANGUAGES.JA) {
-        date = moment
-          .unix(+dataTime.date / 1000)
-          .locale("ja")
-          .format("ddd - MM月DD日")
-          .replace("CN", "日")
-          .replace("T2", "月")
-          .replace("T3", "火")
-          .replace("T4", "水")
-          .replace("T5", "木")
-          .replace("T6", "金")
-          .replace("T7", "土");
-        time = dataTime.timeTypeData.valueVi;
-      }
-      return `${time} - ${date}`;
+  handleConfirmCheckBooking = async () => {
+    let { email, day } = this.state;
+
+    // Validate email
+    if (!email) {
+      toast.error("Email is required");
+      return;
     }
-    return "";
-  };
-  buildDoctorName = (dataTime) => {
-    let { language } = this.props;
-    if (dataTime && !_.isEmpty(dataTime)) {
-      let name = "";
-      if (language === LANGUAGES.VI)
-        name = `${dataTime.doctorData.lastName} ${dataTime.doctorData.firstName}`;
-      if (language === LANGUAGES.JA)
-        name = `${dataTime.doctorData.lastName} ${dataTime.doctorData.firstName}`;
-      if (language === LANGUAGES.EN)
-        name = `${dataTime.doctorData.firstName} ${dataTime.doctorData.lastName}`;
-      return name;
+
+    if (!this.isValidGmail(email)) {
+      toast.error("Please enter a valid Gmail address");
+      return;
     }
-    return "";
+
+    if (!day) {
+      toast.error("Date is required");
+      return;
+    }
+
+    let formattedDate = new Date(day).getTime();
+    let res = await getListPatientBooking(email, formattedDate);
+    if (res && res.errCode === 0) {
+      this.setState({
+        data: res.data,
+        isOpenModalCheckBooking: true,
+      });
+    }
   };
+
+  isValidGmail = (email) => {
+    let regxEmail = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    return regxEmail.test(email);
+  };
+
+  handleOnChangeInput = (event, id) => {
+    let valueInput = event.target.value;
+    let stateCopy = { ...this.state };
+    stateCopy[id] = valueInput;
+    this.setState({
+      ...stateCopy,
+    });
+  };
+
+  closeCheckBookingClose = () => {
+    this.setState({
+      isOpenModalCheckBooking: false,
+    });
+  };
+
+  refreshData = async () => {
+    let { email, day } = this.state;
+    let formattedDate = new Date(day).getTime();
+    let res = await getListPatientBooking(email, formattedDate);
+    if (res && res.errCode === 0) {
+      this.setState({
+        data: res.data,
+      });
+    }
+  };
+
   render() {
-    let { isOpenModal, closeBookingClose, dataTime } = this.props;
+    let { isOpenModal, closeBookingClose } = this.props;
+    let { isOpenModalCheckBooking, data } = this.state;
     return (
       <>
-        <LoadingOverlay
-          active={this.state.isShowLoading}
-          spinner
-          text="Loading...">
-          <Modal
-            isOpen={isOpenModal}
-            className={"booking-modal-container"}
-            size="sm"
-            centered>
-            <div className="booking-modal-content">
-              <div className="booking-modal-header">
-                <span className="left">Kiểm tra lịch khám</span>
-                <span className="right" onClick={closeBookingClose}>
-                  <i className="fas fa-times"></i>
-                </span>
-              </div>
-              <div className="booking-modal-body">
-                <div className="doctor-infor"></div>
-                <div className="row">
-                  <div className="form-group">
-                    <label>
-                      <FormattedMessage id={"patient.booking-modal.email"} />
-                    </label>
-                    <input
-                      className="form-control"
-                      value={this.state.email}
-                      onChange={(event) =>
-                        this.handleOnChangeInput(event, "email")
-                      }></input>
-                  </div>
+        <Modal
+          isOpen={isOpenModal}
+          className={"booking-modal-container"}
+          size="sm"
+          centered>
+          <div className="booking-modal-content">
+            <div className="booking-modal-header">
+              <span className="left">
+                <FormattedMessage id={"pay.check-medical-schedule"} />
+              </span>
+              <span className="right" onClick={closeBookingClose}>
+                <i className="fas fa-times"></i>
+              </span>
+            </div>
+            <div className="booking-modal-body">
+              <div className="doctor-infor"></div>
+              <div className="row">
+                <div className="form-group">
+                  <label>
+                    <FormattedMessage id={"patient.booking-modal.email"} />
+                  </label>
+                  <input
+                    className="form-control"
+                    value={this.state.email}
+                    onChange={(event) =>
+                      this.handleOnChangeInput(event, "email")
+                    }></input>
                 </div>
               </div>
-              <div className="booking-modal-footer">
-                <button
-                  className="btn-booking-confirm"
-                  onClick={() => this.handleConfirmBooking()}>
-                  <FormattedMessage id={"patient.booking-modal.btnConfirm"} />
-                </button>
-                <button
-                  className="btn-booking-cancel"
-                  onClick={closeBookingClose}>
-                  <FormattedMessage id={"patient.booking-modal.btnCancel"} />
-                </button>
+              <div className="row">
+                <div className="form-group">
+                  <label>
+                    <FormattedMessage id={"manage-schedule.choose-date"} />
+                  </label>
+                  <DatePicker
+                    onChange={this.handleOnChangeDatePicker}
+                    className="form-control"
+                    value={this.state.day}
+                  />
+                </div>
               </div>
             </div>
-          </Modal>
-        </LoadingOverlay>
+            <div className="booking-modal-footer">
+              <button
+                className="btn-booking-confirm"
+                onClick={() => this.handleConfirmCheckBooking()}>
+                <FormattedMessage id={"patient.booking-modal.btnConfirm"} />
+              </button>
+              <button
+                className="btn-booking-cancel"
+                onClick={closeBookingClose}>
+                <FormattedMessage id={"patient.booking-modal.btnCancel"} />
+              </button>
+            </div>
+          </div>
+        </Modal>
+        <ViewBookingModal
+          isOpenModal={isOpenModalCheckBooking}
+          closeCheckBookingClose={this.closeCheckBookingClose}
+          data={data}
+          refreshData={this.refreshData}
+        />
       </>
     );
   }

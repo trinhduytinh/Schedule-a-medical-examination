@@ -34,7 +34,7 @@ class SpecialtyRemote extends Component {
       <>
         <HomeHeader />
         <div className="more-container">
-          <div className="title"><FormattedMessage id={"more.medical-facility"}/></div>
+          <div className="title"><FormattedMessage id={"banner.remote-examination"}/></div>
           {dataSpecialty &&
             dataSpecialty.length > 0 &&
             dataSpecialty.map((item, index) => {

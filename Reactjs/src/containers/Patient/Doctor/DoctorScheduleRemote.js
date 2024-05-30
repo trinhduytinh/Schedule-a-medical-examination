@@ -160,7 +160,7 @@ class DoctorScheduleRemote extends Component {
           <div className="all-available-time">
             <div className="text-calendar">
               <i className="fas fa-calendar-alt">
-                <span>Lịch Khám Từ Xa</span>
+                <span><FormattedMessage id={"pay.telemedicine-schedule"}/></span>
               </i>
             </div>
             <div className="time-content">

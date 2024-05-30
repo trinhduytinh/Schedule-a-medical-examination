@@ -220,7 +220,6 @@ class DoctorSchedule extends Component {
       isOpenModalBooking,
       dataScheduleTimeModal,
     } = this.state;
-    console.log("check state", this.state);
     let { language } = this.props;
     return (
       <>

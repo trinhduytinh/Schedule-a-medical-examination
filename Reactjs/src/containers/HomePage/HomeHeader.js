@@ -123,16 +123,18 @@ class HomeHeader extends Component {
                 isOpen={this.state.isOffcanvasOpen}
                 toggle={this.toggleOffcanvas}>
                 <OffcanvasHeader toggle={this.toggleOffcanvas}>
-                  Menu
+                  <FormattedMessage id={"menu.patient.menu"} />
                 </OffcanvasHeader>
                 <OffcanvasBody>
                   <div
                     className="item"
                     onClick={() => this.handleClickCheckBooking()}>
-                    Kiểm tra lịch hẹn
+                    <FormattedMessage
+                      id={"menu.patient.check-appointment-schedule"}
+                    />
                   </div>
                   <div className="item" onClick={() => this.returnToLogin()}>
-                    Dành cho bác sĩ
+                    <FormattedMessage id={"menu.patient.for-doctors"} />
                   </div>
                 </OffcanvasBody>
               </Offcanvas>
@@ -322,7 +324,6 @@ class HomeHeader extends Component {
         <CheckBookingModal
           isOpenModal={isOpenModalBooking}
           closeBookingClose={this.closeBookingClose}
-          // dataTime={dataScheduleTimeModal}
         />
       </React.Fragment>
     );

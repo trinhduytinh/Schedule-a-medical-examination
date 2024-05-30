@@ -119,7 +119,6 @@ class ManagePatientRemote extends Component {
   };
   render() {
     let { dataPatient, isOpenRemedyModal, dataModal } = this.state;
-    console.log("check dataPatient", dataPatient);
     let { language } = this.props;
     return (
       <>

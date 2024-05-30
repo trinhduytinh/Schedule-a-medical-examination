@@ -9,7 +9,11 @@ import DatePicker from "../../../../components/Input/DatePicker";
 import * as actions from "../../../../store/actions";
 import { LANGUAGES } from "../../../../utils";
 import Select from "react-select";
-import { postPatientBookAppointment, postPatientBookAppointmentRemote } from "../../../../services/userService";
+import {
+  createPaymentBookingRemote,
+  postPatientBookAppointment,
+  postPatientBookAppointmentRemote,
+} from "../../../../services/userService";
 import { toast } from "react-toastify";
 import moment from "moment";
 import LoadingOverlay from "react-loading-overlay";
@@ -128,46 +132,112 @@ class BookingModalRemote extends Component {
     };
   };
 
+  // handleConfirmBooking = async () => {
+  //   //validate input
+  //   let check = this.isValidInput(this.state);
+  //   if (check) {
+  //     this.setState({
+  //       isShowLoading: true,
+  //     });
+  //     let date = new Date(this.state.birthday).getTime();
+  //     let timeString = this.buildTimeBooking(this.props.dataTime);
+  //     let doctorName = this.buildDoctorName(this.props.dataTime);
+  //     let resPayment = await createPaymentBookingRemote({
+  //       fullName: this.state.fullName,
+  //       phoneNumber: this.state.phoneNumber,
+  //       email: this.state.email,
+  //       address: this.state.address,
+  //       reason: this.state.reason,
+  //       date: this.props.dataTime.date,
+  //       birthday: "" + date,
+  //       selectedGender: this.state.selectedGender.value,
+  //       doctorId: this.state.doctorId,
+  //       timeType: this.state.timeType,
+  //       language: this.props.language,
+  //       timeString: timeString,
+  //       doctorName: doctorName,
+  //     });
+  //     console.log("check res", resPayment);
+  //     if (resPayment && resPayment.errCode === 0) {
+  //       let res = await postPatientBookAppointmentRemote({
+  //         fullName: this.state.fullName,
+  //         phoneNumber: this.state.phoneNumber,
+  //         email: this.state.email,
+  //         address: this.state.address,
+  //         reason: this.state.reason,
+  //         date: this.props.dataTime.date,
+  //         birthday: "" + date,
+  //         selectedGender: this.state.selectedGender.value,
+  //         doctorId: this.state.doctorId,
+  //         timeType: this.state.timeType,
+  //         language: this.props.language,
+  //         timeString: timeString,
+  //         doctorName: doctorName,
+  //       });
+  //       if (res && res.errCode === 0) {
+  //         toast.success("Booking a new appointment succeed!");
+  //         this.setState({
+  //           isShowLoading: false,
+  //         });
+  //         this.props.closeBookingClose();
+  //       } else {
+  //         this.setState({
+  //           isShowLoading: false,
+  //         });
+  //         toast.error("Booking a new appointment error!");
+  //       }
+  //     } else {
+  //       this.setState({
+  //         isShowLoading: false,
+  //       });
+  //       toast.error("Booking a new appointment error!");
+  //     }
+  //   }
+  // };
   handleConfirmBooking = async () => {
-    //validate input
     let check = this.isValidInput(this.state);
-    if (check) {
-      this.setState({
-        isShowLoading: true,
-      });
+    if (check.isValid) {
+      this.setState({ isShowLoading: true });
       let date = new Date(this.state.birthday).getTime();
       let timeString = this.buildTimeBooking(this.props.dataTime);
       let doctorName = this.buildDoctorName(this.props.dataTime);
-      console.log("check all state", this.state);
-      let res = await postPatientBookAppointmentRemote({
-        fullName: this.state.fullName,
-        phoneNumber: this.state.phoneNumber,
-        email: this.state.email,
-        address: this.state.address,
-        reason: this.state.reason,
-        date: this.props.dataTime.date,
-        birthday: "" + date,
-        selectedGender: this.state.selectedGender.value,
-        doctorId: this.state.doctorId,
-        timeType: this.state.timeType,
-        language: this.props.language,
-        timeString: timeString,
-        doctorName: doctorName,
-      });
-      if (res && res.errCode === 0) {
-        toast.success("Booking a new appointment succeed!");
-        this.setState({
-          isShowLoading: false,
+
+      try {
+        let resPayment = await createPaymentBookingRemote({
+          fullName: this.state.fullName,
+          phoneNumber: this.state.phoneNumber,
+          email: this.state.email,
+          address: this.state.address,
+          reason: this.state.reason,
+          date: this.props.dataTime.date,
+          birthday: "" + date,
+          selectedGender: this.state.selectedGender.value,
+          doctorId: this.state.doctorId,
+          timeType: this.state.timeType,
+          language: this.props.language,
+          timeString: timeString,
+          doctorName: doctorName,
         });
-        this.props.closeBookingClose();
-      } else {
-        this.setState({
-          isShowLoading: false,
-        });
+
+        if (resPayment && resPayment.errCode === 0) {
+          toast.success("Booking a new appointment succeed!");
+          window.location.href = resPayment.paymentLink.checkoutUrl; // Redirect to payment link
+        } else {
+          this.setState({ isShowLoading: false });
+          toast.error(
+            resPayment.errMessage || "Booking a new appointment error!"
+          );
+        }
+      } catch (error) {
+        console.error("Error in handleConfirmBooking:", error);
+        this.setState({ isShowLoading: false });
         toast.error("Booking a new appointment error!");
       }
+    } else {
+      toast.error(`Missing parameter: ${check.element}`);
     }
   };
+
   buildTimeBooking = (dataTime) => {
     let { language } = this.props;
     let date = "",
@@ -236,8 +306,7 @@ class BookingModalRemote extends Component {
             <div className="booking-modal-content">
               <div className="booking-modal-header">
                 <span className="left">
-                  {/* <FormattedMessage id={"patient.booking-modal.title"} /> */}
-                  Thông tin đặt lịch khám bệnh từ xa
+                  <FormattedMessage id={"pay.information-remote"}/>
                 </span>
                 <span className="right" onClick={closeBookingClose}>
                   <i className="fas fa-times"></i>

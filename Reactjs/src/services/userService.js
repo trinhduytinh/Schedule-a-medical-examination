@@ -7,9 +7,9 @@ const handleLoginApi = (userEmail, userPassword) => {
 const getAllUsers = (inputId) => {
   return axios.get(`/api/get-all-users?id=${inputId}`);
 };
-const getUsersPage=(page, limit)=>{
-  return axios.get(`/api/get-all-users?page=${page}&limit=${limit}`)
-}
+const getUsersPage = (page, limit) => {
+  return axios.get(`/api/get-all-users?page=${page}&limit=${limit}`);
+};
 const createNewUserService = (data) => {
   return axios.post("/api/create-new-user", data);
 };
@@ -100,13 +100,13 @@ const getAllHandbook = (doctorId, role) => {
 const getAllDetailHandbookById = (handbookId) => {
   return axios.get(`/api/get-detail-handbook-by-id?id=${handbookId}`);
 };
-const deleteHandbook = (handbookId)=>{
+const deleteHandbook = (handbookId) => {
   return axios.delete("/api/delete-handbook", {
     data: {
       id: handbookId,
     },
   });
-}
+};
 const editHandbookService = (inputData) => {
   return axios.put("/api/edit-handbook", inputData);
 };
@@ -134,7 +134,19 @@ const getAllPatientForDoctorRemote = (data) => {
     `/api/get-list-patient-remote-for-doctor?doctorId=${data.doctorId}&date=${data.date}`
   );
 };
-
+const getListPatientBooking = (email, day) => {
+  return axios.get(`/api/get-list-patient-booking?email=${email}&date=${day}`);
+};
+const deleteBooking = (bookingId) => {
+  return axios.delete("/api/delete-list-patient-booking", {
+    data: {
+      id: bookingId,
+    },
+  });
+};
+const createPaymentBookingRemote = (data) => {
+  return axios.post("/api/create-payment-booking-remote", data);
+};
 export {
   handleLoginApi,
   getAllUsers,
@@ -171,5 +183,8 @@ export {
   getAllDetailSpecialtyRemoteById,
   getScheduleRemoteByDate,
   postPatientBookAppointmentRemote,
-  getAllPatientForDoctorRemote
+  getAllPatientForDoctorRemote,
+  getListPatientBooking,
+  deleteBooking,
+  createPaymentBookingRemote,
 };

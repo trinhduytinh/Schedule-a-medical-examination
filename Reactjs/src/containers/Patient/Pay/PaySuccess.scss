@@ -1,0 +1,18 @@
+.pay {
+  display: flex;
+  justify-content: center;
+  .img-pay-success {
+    height: 200px;
+    width: 165px;
+    background: center center no-repeat;
+    background-size: cover;
+    background-color: #eee;
+  }
+}
+
+.title-pay {
+  text-align: center;
+  /* text-transform: uppercase; */
+  font-weight: bold;
+  font-size: 20px;
+}

@@ -111,7 +111,80 @@ let postVerifyBookAppointment = (data) => {
     }
   });
 };
+let getListPatient = (email, date) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!email || !date) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required parameter",
+        });
+      } else {
+        let idPatient = await db.User.findOne({
+          where: {
+            email: email,
+          },
+          attributes: ["id"],
+        });
+        let data = await db.Booking.findAll({
+          where: {
+            statusId: "S1",
+            patientID: idPatient.id,
+            date: date,
+          },
+          include: [
+            {
+              model: db.User,
+              as: "patientData",
+              attributes: ["email", "firstName"],
+            },
+            {
+              model: db.Allcode,
+              as: "timeTypeDataPatient",
+              attributes: ["valueEn", "valueJa", "valueVi"],
+            },
+            {
+              model: db.Allcode,
+              as: "statusPatient",
+              attributes: ["valueEn", "valueJa", "valueVi"],
+            },
+          ],
+          raw: false,
+          nest: true,
+        });
+        resolve({
+          errCode: 0,
+          data: data,
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+let deleteListPatient = (id) => {
+  return new Promise(async (resolve, reject) => {
+    let booking = await db.Booking.findOne({
+      where: { id: id },
+    });
+    if (!booking) {
+      resolve({
+        errCode: 2,
+        errMessage: `The booking isn't exist`,
+      });
+    }
+    await db.Booking.destroy({
+      where: { id: id },
+    });
+    resolve({
+      errCode: 0,
+      errMessage: `The handbook is deleted`,
+    });
+  });
+};
 module.exports = {
   postBookAppointment: postBookAppointment,
   postVerifyBookAppointment: postVerifyBookAppointment,
+  getListPatient: getListPatient,
+  deleteListPatient: deleteListPatient,
 };

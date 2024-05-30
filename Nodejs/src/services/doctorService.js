@@ -2,6 +2,7 @@ import db from "../models/index";
 import { translate } from "bing-translate-api";
 import _, { reject } from "lodash";
 import emailService from "../services/emailService.js";
+const { Op } = require('sequelize');
 require("dotenv").config();
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 let getTopDoctorHome = (limit) => {
@@ -734,7 +735,7 @@ let sendRemedy = (data) => {
             doctorId: data.doctorId,
             patientId: data.patientId,
             timeType: data.timeType,
-            statusId: "S2",
+            [Op.or]: [{ statusId: "S2"}, { statusId: "RM"}],
           },
           raw: false,
         });
