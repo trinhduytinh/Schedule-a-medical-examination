@@ -35,6 +35,8 @@ module.exports = (sequelize, DataTypes) => {
       noteEn: DataTypes.STRING,
       noteJa: DataTypes.STRING,
       count: DataTypes.INTEGER,
+      remote: DataTypes.STRING,
+      totalStars: DataTypes.FLOAT
     },
     {
       sequelize,

@@ -2,7 +2,7 @@ import db from "../models/index";
 import { translate } from "bing-translate-api";
 import _, { reject } from "lodash";
 import emailService from "../services/emailService.js";
-const { Op } = require('sequelize');
+const { Op } = require("sequelize");
 require("dotenv").config();
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 let getTopDoctorHome = (limit) => {
@@ -735,7 +735,7 @@ let sendRemedy = (data) => {
             doctorId: data.doctorId,
             patientId: data.patientId,
             timeType: data.timeType,
-            [Op.or]: [{ statusId: "S2"}, { statusId: "RM"}],
+            [Op.or]: [{ statusId: "S2" }, { statusId: "RM" }],
           },
           raw: false,
         });
@@ -756,6 +756,71 @@ let sendRemedy = (data) => {
     }
   });
 };
+let getStars = (doctorId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let totalStars = await db.Doctor_Infor.findOne({
+        where: { doctorId: doctorId },
+        attributes: ["totalStars"],
+      });
+      resolve({
+        errCode: 0,
+        totalStars: totalStars,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+let totalStars = async (doctorId, newStars) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Fetch the doctor's totalStars information including the primary key
+      let doctorInfo = await db.Doctor_Infor.findOne({
+        where: { doctorId: doctorId },
+        raw: false,
+      });
+      if (doctorInfo) {
+        // Check if the current totalStars is null
+        let currentTotalStars = doctorInfo.dataValues.totalStars;
+        let updatedTotalStars;
+
+        if (currentTotalStars === null) {
+          // If there is no previous rating, set the new rating directly
+          updatedTotalStars = newStars;
+        } else {
+          // Calculate the new totalStars as the average of the existing value and the new rating
+          updatedTotalStars = (currentTotalStars + newStars) / 2;
+        }
+
+        // Round the updated totalStars to 1 decimal place
+        updatedTotalStars = parseFloat(updatedTotalStars.toFixed(1));
+
+        // Update the totalStars value
+        doctorInfo.totalStars = updatedTotalStars;
+        await doctorInfo.save();
+
+        resolve({
+          errCode: 0,
+          errMessage: "Update the total stars succeeded!",
+        });
+      } else {
+        resolve({
+          errCode: 2,
+          errMessage: "Doctor information not found",
+        });
+      }
+    } catch (error) {
+      console.error("Error updating totalStars:", error);
+      reject({
+        errCode: 1,
+        errMessage: "Error occurred while updating the total stars",
+        error: error.message,
+      });
+    }
+  });
+};
+
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
   getAllDoctor: getAllDoctor,
@@ -767,4 +832,6 @@ module.exports = {
   getProfileDoctorById: getProfileDoctorById,
   getListPatientForDoctor: getListPatientForDoctor,
   sendRemedy: sendRemedy,
+  getStars: getStars,
+  totalStars: totalStars,
 };

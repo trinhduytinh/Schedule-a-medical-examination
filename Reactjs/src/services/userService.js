@@ -147,6 +147,12 @@ const deleteBooking = (bookingId) => {
 const createPaymentBookingRemote = (data) => {
   return axios.post("/api/create-payment-booking-remote", data);
 };
+const getStars = (doctorId) => {
+  return axios.get(`/api/get-stars?doctorId=${doctorId}`);
+};
+const postTotalStars = (doctorId, newStars) =>{
+  return axios.post(`/api/total-stars?doctorId=${doctorId}&newStars=${newStars}`);
+}
 export {
   handleLoginApi,
   getAllUsers,
@@ -187,4 +193,6 @@ export {
   getListPatientBooking,
   deleteBooking,
   createPaymentBookingRemote,
+  getStars,
+  postTotalStars
 };

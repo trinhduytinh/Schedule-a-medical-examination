@@ -361,7 +361,6 @@ let createPaymentBookingRemote = async (data) => {
           });
         }
         const encodedData = encodeURIComponent(JSON.stringify(data));
-        console.log("check encodeData", encodedData);
         const body = {
           orderCode: Date.now(),
           // amount: inforDoctor["priceTypeData.valueVi"],
