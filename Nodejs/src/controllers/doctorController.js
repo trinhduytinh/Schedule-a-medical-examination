@@ -48,7 +48,7 @@ let getDetailDoctorById = async (req, res) => {
     return res.status(200).json(infor);
   } catch (e) {
     console.log(e);
-    return res.status(200).json({
+    return res.status(500).json({
       errCode: -1,
       errMessage: "Error from the server",
     });
@@ -113,7 +113,6 @@ let getListPatientForDoctor = async (req, res) => {
     );
     return res.status(200).json(infor);
   } catch (e) {
-    console.log(e);
     return res.status(200).json({
       errCode: -1,
       errMessage: "Error from the server",
@@ -124,6 +123,30 @@ let sendRemedy = async (req, res) => {
   try {
     let infor = await doctorService.sendRemedy(req.body);
     return res.status(200).json(infor);
+  } catch (e) {
+    console.log(e);
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from the server",
+    });
+  }
+};
+let getStars = async (req, res) => {
+  try {
+    let response = await doctorService.getStars(req.query.doctorId);
+    return res.status(200).json(response);
+  } catch (e) {
+    console.log(e);
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from the server",
+    });
+  }
+};
+let totalStars = async (req, res) => {
+  try {
+    let response = await doctorService.totalStars(req.query.doctorId, +req.query.newStars);
+    return res.status(200).json(response);
   } catch (e) {
     console.log(e);
     return res.status(200).json({
@@ -143,4 +166,6 @@ module.exports = {
   getProfileDoctorById: getProfileDoctorById,
   getListPatientForDoctor: getListPatientForDoctor,
   sendRemedy: sendRemedy,
+  getStars: getStars,
+  totalStars: totalStars,
 };

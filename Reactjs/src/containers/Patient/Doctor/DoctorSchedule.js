@@ -52,7 +52,6 @@ class DoctorSchedule extends Component {
             return true;
           }
         });
-        console.log("check time", futureTimes);
         this.setState({
           allAvailableTime: futureTimes,
         });
@@ -133,8 +132,6 @@ class DoctorSchedule extends Component {
         this.props.doctorIdFromParent,
         allDays[0].value
       );
-      console.log("check data:", res);
-      console.log("check log:", res);
       if (res.data) {
         // Lấy ngày và thời gian hiện tại
         const currentTime = moment();

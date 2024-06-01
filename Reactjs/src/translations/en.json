@@ -131,7 +131,8 @@
       "schedule": "Schedule",
       "no-schedule": "There are no appointments available during this time, please choose another time!",
       "choose": "Choose",
-      "book-free": "and book (free)"
+      "book-free": "and book (free)",
+      "evaluate": "Evaluation: "
     },
     "extra-infor-doctor": {
       "text-address": "Examination address",

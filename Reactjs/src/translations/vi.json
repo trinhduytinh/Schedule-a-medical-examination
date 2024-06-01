@@ -131,7 +131,8 @@
       "schedule": "Lịch khám",
       "no-schedule": "Không có lịch hẹn trong thời gian này, vui lòng chọn thời gian khác!",
       "choose": "Chọn",
-      "book-free": "và đặt (miễn phí)"
+      "book-free": "và đặt (miễn phí)",
+      "evaluate": "Đánh Giá: "
     },
     "extra-infor-doctor": {
       "text-address": "Địa chỉ khám",

@@ -1,0 +1,33 @@
+.star-wrapper {
+  position: relative;
+  display: flex;
+}
+
+.star-wrapper .star {
+  color: #999;
+  text-decoration: none;
+  transition: all 0.3s;
+  margin: 4px;
+  cursor: pointer;
+}
+
+.star-wrapper .star.hovered {
+  color: gold;
+  transform: scale(1.3);
+}
+
+.star-wrapper .star.checked {
+  color: orange;
+  transform: scale(1.3);
+}
+.total-stars {
+    padding-left: 10px;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color: #999;
+    margin-top: 4px;
+}
+.title-evaluate{
+  font-size: 15px;
+  font-weight: 600;
+}

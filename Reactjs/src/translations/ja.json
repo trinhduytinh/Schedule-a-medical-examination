@@ -131,7 +131,8 @@
       "schedule": "スケジュール",
       "no-schedule": "この時間帯は予約ができません。別の時間を選択してください。",
       "choose": "選んで",
-      "book-free": "予約する（無料）"
+      "book-free": "予約する（無料）",
+      "evaluate": "評価: "
     },
     "extra-infor-doctor": {
       "text-address": "診察場所",
