@@ -28,53 +28,108 @@ let postBookAppointment = (data) => {
           errMessage: "Missing parameter",
         });
       } else {
-        let token = uuidv4();
-        await emailService.sendSimpleEmail({
-          receiverEmail: data.email,
-          patientName: data.fullName,
-          time: data.timeString,
-          doctorName: data.doctorName,
-          language: data.language,
-          redirectLink: buildUrlEmail(data.doctorId, token),
-        });
-        //upsert patient
-        let user = await db.User.findOrCreate({
-          where: { email: data.email },
-          defaults: {
-            email: data.email,
-            roleId: "R3",
-            gender: data.selectedGender,
-            address: data.address,
-            firstName: data.fullName,
-            phonenumber: data.phoneNumber,
-          },
+        // Fetch the schedule to check the currentNumber and maxNumber
+        let schedule = await db.Schedule.findOne({
+          where: {
+            doctorID: data.doctorId,
+            date: data.date,
+            timeType: data.timeType
+          }
         });
 
-        if (user && user[0]) {
-          await db.Booking.findOrCreate({
-            where: { patientID: user[0].id },
+        if (!schedule) {
+          resolve({
+            errCode: 2,
+            errMessage: "Schedule not found"
+          });
+        } else if (schedule.currentNumber >= schedule.maxNumber) {
+          resolve({
+            errCode: 3,
+            errMessage: "Booking is full"
+          });
+        } else {
+          // Generate token
+          let token = uuidv4();
+
+          // Upsert patient
+          let user = await db.User.findOrCreate({
+            where: { email: data.email },
             defaults: {
-              statusId: "S1",
-              doctorId: data.doctorId,
-              patientID: user[0].id,
-              date: data.date,
-              timeType: data.timeType,
-              reason: data.reason,
-              birthday: data.birthday,
-              token: token,
+              email: data.email,
+              roleId: "R3",
+              gender: data.selectedGender,
+              address: data.address,
+              firstName: data.fullName,
+              phonenumber: data.phoneNumber,
             },
           });
+
+          if (user && user[0]) {
+            // Check if the user has already booked the same schedule
+            let existingBooking = await db.Booking.findOne({
+              where: {
+                patientID: user[0].id,
+                doctorId: data.doctorId,
+                date: data.date,
+                timeType: data.timeType,
+              },
+            });
+
+            if (existingBooking) {
+              resolve({
+                errCode: 4,
+                errMessage: "You have already booked this schedule",
+              });
+            } else {
+              // Send email
+              await emailService.sendSimpleEmail({
+                receiverEmail: data.email,
+                patientName: data.fullName,
+                time: data.timeString,
+                doctorName: data.doctorName,
+                language: data.language,
+                redirectLink: buildUrlEmail(data.doctorId, token),
+              });
+
+              // Create booking
+              await db.Booking.create({
+                statusId: "S1",
+                doctorId: data.doctorId,
+                patientID: user[0].id,
+                date: data.date,
+                timeType: data.timeType,
+                reason: data.reason,
+                birthday: data.birthday,
+                token: token,
+              });
+
+              // Increment currentNumber in schedule
+              await db.Schedule.update(
+                { currentNumber: schedule.currentNumber + 1 },
+                { where: { id: schedule.id } }
+              );
+
+              resolve({
+                errCode: 0,
+                errMessage: "Save info patient succeed!",
+              });
+            }
+          } else {
+            resolve({
+              errCode: 5,
+              errMessage: "User creation failed",
+            });
+          }
         }
-        resolve({
-          errCode: 0,
-          errMessage: "Save infor patient succeed!",
-        });
       }
     } catch (e) {
       reject(e);
     }
   });
 };
+
+
+
 let postVerifyBookAppointment = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
