@@ -39,6 +39,7 @@ import DoctorCall from "./CallVideo/DoctorCall";
 import ManagePatientRemote from "./System/Doctor/ManagePatientRemote";
 import PaySuccess from "./Patient/Pay/PaySuccess";
 import PayCancellation from "./Patient/Pay/PayCancellation";
+import ChangPassword from "./Auth/ChangPassword";
 
 
 class App extends Component {
@@ -99,6 +100,7 @@ class App extends Component {
                   <Route path={path.MANAGE_PATIENT_REMOTE} component={ManagePatientRemote} />
                   <Route path={path.PAY_SUCCESS} component = {PaySuccess}/>
                   <Route path={path.PAY_CANCEL} component = {PayCancellation}/>
+                  <Route path={path.CHANG_PASSWORD} component = {ChangPassword}/>
                 </Switch>
               </CustomScrollbars>
             </div>

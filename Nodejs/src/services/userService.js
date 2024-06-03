@@ -1,7 +1,8 @@
-import { where } from "sequelize";
 import db from "../models/index";
 import bcrypt from "bcryptjs";
-
+import emailService from "./emailService";
+import { v4 as uuidv4 } from "uuid";
+require("dotenv").config();
 const salt = bcrypt.genSaltSync(10);
 
 let handleUserLogin = (email, password) => {
@@ -158,6 +159,42 @@ let createNewUser = (data) => {
     }
   });
 };
+let handleCreateNewUsersLogin = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if ( !data.password || !data.firstName || !data.lastName) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required parameters",
+        });
+      } else {
+        let check = await checkUserEmail(data.email);
+        if (check === true) {
+          resolve({
+            errCode: 2,
+            errMessage: "You email is already in used, Plz try another email",
+          });
+        } else {
+          let hashUserPasswordFromBcrypt = await hashUserPassword(
+            data.password
+          );
+          await db.User.create({
+            email: data.email,
+            password: hashUserPasswordFromBcrypt,
+            firstName: data.firstName,
+            lastName: data.lastName,
+          });
+          resolve({
+            errCode: 0,
+            errMessage: "OK",
+          });
+        }
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 let deleteUser = (userId) => {
   return new Promise(async (resolve, reject) => {
     let user = await db.User.findOne({
@@ -238,6 +275,158 @@ let getAllCodeService = (typeInput) => {
     }
   });
 };
+let changePassword = (data) => {
+  return new Promise(async (resolve, reject) => {
+    let userData = {};
+    try {
+      // Kiểm tra người dùng đã tồn tại chưa
+      let user = await db.User.findOne({
+        attributes: [
+          "id",
+          "email",
+          "roleId",
+          "password",
+          "firstName",
+          "lastName",
+        ],
+        where: { id: data.doctorId },
+        raw: true,
+      });
+
+      if (user) {
+        // So sánh mật khẩu
+        let check = bcrypt.compareSync(data.password, user.password);
+        if (check) {
+          // Nếu mật khẩu đúng, băm mật khẩu mới
+          let hashUserPasswordFromBcrypt = await hashUserPassword(
+            data.newPassword
+          );
+          // Cập nhật mật khẩu trong cơ sở dữ liệu
+          await db.User.update(
+            { password: hashUserPasswordFromBcrypt },
+            { where: { id: data.doctorId } }
+          );
+
+          userData.errCode = 0;
+          userData.errMessage = "OK";
+          userData.user = user;
+        } else {
+          userData.errCode = 3;
+          userData.errMessage = "Wrong password";
+        }
+      } else {
+        userData.errCode = 2;
+        userData.errMessage = "User's not found";
+      }
+      resolve(userData);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+let buildUrlEmail = (email, token) => {
+  let result = "";
+  result = `${process.env.URL_REACT}/chang-password?token=${token}&email=${email}`;
+  return result;
+};
+let forgotPassword = (email, language) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("check email", email);
+      let userData = {};
+      let isExist = await checkUserEmail(email);
+      if (isExist) {
+        //user already exits
+        let user = await db.User.findOne({
+          attributes: [
+            "id",
+            "email",
+            "roleId",
+            "password",
+            "firstName",
+            "lastName",
+          ],
+          where: { email: email },
+          raw: true,
+        });
+        if (user) {
+          let token = uuidv4();
+          //compare password
+          await emailService.sendSimpleEmailForgotPassword({
+            receiverEmail: email,
+            user: `${user.firstName} ${user.lastName}`,
+            language: language,
+            redirectLink: buildUrlEmail(email, token),
+          });
+          await db.User.update({ password: token }, { where: { id: user.id } });
+          userData.errCode = 0;
+          userData.errMessage = "OK";
+          userData.user = user;
+        } else {
+          userData.errCode = 2;
+          userData.errMessage = `Email's not found~`;
+        }
+      } else {
+        //return error
+        userData.errCode = 1;
+        userData.errMessage = `Your's Email isn't exist in your system. Plz try other email.!`;
+      }
+      resolve(userData);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+let confirmPassword = (data) => {
+  return new Promise(async (resolve, reject) => {
+    let userData = {};
+    try {
+      // Kiểm tra người dùng đã tồn tại chưa
+      let user = await db.User.findOne({
+        attributes: [
+          "id",
+          "email",
+          "roleId",
+          "password",
+          "firstName",
+          "lastName",
+        ],
+        where: { email: data.email },
+        raw: true,
+      });
+
+      if (user) {
+        // So sánh token với mật khẩu
+        let check = data.token === user.password;
+        if (check) {
+          // Nếu token đúng, băm mật khẩu mới
+          let hashUserPasswordFromBcrypt = await hashUserPassword(
+            data.newPassword
+          );
+          // Cập nhật mật khẩu trong cơ sở dữ liệu
+          await db.User.update(
+            { password: hashUserPasswordFromBcrypt },
+            { where: { id: user.id } }
+          );
+
+          userData.errCode = 0;
+          userData.errMessage = "OK";
+          userData.user = user;
+        } else {
+          userData.errCode = 3;
+          userData.errMessage = "Wrong token";
+        }
+      } else {
+        userData.errCode = 2;
+        userData.errMessage = "User's not found";
+      }
+      resolve(userData);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   handleUserLogin: handleUserLogin,
   getAllUsers: getAllUsers,
@@ -246,4 +435,8 @@ module.exports = {
   updateUserData: updateUserData,
   getAllCodeService: getAllCodeService,
   getUserWithPagination: getUserWithPagination,
+  changePassword: changePassword,
+  forgotPassword: forgotPassword,
+  confirmPassword: confirmPassword,
+  handleCreateNewUsersLogin: handleCreateNewUsersLogin,
 };

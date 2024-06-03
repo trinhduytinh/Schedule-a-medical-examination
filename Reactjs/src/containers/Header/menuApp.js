@@ -64,7 +64,18 @@ export const adminMenu = [
       },
     ],
   },
+  {
+    //Đổi mật khẩu
+    name: "Đổi mật khẩu",
+    menus: [
+      {
+        name: "Đổi mật khẩu",
+        link: "/system/edit-password",
+      },
+    ],
+  },
 ];
+
 
 export const doctorMenu = [
   {

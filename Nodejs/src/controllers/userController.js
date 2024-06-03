@@ -54,8 +54,18 @@ let handleGetAllUsers = async (req, res) => {
 };
 let handleCreateNewUsers = async (req, res) => {
   let message = await userService.createNewUser(req.body);
-  console.log(message);
   return res.status(200).json(message);
+};
+let handleCreateNewUsersLogin = async (req, res) => {
+  try {
+    let data = await userService.handleCreateNewUsersLogin(req.body);
+    return res.status(200).json(data);
+  } catch (e) {
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from the server",
+    });
+  }
 };
 let handleEditUsers = async (req, res) => {
   let data = req.body;
@@ -84,6 +94,58 @@ let getAllCode = async (req, res) => {
     });
   }
 };
+let changePassword = async (req, res) => {
+  //check email exist
+  //compare password
+  //return userInfor
+  //access_token: JWT json web token
+  let data = req.body;
+  if (!data) {
+    return res.status(500).json({
+      errorCode: 1,
+      message: "Missing inputs parameter!",
+    });
+  }
+
+  let userData = await userService.changePassword(data);
+  return res.status(200).json({
+    errCode: userData.errCode,
+    message: userData.errMessage,
+  });
+};
+let forgotPassword = async (req, res) => {
+  console.log("check email co", req.query);
+  if (!req.query.email || !req.query.language) {
+    return res.status(500).json({
+      errorCode: 1,
+      message: "Missing inputs parameter!",
+    });
+  }
+
+  let userData = await userService.forgotPassword(
+    req.query.email,
+    req.query.language
+  );
+  return res.status(200).json({
+    errCode: userData.errCode,
+    message: userData.errMessage,
+  });
+};
+let confirmPassword = async (req, res) => {
+  let data = req.body;
+  if (!data) {
+    return res.status(500).json({
+      errorCode: 1,
+      message: "Missing inputs parameter!",
+    });
+  }
+
+  let userData = await userService.confirmPassword(data);
+  return res.status(200).json({
+    errCode: userData.errCode,
+    message: userData.errMessage,
+  });
+};
 module.exports = {
   handleLogin: handleLogin,
   handleGetAllUsers: handleGetAllUsers,
@@ -91,4 +153,8 @@ module.exports = {
   handleEditUsers: handleEditUsers,
   handleDeleteUsers: handleDeleteUsers,
   getAllCode: getAllCode,
+  changePassword: changePassword,
+  forgotPassword: forgotPassword,
+  confirmPassword: confirmPassword,
+  handleCreateNewUsersLogin: handleCreateNewUsersLogin,
 };

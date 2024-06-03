@@ -46,22 +46,7 @@ class Header extends Component {
             <FormattedMessage id="homeheader.welcome" />,{" "}
             {userInfo && userInfo.firstName ? userInfo.firstName : ""}!
           </span>
-          {/* <span
-            className={
-              language == LANGUAGES.VI ? "language-vi active" : "language-vi"
-            }
-            onClick={() => this.handleChangeLanguage(LANGUAGES.VI)}>
-            VN
-          </span>
-          <span
-            className={
-              language == LANGUAGES.EN ? "language-en active" : "language-en"
-            }
-            onClick={() => this.handleChangeLanguage(LANGUAGES.EN)}>
-            EN
-          </span> */}
           {/* nút logout */}
-
           <select value={language} onChange={this.handleChangeLanguage}>
             <option value={LANGUAGES.VI}>Tiếng Việt</option>
             <option value={LANGUAGES.EN}>English</option>
