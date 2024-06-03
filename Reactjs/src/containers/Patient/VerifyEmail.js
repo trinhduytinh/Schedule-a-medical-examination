@@ -39,7 +39,6 @@ class VerifyEmail extends Component {
   async componentDidUpdate(prevProps, prevState, snapshot) {}
   render() {
     let { statusVerify, errCode } = this.state;
-    console.log("check prop: ", this.state);
     return (
       <>
         <HomeHeader />

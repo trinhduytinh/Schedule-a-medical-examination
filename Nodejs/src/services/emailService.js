@@ -197,8 +197,72 @@ let getBodyHTMLEmailRemote = (dataSend) => {
   }
   return result;
 };
+let sendSimpleEmailForgotPassword = async (dataSend) => {
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+      user: process.env.EMAIL_APP,
+      pass: process.env.EMAIL_APP_PASSWORD,
+    },
+  });
+
+  // send mail with defined transport object
+  let info = await transporter.sendMail({
+    from: '"Trịnh Duy Tính 👻" <tinhtrinh54@gmail.com>', // sender address
+    to: dataSend.receiverEmail, // list of receivers
+    subject: "Thông tin đặt lịch khám bệnh từ xa", // Subject line
+    // text: "Hello world?", // plain text body
+    html: getBodyHTMLEmailForgotPassword(dataSend), // html body
+  });
+};
+let getBodyHTMLEmailForgotPassword = (dataSend) => {
+  let result = "";
+  if (dataSend.language === "vi") {
+    result = `
+    <h3>Xin chào ${dataSend.user}<h3/>
+    <p>Bạn đã quên mật khẩu?</p>
+    <p>Để đặt lại mật khẩu bạn vui lòng click vào đường link bên dưới để thay đổi mật khẩu.</p>
+    <div><a href=${dataSend.redirectLink} target="_blank">Click here</a></div>
+    <div>Xin chân thành cảm ơn</div>
+    <div>Chúc bạn một ngày tốt lành</div>
+`;
+  }
+  if (dataSend.language === "en") {
+    result = `
+    <h3>Hello ${dataSend.patientName}<h3/>
+    <p>You are receiving this email because you have scheduled an online medical appointment on Trịnh Duy Tính's website.</p>
+    <p>Your appointment details are as follows:<p>
+    <div><b>Time: ${dataSend.time}</b></div>
+    <div><b>Doctor: ${dataSend.doctorName}</div>
+    <p>Thank you for your payment and confirming your online appointment.</p>
+    <p>Please click the link below to join the remote consultation at the scheduled time.</p>
+    <div><a href=${dataSend.redirectLink} target="_blank">Click here</a></div>
+    <div>Sincerely,</div>
+    <div>Wishing you a great day</div>    
+   `;
+  }
+  if (dataSend.language === "ja") {
+    result = `
+    <h3>こんにちは${dataSend.patientName}<h3/>
+    <p>このメールを受信していますのは、Trịnh Duy Tínhのウェブサイトでオンライン医療予約をされたためです。</p>
+    <p>ご予約の詳細は以下の通りです:<p>
+    <div><b>時間: ${dataSend.time}</b></div>
+    <div><b>医師: ${dataSend.doctorName}</div>
+    <p>お支払いとオンライン予約の確認ありがとうございます。</p>
+    <p>スケジュールされた時間にリモート相談に参加するためには、以下のリンクをクリックしてください。</p>
+    <div><a href=${dataSend.redirectLink} target="_blank">こちらをクリック</a></div>
+    <div>心より</div>
+    <div>良い一日をお過ごしください</div>    
+   `;
+  }
+  return result;
+};
 module.exports = {
   sendSimpleEmail: sendSimpleEmail,
   sendAttachment: sendAttachment,
   sendSimpleEmailRemote: sendSimpleEmailRemote,
+  sendSimpleEmailForgotPassword: sendSimpleEmailForgotPassword,
 };

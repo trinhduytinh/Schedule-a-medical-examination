@@ -22,6 +22,7 @@ export const path = {
   MANAGE_PATIENT_REMOTE: "/manage-patient-remote",
   PAY_SUCCESS: "/pay-success",
   PAY_CANCEL: "/pay-cancel",
+  CHANG_PASSWORD: "/chang-password",
 };
 
 export const LANGUAGES = {

@@ -150,9 +150,23 @@ const createPaymentBookingRemote = (data) => {
 const getStars = (doctorId) => {
   return axios.get(`/api/get-stars?doctorId=${doctorId}`);
 };
-const postTotalStars = (doctorId, newStars) =>{
-  return axios.post(`/api/total-stars?doctorId=${doctorId}&newStars=${newStars}`);
-}
+const postTotalStars = (doctorId, newStars) => {
+  return axios.post(
+    `/api/total-stars?doctorId=${doctorId}&newStars=${newStars}`
+  );
+};
+const changePassword = (data) => {
+  return axios.post(`/api/change-password`, data);
+};
+const confirmPassword = (data) => {
+  return axios.post(`/api/confirm-password`, data);
+};
+const forgotPassword = (email, language) => {
+  return axios.post(`/api/forgot-password?email=${email}&language=${language}`);
+};
+const createNewUserLogin = (data) => {
+  return axios.post(`/api/create-new-user-login`, data);
+};
 export {
   handleLoginApi,
   getAllUsers,
@@ -194,5 +208,9 @@ export {
   deleteBooking,
   createPaymentBookingRemote,
   getStars,
-  postTotalStars
+  postTotalStars,
+  changePassword,
+  confirmPassword,
+  forgotPassword,
+  createNewUserLogin,
 };
