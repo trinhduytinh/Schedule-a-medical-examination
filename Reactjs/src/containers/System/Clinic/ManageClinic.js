@@ -8,129 +8,178 @@ import MdEditor from "react-markdown-editor-lite";
 import {
   createNewClinic,
   createNewSpecialty,
+  deleteClinic,
+  getClinicPage,
 } from "../../../services/userService";
 import { toast } from "react-toastify";
 import LoadingOverlay from "react-loading-overlay"; // mang hinh load doi
+import ModalClinic from "./ModalClinic";
+import ReactPaginate from "react-paginate";
+import ModalClinicEdit from "./ModalClinicEdit";
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 class ManageClinic extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      address: "",
-      imageBase64: "",
-      descriptionHTML: "",
-      descriptionMarkdown: "",
+      arrClinic: [],
+      handClinicEdit: {},
+      currentPage: 1,
+      currentLimit: 10,
+      totalPages: 0,
       isShowLoading: false,
+      isOpenModalClinic: false,
+      isOpenModalEditClinic: false,
     };
   }
-  async componentDidMount() {}
+  async componentDidMount() {
+    this.fetchClinic();
+  }
 
   async componentDidUpdate(prevProps, prevState, snapshot) {}
 
-  handleOnChangeInput = (event, id) => {
-    let stateCopy = { ...this.state };
-    stateCopy[id] = event.target.value;
+  toggleClinicModal = async () => {
     this.setState({
-      ...stateCopy,
+      isOpenModalClinic: !this.state.isOpenModalClinic,
+    });
+    await this.fetchClinic(this.state.currentPage);
+  };
+  toggleEditClinicModal = () => {
+    this.setState({
+      isOpenModalEditClinic: !this.state.isOpenModalEditClinic,
     });
   };
-  handleEditorChange = ({ html, text }) => {
+  handleEditClinicModal = (item) => {
     this.setState({
-      descriptionHTML: html,
-      descriptionMarkdown: text,
+      isOpenModalEditClinic: !this.state.isOpenModalEditClinic,
+      handClinicEdit: item,
     });
   };
-  handleOnchangeImage = async (event) => {
-    let data = event.target.files;
-    let file = data[0];
-    if (file) {
-      let base64 = await CommonUtils.getBase64(file);
-      this.setState({
-        imageBase64: base64,
-      });
-    }
-  };
-  handleSaveNewClinic = async () => {
+  handleAddNewClinic = () => {
     this.setState({
-      isShowLoading: true,
+      isOpenModalClinic: true,
     });
-    let res = await createNewClinic(this.state);
+  };
+  handleDeleteClinic = async (clinic) => {
+    let res = await deleteClinic(clinic.id);
     if (res && res.errCode === 0) {
-      toast.success("Add new clinic succeeds");
-      this.setState({
-        name: "",
-        address: "",
-        imageBase64: "",
-        descriptionHTML: "",
-        descriptionMarkdown: "",
-      });
-      this.setState({
-        isShowLoading: false,
-      });
+      await this.fetchClinic(this.state.currentPage);
+      toast.success(res.errMessage);
     } else {
-      toast.error("Something wrongs....");
-      this.setState({
-        isShowLoading: false,
-      });
+      toast.error(res.errMessage);
     }
+  };
+  fetchClinic = async (page = this.state.currentPage) => {
+    const { currentLimit } = this.state;
+    const response = await getClinicPage(page, currentLimit);
+    if (response && response.errCode === 0) {
+      this.setState((prevState) => ({
+        arrClinic: response.data.clinic,
+        totalPages: response.data.totalPages,
+        currentPage: page, // Cập nhật currentPage dựa trên tham số truyền vào
+      }));
+    }
+  };
+  handlePageClick = async (event) => {
+    const selectedPage = +event.selected + 1;
+    this.setState({ currentPage: selectedPage }, () => {
+      this.fetchSpecialty(selectedPage);
+    });
   };
   render() {
+    let {
+      arrClinic,
+      isOpenModalClinic,
+      isOpenModalEditClinic,
+      handClinicEdit,
+      totalPages
+    } = this.state;
     return (
       <>
-        <LoadingOverlay
-          active={this.state.isShowLoading}
-          spinner
-          text="Loading...">
-          <div className="manage-specialty-container">
-            <div className="ms-title"><FormattedMessage id={"manage-clinic.manage-clinic"}/></div>
-            <div className="add-new-specialty row">
-              <div className="col-6 form-group">
-                <label className="form-label"><FormattedMessage id={"manage-clinic.name-clinic"}/></label>
-                <input
-                  className="form-control"
-                  type="text"
-                  value={this.state.name}
-                  onChange={(event) => this.handleOnChangeInput(event, "name")}
-                />
-              </div>
-              <div className="col-6 form-group">
-                <label className="form-label"><FormattedMessage id={"manage-clinic.image-clinic"}/></label>
-                <input
-                  className="form-control"
-                  type="file"
-                  onChange={(event) => this.handleOnchangeImage(event)}
-                />
-              </div>
-              <div className="col-6 form-group">
-                <label className="form-label"><FormattedMessage id={"manage-clinic.address-clinic"}/> </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  value={this.state.address}
-                  onChange={(event) =>
-                    this.handleOnChangeInput(event, "address")
-                  }
-                />
-              </div>
-              <div className="col-12 mt-3">
-                <MdEditor
-                  style={{ height: "500px" }}
-                  renderHTML={(text) => mdParser.render(text)}
-                  onChange={this.handleEditorChange}
-                  value={this.state.descriptionMarkdown}
-                />
-              </div>
-              <div className="col-12">
-                <button
-                  className="btn-save-specialty"
-                  onClick={() => this.handleSaveNewClinic()}>
-                  <FormattedMessage id={"manage-clinic.save"}/>
-                </button>
-              </div>
-            </div>
+        <div className="manage-specialty-container">
+          <ModalClinic
+            isOpen={isOpenModalClinic}
+            toggleClinicModal={this.toggleClinicModal}
+          />
+          {isOpenModalEditClinic && (
+            <ModalClinicEdit
+              isOpen={isOpenModalEditClinic}
+              toggleEditClinicModal={this.toggleEditClinicModal}
+              currentClinic={handClinicEdit}
+            />
+          )}
+          <div className="ms-title">
+            <FormattedMessage id="manage-specialty.specialty-management" />
           </div>
-        </LoadingOverlay>
+          <div className="mx-1 my-4">
+            <button
+              className="btn btn-primary px-3"
+              onClick={() => this.handleAddNewClinic()}>
+              <i className="fas fa-plus"></i>
+              Thêm mới phòng khám
+            </button>
+          </div>
+          <table id="TableManageUser">
+            <tbody>
+              <tr>
+                <th>STT</th>
+                <th>Tên phòng khám</th>
+                <th>Actions</th>
+              </tr>
+              {arrClinic && arrClinic.length > 0 ? (
+                arrClinic.map((item, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{item.name}</td>
+                      <td>
+                        <button
+                          className="btn-edit"
+                          onClick={() => this.handleEditClinicModal(item)}>
+                          <i className="fas fa-pencil-alt"></i>
+                        </button>
+                        <button
+                          className="btn-delete"
+                          onClick={() => this.handleDeleteClinic(item)}>
+                          <i className="fas fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={8} style={{ textAlign: "center" }}>
+                    <FormattedMessage id={"manage-patient.no-data"} />
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+          {totalPages > 0 && (
+            <div className="user-footer">
+              <ReactPaginate
+                nextLabel="next >"
+                onPageChange={this.handlePageClick}
+                pageRangeDisplayed={3}
+                marginPagesDisplayed={2}
+                pageCount={totalPages}
+                previousLabel="< previous"
+                pageClassName="page-item"
+                pageLinkClassName="page-link"
+                previousClassName="page-item"
+                previousLinkClassName="page-link"
+                nextClassName="page-item"
+                nextLinkClassName="page-link"
+                breakLabel="..."
+                breakClassName="page-item"
+                breakLinkClassName="page-link"
+                containerClassName="pagination"
+                activeClassName="active"
+                renderOnZeroPageCount={null}
+              />
+            </div>
+          )}
+        </div>
       </>
     );
   }

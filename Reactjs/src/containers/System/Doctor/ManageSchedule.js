@@ -10,27 +10,32 @@ import moment from "moment";
 import _, { times } from "lodash";
 import { toast } from "react-toastify";
 import { saveBulkScheduleDoctor } from "../../../services/userService";
+
 class ManageSchedule extends Component {
   constructor(props) {
     super(props);
     this.state = {
       listDoctors: [],
       selectedDoctor: {},
-      currentDate: moment(new Date()).startOf("day").valueOf(), //lay ngay ko lay gio de phu hop vs thu vien lich
+      currentDate: moment(new Date()).startOf("day").valueOf(), // lay ngay ko lay gio de phu hop vs thu vien lich
       rangetime: [],
     };
   }
+
   componentDidMount() {
     this.props.fetchAllDoctors();
     this.props.fetchAllsScheduleTime();
   }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.allDoctors !== this.props.allDoctors) {
-      let dataSelect = this.buildDataInputSelect(this.props.allDoctors);
+    if (prevProps.allDoctors !== this.props.allDoctors || prevProps.userInfo !== this.props.userInfo) {
+      let dataSelect = this.buildDataInputSelect([this.props.userInfo]);
       this.setState({
         listDoctors: dataSelect,
+        selectedDoctor: dataSelect[0] // automatically select the logged-in doctor
       });
     }
+
     if (prevProps.allScheduleTime !== this.props.allScheduleTime) {
       let data = this.props.allScheduleTime;
       if (data && data.length > 0) {
@@ -40,18 +45,21 @@ class ManageSchedule extends Component {
         rangetime: data,
       });
     }
+
     if (prevProps.language !== this.props.language) {
-      let dataSelect = this.buildDataInputSelect(this.props.allDoctors);
+      let dataSelect = this.buildDataInputSelect([this.props.userInfo]);
       this.setState({
         listDoctors: dataSelect,
+        selectedDoctor: dataSelect[0] // automatically select the logged-in doctor
       });
     }
   }
+
   buildDataInputSelect = (inputData) => {
     let result = [];
     let { language } = this.props;
     if (inputData && inputData.length > 0) {
-      inputData.map((item, index) => {
+      inputData.map((item) => {
         let object = {};
         let labelVi = `${item.lastName} ${item.firstName}`;
         let labelEn = `${item.firstName} ${item.lastName}`;
@@ -62,14 +70,17 @@ class ManageSchedule extends Component {
     }
     return result;
   };
+
   handleChangeSelect = async (selectedOption) => {
     this.setState({ selectedDoctor: selectedOption });
   };
+
   handleOnchangeDatePicker = (data) => {
     this.setState({
       currentDate: data[0],
     });
   };
+
   handleClickBtnTime = (time) => {
     let { rangetime } = this.state;
     if (rangetime && rangetime.length > 0) {
@@ -82,6 +93,7 @@ class ManageSchedule extends Component {
       });
     }
   };
+
   handleSaveSchedule = async () => {
     let { rangetime, selectedDoctor, currentDate } = this.state;
     let result = [];
@@ -124,6 +136,7 @@ class ManageSchedule extends Component {
       console.log("error saveBulkScheduleDoctor: ", res);
     }
   };
+
   render() {
     let { language } = this.props;
     let { rangetime } = this.state;
@@ -143,6 +156,7 @@ class ManageSchedule extends Component {
                 value={this.state.selectedDoctor}
                 onChange={this.handleChangeSelect}
                 options={this.state.listDoctors}
+                isDisabled={true} // disable the Select component
               />
             </div>
             <div className="col-6 form-group">
@@ -194,6 +208,7 @@ const mapStateToProps = (state) => {
     language: state.app.language,
     allDoctors: state.admin.allDoctors,
     allScheduleTime: state.admin.allScheduleTime,
+    userInfo: state.user.userInfo, // assuming userInfo contains the logged-in user's info
   };
 };
 

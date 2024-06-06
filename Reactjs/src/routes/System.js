@@ -9,6 +9,7 @@ import ManageSpecialty from "../containers/System/Specialty/ManageSpecialty";
 import ManageClinic from "../containers/System/Clinic/ManageClinic";
 import ManageHandbook from "../containers/System/Handbook/ManageHandbook";
 import EditPassword from "../containers/System/Admin/EditPassword";
+import LoginHome from "../containers/System/LoginHome";
 class System extends Component {
   render() {
     const { systemMenuPath, isLoggedIn } = this.props;
@@ -19,6 +20,7 @@ class System extends Component {
           <div className="system-list">
             <Switch>
               <Route path="/system/user-manage" component={UserManage} />
+              <Route path="/system/home" component={LoginHome}/>
               <Route path="/system/user-redux" component={UserRedux} />
               <Route path="/system/manage-doctor" component={ManageDoctor} />
               <Route path="/system/manage-specialty" component={ManageSpecialty} />

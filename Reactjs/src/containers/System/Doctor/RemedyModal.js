@@ -59,6 +59,7 @@ class RemedyModal extends Component {
         </div>
         <ModalBody>
           <div className="row">
+            
             <div className="col-6 form-group">
               <label className="form-label">Email bệnh nhân</label>
               <input

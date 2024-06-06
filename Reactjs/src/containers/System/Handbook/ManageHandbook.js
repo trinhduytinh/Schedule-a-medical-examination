@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import "./ManageHandbook.scss";
-import { emitter } from "../../../utils/emitter";
 import ModalHandbook from "./ModalHandbook";
 import { toast } from "react-toastify";
 import {
@@ -69,7 +68,6 @@ class ManageHandbook extends Component {
         this.setState({
           isOpenModalHandbook: false,
         });
-        // emitter.emit("EVENT_CLEAR_MODAL_DATA");
       }
       this.setState({
         isShowLoading: false,
@@ -111,7 +109,6 @@ class ManageHandbook extends Component {
       console.log(e);
     }
   };
-  //nhan tu con
   //nhận từ con
   receiveDataFromChild = async (data) => {
     this.setState({
@@ -158,6 +155,7 @@ class ManageHandbook extends Component {
             <div class="handbook-card row row-cols-1 row-cols-md-4">
               {arrHandbooks &&
                 arrHandbooks.map((item, index) => {
+                  console.log("check image", item);
                   return (
                     <div className="row" key={index}>
                       <CardHandbook

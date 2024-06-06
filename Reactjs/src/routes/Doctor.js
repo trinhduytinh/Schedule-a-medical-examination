@@ -9,7 +9,8 @@ import ManageScheduleRemote from "../containers/System/Doctor/ManageScheduleRemo
 import ManagePatientRemote from "../containers/System/Doctor/ManagePatientRemote";
 class Doctor extends Component {
   render() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn } = this.props;  
+    console.log("check isLoggedIn", isLoggedIn);
     return (
       <React.Fragment>
         {this.props.isLoggedIn && <Header />}

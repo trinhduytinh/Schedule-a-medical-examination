@@ -137,9 +137,9 @@ class ManageScheduleRemote extends Component {
     });
 
     if (res && res.errCode === 0) {
-      toast.success("Lưu thông tin thành công!");
+      toast.success("Information saved successfully!");
     } else {
-      toast.error("Lỗi khi lưu thông tin!");
+      toast.error("Error saving information!");
       console.log("error saveBulkScheduleDoctor: ", res);
     }
   };

@@ -31,7 +31,7 @@ export const adminMenu = [
       {
         name: "quản lí lịch khám từ xa",
         link: "/doctor/manage-schedule-remote",
-      }
+      },
     ],
   },
   {
@@ -76,7 +76,6 @@ export const adminMenu = [
   },
 ];
 
-
 export const doctorMenu = [
   {
     //quản lý kế hoạch kahsm bệnh cảu bác sĩ
@@ -95,9 +94,54 @@ export const doctorMenu = [
         name: "Quản lý bài viết",
         link: "/doctor/manage-handbook",
       },
+    ],
+  },
+  {
+    //Đổi mật khẩu
+    name: "Đổi mật khẩu",
+    menus: [
+      {
+        name: "Đổi mật khẩu",
+        link: "/system/edit-password",
+      },
+    ],
+  },
+];
+export const doctorMenuRemote = [
+  {
+    //quản lý kế hoạch kahsm bệnh cảu bác sĩ
+    name: "menu.admin.manage-user",
+    menus: [
+      {
+        name: "menu.doctor.manage-schedule",
+        link: "/doctor/manage-schedule",
+      },
+      {
+        //quan ly benh han kham benh cua bac si
+        name: "menu.doctor.manage-patient",
+        link: "/doctor/manage-patient",
+      },
+      {
+        name: "Quản lý bài viết",
+        link: "/doctor/manage-handbook",
+      },
+      {
+        name: "quản lí lịch khám từ xa",
+        link: "/doctor/manage-schedule-remote",
+      },
       {
         name: "Quản lý lịch khám bệnh từ xa",
         link: "/doctor/manage-patient-remote",
+      },
+    ],
+  },
+  {
+    //Đổi mật khẩu
+    name: "Đổi mật khẩu",
+    menus: [
+      {
+        name: "Đổi mật khẩu",
+        link: "/system/edit-password",
       },
     ],
   },

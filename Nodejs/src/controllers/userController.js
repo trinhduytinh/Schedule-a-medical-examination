@@ -87,7 +87,6 @@ let getAllCode = async (req, res) => {
     let data = await userService.getAllCodeService(req.query.type);
     return res.status(200).json(data);
   } catch (e) {
-    console.log("Get all code error: ", e);
     return res.status(200).json({
       errCode: -1,
       errMessage: "Error from server",
@@ -114,7 +113,6 @@ let changePassword = async (req, res) => {
   });
 };
 let forgotPassword = async (req, res) => {
-  console.log("check email co", req.query);
   if (!req.query.email || !req.query.language) {
     return res.status(500).json({
       errorCode: 1,
@@ -146,6 +144,17 @@ let confirmPassword = async (req, res) => {
     message: userData.errMessage,
   });
 };
+let handleGetUserInfo = async (req, res) => {
+  try {
+    let infor = await userService.handleGetUserInfo(req.query.doctorId);
+    return res.status(200).json(infor);
+  } catch (e) {
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from the server",
+    });
+  }
+};
 module.exports = {
   handleLogin: handleLogin,
   handleGetAllUsers: handleGetAllUsers,
@@ -157,4 +166,5 @@ module.exports = {
   forgotPassword: forgotPassword,
   confirmPassword: confirmPassword,
   handleCreateNewUsersLogin: handleCreateNewUsersLogin,
+  handleGetUserInfo: handleGetUserInfo,
 };
