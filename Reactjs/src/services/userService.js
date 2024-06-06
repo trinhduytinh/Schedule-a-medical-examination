@@ -80,6 +80,19 @@ const createNewClinic = (data) => {
 const getAllClinic = () => {
   return axios.get(`/api/get-clinic`);
 };
+const deleteClinic = (specialtyId) => {
+  return axios.delete("/api/delete-clinic", {
+    data: {
+      id: specialtyId,
+    },
+  });
+};
+const editClinicService = (inputData) => {
+  return axios.put("/api/edit-clinic", inputData);
+};
+const getClinicPage = (page, limit) => {
+  return axios.get(`/api/get-clinic?page=${page}&limit=${limit}`);
+};
 const getAllDetailClinicById = (data) => {
   return axios.get(`/api/get-detail-clinic-by-id?id=${data.id}`);
 };
@@ -120,6 +133,19 @@ const getAllDetailSpecialtyRemoteById = (data) => {
   return axios.get(
     `/api/get-detail-specialty-remote-by-id?id=${data.id}&location=${data.location}`
   );
+};
+const deleteSpecialty = (specialtyId) => {
+  return axios.delete("/api/delete-specialty", {
+    data: {
+      id: specialtyId,
+    },
+  });
+};
+const editSpecialtyService = (inputData) => {
+  return axios.put("/api/edit-specialty", inputData);
+};
+const getSpecialtyPage = (page, limit) => {
+  return axios.get(`/api/get-specialty?page=${page}&limit=${limit}`);
 };
 const getScheduleRemoteByDate = (doctorID, date) => {
   return axios.get(
@@ -167,6 +193,10 @@ const forgotPassword = (email, language) => {
 const createNewUserLogin = (data) => {
   return axios.post(`/api/create-new-user-login`, data);
 };
+const getDoctorInfor = (doctorId) => {
+  return axios.get(`/api/get-user-info?doctorId=${doctorId}`);
+};
+
 export {
   handleLoginApi,
   getAllUsers,
@@ -213,4 +243,11 @@ export {
   confirmPassword,
   forgotPassword,
   createNewUserLogin,
+  getDoctorInfor,
+  deleteSpecialty,
+  editSpecialtyService,
+  getSpecialtyPage,
+  getClinicPage,
+  deleteClinic,
+  editClinicService,
 };

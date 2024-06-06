@@ -90,7 +90,6 @@ class ModalHandbookEdit extends Component {
     }
   };
   render() {
-    console.log(this.state);
     return (
       <Modal
         isOpen={this.props.isOpen}

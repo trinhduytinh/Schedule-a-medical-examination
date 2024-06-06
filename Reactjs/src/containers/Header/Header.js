@@ -3,10 +3,12 @@ import { connect } from "react-redux";
 import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
 import * as actions from "../../store/actions";
 import Navigator from "../../components/Navigator";
-import { adminMenu, doctorMenu } from "./menuApp";
+import { adminMenu, doctorMenu, doctorMenuRemote } from "./menuApp";
 import { LANGUAGES, USER_ROLE } from "../../utils";
 import "./Header.scss";
 import { isEmpty } from "lodash";
+import { getDoctorInfor } from "../../services/userService";
+import { toast } from "react-toastify";
 
 class Header extends Component {
   constructor(props) {
@@ -18,20 +20,29 @@ class Header extends Component {
   handleChangeLanguage = (event) => {
     this.props.changeLanguageAppRedux(event.target.value);
   };
-  componentDidMount() {
+  async componentDidMount() {
     let { userInfo } = this.props;
     let menu = [];
     if (userInfo && !isEmpty(userInfo)) {
       let role = userInfo.roleId;
-      if(role === USER_ROLE.ADMIN)
-        menu = adminMenu;
-      if(role === USER_ROLE.DOCTOR)
-        menu = doctorMenu;
+      if (role === USER_ROLE.ADMIN) menu = adminMenu;
+      if (role === USER_ROLE.DOCTOR) {
+        let res = await getDoctorInfor(userInfo.id);
+        if (res && res.errCode === 0) {
+          if (res.data && res.data.remote === "RM") {
+            menu = doctorMenuRemote;
+          }
+          if (res.data && res.data.remote === "RM0") {
+            menu = doctorMenu;
+          }
+        } else {
+          toast.error("Lỗi!");
+        }
+      }
     }
     this.setState({
       menuApp: menu,
-    })
-
+    });
   }
   render() {
     const { processLogout, language, userInfo } = this.props;

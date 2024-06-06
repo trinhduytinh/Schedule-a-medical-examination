@@ -82,22 +82,20 @@ let getAllHandbook = (userId, userRole) => {
   return new Promise(async (resolve, reject) => {
     try {
       let data;
-      if (userRole === 'R1') {
+      if (userRole === "R1") {
         data = await db.Handbook.findAll();
-      } else if (userRole === 'R2') {
+      } else if (userRole === "R2") {
         // Assuming userId is associated with Handbook Id
         data = await db.Handbook.findAll({ where: { doctorId: userId } });
       } else {
         // Handle other roles if needed
         data = [];
       }
-
       if (data && data.length > 0) {
         data.forEach((item) => {
           item.image = new Buffer(item.image, "base64").toString("binary");
         });
       }
-
       resolve({
         errCode: 0,
         errMessage: "ok",
@@ -158,7 +156,6 @@ let getDetailHandbookById = (inputId) => {
 let updateHandbookData = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-     
       if (
         !data.title ||
         !data.description ||
@@ -210,9 +207,6 @@ let updateHandbookData = (data) => {
         handbook.descriptionMarkdownJa = descriptionMarkdownJa;
         handbook.doctorId = data.doctorId;
         handbook.image = data.imageBase64;
-        if (data.avatar) {
-          handbook.image = data.avatar;
-        }
         await handbook.save();
         resolve({
           errCode: 0,

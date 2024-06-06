@@ -104,6 +104,31 @@ let getAllClinic = () => {
     }
   });
 };
+let getClinicWithPagination = (page, limit) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let offset = (page - 1) * limit;
+      //js object destructuring
+      const { count, rows } = await db.Clinic.findAndCountAll({
+        offset: offset,
+        limit: limit,
+      });
+      let totalPages = Math.ceil(count / limit);
+      let data = {
+        totalRows: count,
+        totalPages: totalPages,
+        clinic: rows,
+      };
+      resolve({
+        errCode: 0,
+        errMessage: "ok",
+        data,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 let getDetailClinicById = (inputId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -154,8 +179,109 @@ let getDetailClinicById = (inputId) => {
     }
   });
 };
+let deleteClinic = (id) => {
+  return new Promise(async (resolve, reject) => {
+    let clinic = await db.Clinic.findOne({
+      where: { id: id },
+    });
+    if (!clinic) {
+      resolve({
+        errCode: 2,
+        errMessage: `The clinic isn't exist`,
+      });
+    }
+    await db.Clinic.destroy({
+      where: { id: id },
+    });
+    resolve({
+      errCode: 0,
+      errMessage: `The clinic is deleted`,
+    });
+  });
+};
+let editClinic = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (
+        !data.name ||
+        !data.address ||
+        !data.imageBase64 ||
+        !data.descriptionHTML ||
+        !data.descriptionMarkdown
+      ) {
+        resolve({
+          errCode: 2,
+          errMessage: `Missing required parameters`,
+        });
+      }
+      let clinic = await db.Clinic.findOne({
+        where: { id: data.id },
+        raw: false,
+      });
+      if (clinic) {
+        let nameEn = "",
+          nameJa = "",
+          addressEn = "",
+          addressJa = "",
+          descriptionHTMLEn = "",
+          descriptionHTMLJa = "",
+          descriptionMarkdownEn = "",
+          descriptionMarkdownJa = "";
+
+        try {
+          // Dịch các trường dữ liệu
+          nameEn = await translateText(data.name, "en");
+          nameJa = await translateText(data.name, "ja");
+          addressEn = await translateText(data.address, "en");
+          addressJa = await translateText(data.address, "ja");
+          descriptionHTMLEn = await translateText(data.descriptionHTML, "en");
+          descriptionHTMLJa = await translateText(data.descriptionHTML, "ja");
+          descriptionMarkdownEn = await translateText(
+            data.descriptionMarkdown,
+            "en"
+          );
+          descriptionMarkdownJa = await translateText(
+            data.descriptionMarkdown,
+            "ja"
+          );
+        } catch (err) {
+          console.error(err);
+        }
+        clinic.name = data.name;
+        clinic.nameEn = nameEn;
+        clinic.nameJa = nameJa;
+        clinic.address = data.address;
+        clinic.addressEn = addressEn;
+        clinic.addressJa = addressJa;
+        clinic.image = data.imageBase64;
+        clinic.descriptionHTML = data.descriptionHTML;
+        clinic.descriptionHTMLEn = descriptionHTMLEn;
+        clinic.descriptionHTMLJa = descriptionHTMLJa;
+        clinic.descriptionMarkdown = data.descriptionMarkdown;
+        clinic.descriptionMarkdownEn = descriptionMarkdownEn;
+        clinic.descriptionMarkdownJa = descriptionMarkdownJa;
+        clinic.image = data.imageBase64;
+        await clinic.save();
+        resolve({
+          errCode: 0,
+          errMessage: `Update the clinic succeeds!`,
+        });
+      } else {
+        resolve({
+          errCode: 1,
+          errMessage: `Clinic's not found!`,
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 module.exports = {
   createClinic: createClinic,
   getAllClinic: getAllClinic,
   getDetailClinicById: getDetailClinicById,
+  editClinic: editClinic,
+  deleteClinic: deleteClinic,
+  getClinicWithPagination: getClinicWithPagination,
 };
