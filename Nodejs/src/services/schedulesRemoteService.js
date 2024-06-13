@@ -5,6 +5,7 @@ import emailService from "./emailService";
 import { v4 as uuidv4 } from "uuid";
 const PayOS = require("@payos/node"); // thanh toan hoa don
 require("dotenv").config();
+const { Op } = require("sequelize");
 const payOS = new PayOS(
   process.env.PAYOS_CLIENT_ID,
   process.env.PAYOS_API_KEY,
@@ -111,6 +112,65 @@ let getScheduleRemoteByDate = (doctorID, date) => {
         resolve({
           errCode: 0,
           data: data,
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+let updateScheduleRemote = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.arrScheduleRemote || !data.doctorID || !data.formateDate) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required parameters!",
+        });
+      } else {
+        let scheduleRemote = data.arrScheduleRemote;
+        if (scheduleRemote && scheduleRemote.length > 0) {
+          scheduleRemote = scheduleRemote.map((item) => {
+            item.maxNumber = 1;
+            return item;
+          });
+        }
+        // Nhận tất cả dữ liệu hiện có
+        let existing = await db.Schedule_Remote.findAll({
+          where: { doctorID: data.doctorID, date: data.formateDate },
+          attributes: ["timeType", "date", "doctorID", "maxNumber"],
+          raw: true,
+        });
+        console.log("check existing", existing);
+        // Xác định lịch trình cần xóa
+        let toDelete = _.differenceWith(existing, scheduleRemote, (a, b) => {
+          return a.timeType === b.timeType && +a.date === +b.date;
+        });
+
+        // Xác định lịch trình để tạo
+        let toCreate = _.differenceWith(scheduleRemote, existing, (a, b) => {
+          return a.timeType === b.timeType && +a.date === +b.date;
+        });
+        // Thực hiện xóa
+        if (toDelete && toDelete.length > 0) {
+          console.log("check toDelete", toDelete);
+          await db.Schedule_Remote.destroy({
+            where: {
+              doctorID: data.doctorID,
+              date: data.formateDate,
+              timeType: { [Op.in]: toDelete.map((item) => item.timeType) },
+            },
+          });
+        }
+
+        // Perform creations
+        if (toCreate && toCreate.length > 0) {
+          await db.Schedule_Remote.bulkCreate(toCreate);
+        }
+
+        resolve({
+          errCode: 0,
+          errMessage: "Schedule_Remote updated successfully!",
         });
       }
     } catch (e) {
@@ -406,4 +466,5 @@ module.exports = {
   postVerifyBookAppointmentRemote: postVerifyBookAppointmentRemote,
   getListPatientRemoteForDoctor: getListPatientRemoteForDoctor,
   createPaymentBookingRemote: createPaymentBookingRemote,
+  updateScheduleRemote: updateScheduleRemote,
 };

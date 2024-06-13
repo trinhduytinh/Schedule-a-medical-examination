@@ -465,6 +465,7 @@ let getDetailDoctorById = (inputId) => {
 };
 let bulkCreateSchedule = (data) => {
   return new Promise(async (resolve, reject) => {
+    console.log("check data bulkCreateSchedule", data);
     try {
       if (!data.arrSchedule || !data.doctorID || !data.formateDate) {
         resolve({
@@ -591,6 +592,66 @@ let getExtraInforDoctorById = (doctorId) => {
     }
   });
 };
+let updateSchedule = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.arrSchedule || !data.doctorID || !data.formateDate) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required parameters!",
+        });
+      } else {
+        let schedule = data.arrSchedule;
+        if (schedule && schedule.length > 0) {
+          schedule = schedule.map((item) => {
+            item.maxNumber = MAX_NUMBER_SCHEDULE;
+            return item;
+          });
+        }
+        // Get all existing data
+        let existing = await db.Schedule.findAll({
+          where: { doctorID: data.doctorID, date: data.formateDate },
+          attributes: ["timeType", "date", "doctorID", "maxNumber"],
+          raw: true,
+        });
+
+        // Identify schedules to delete
+        let toDelete = _.differenceWith(existing, schedule, (a, b) => {
+          return a.timeType === b.timeType && +a.date === +b.date;
+        });
+
+        // Identify schedules to create
+        let toCreate = _.differenceWith(schedule, existing, (a, b) => {
+          return a.timeType === b.timeType && +a.date === +b.date;
+        });
+
+        // Perform deletions
+        if (toDelete && toDelete.length > 0) {
+          await db.Schedule.destroy({
+            where: {
+              doctorID: data.doctorID,
+              date: data.formateDate,
+              timeType: { [Op.in]: toDelete.map((item) => item.timeType) },
+            },
+          });
+        }
+
+        // Perform creations
+        if (toCreate && toCreate.length > 0) {
+          await db.Schedule.bulkCreate(toCreate);
+        }
+
+        resolve({
+          errCode: 0,
+          errMessage: "Schedule updated successfully!",
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 let getProfileDoctorById = (inputId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -834,4 +895,5 @@ module.exports = {
   sendRemedy: sendRemedy,
   getStars: getStars,
   totalStars: totalStars,
+  updateSchedule: updateSchedule,
 };

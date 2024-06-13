@@ -81,6 +81,17 @@ let getScheduleByDate = async (req, res) => {
     });
   }
 };
+let updateSchedule = async (req, res) => {
+  try {
+    let infor = await doctorService.updateSchedule(req.body);
+    return res.status(200).json(infor);
+  } catch (error) {
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from the server",
+    });
+  }
+};
 let getExtraInforDoctorById = async (req, res) => {
   try {
     let infor = await doctorService.getExtraInforDoctorById(req.query.doctorId);
@@ -145,7 +156,10 @@ let getStars = async (req, res) => {
 };
 let totalStars = async (req, res) => {
   try {
-    let response = await doctorService.totalStars(req.query.doctorId, +req.query.newStars);
+    let response = await doctorService.totalStars(
+      req.query.doctorId,
+      +req.query.newStars
+    );
     return res.status(200).json(response);
   } catch (e) {
     console.log(e);
@@ -168,4 +182,5 @@ module.exports = {
   sendRemedy: sendRemedy,
   getStars: getStars,
   totalStars: totalStars,
+  updateSchedule: updateSchedule,
 };

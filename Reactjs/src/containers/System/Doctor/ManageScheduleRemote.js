@@ -12,6 +12,8 @@ import { toast } from "react-toastify";
 import {
   getAllDoctorRemote,
   saveBulkScheduleRemoteDoctor,
+  getScheduleRemoteByDate,  // Import the new function
+  updateScheduleRemoteDoctor, // Import the update function
 } from "../../../services/userService";
 
 class ManageScheduleRemote extends Component {
@@ -21,38 +23,27 @@ class ManageScheduleRemote extends Component {
       listDoctors: [],
       selectedDoctor: {},
       currentDate: moment(new Date()).startOf("day").valueOf(),
-      rangetime: [""], // khởi tạo với một phần tử trống
+      rangetime: [""],
+      isUpdate: false,
     };
   }
 
   async componentDidMount() {
-    // this.props.fetchAllDoctors();
-    let res = await getAllDoctorRemote();
-    if (res && res.errCode === 0) {
-      let dataSelect = this.buildDataInputSelect(res.data);
-      this.setState({
-        listDoctors: dataSelect,
-      });
-    }
-    // this.props.fetchAllsScheduleTime();
+    let { userInfo } = this.props;
+    let dataSelect = this.buildDataInputSelect([userInfo]);
+    this.setState({
+      listDoctors: dataSelect,
+      selectedDoctor: dataSelect[0], // Automatically select the logged-in doctor
+    });
   }
 
   async componentDidUpdate(prevProps, prevState, snapshot) {
-    // if (prevProps.allDoctors !== this.props.allDoctors) {
-    //   let dataSelect = this.buildDataInputSelect(this.props.allDoctors);
-    //   this.setState({
-    //     listDoctors: dataSelect,
-    //   });
-    // }
-
     if (prevProps.language !== this.props.language) {
-      let res = await getAllDoctorRemote();
-      if (res && res.errCode === 0) {
-        let dataSelect = this.buildDataInputSelect(res.data);
-        this.setState({
-          listDoctors: dataSelect,
-        });
-      }
+      let dataSelect = this.buildDataInputSelect([this.props.userInfo]);
+      this.setState({
+        listDoctors: dataSelect,
+        selectedDoctor: dataSelect[0], // Automatically select the logged-in doctor
+      });
     }
   }
 
@@ -72,14 +63,29 @@ class ManageScheduleRemote extends Component {
     return result;
   };
 
-  handleChangeSelect = async (selectedOption) => {
-    this.setState({ selectedDoctor: selectedOption });
-  };
+  handleOnchangeDatePicker = async (data) => {
+    let selectedDate = data[0];
+    let formateDate = new Date(selectedDate).getTime();
+    let { selectedDoctor } = this.state;
 
-  handleOnchangeDatePicker = (data) => {
-    this.setState({
-      currentDate: data[0],
-    });
+    if (selectedDoctor && !_.isEmpty(selectedDoctor)) {
+      let res = await getScheduleRemoteByDate(selectedDoctor.value, formateDate);
+      if (res && res.errCode === 0) {
+        let scheduleData = res.data;
+        let updatedRangetime = scheduleData.length > 0 ? scheduleData.map((item) => item.timeType) : [""];
+        this.setState({
+          currentDate: selectedDate,
+          rangetime: updatedRangetime,
+          isUpdate: scheduleData.length > 0,
+        });
+      } else {
+        this.setState({
+          currentDate: selectedDate,
+          rangetime: [""],
+          isUpdate: false,
+        });
+      }
+    }
   };
 
   handleTimeChange = (index, event) => {
@@ -105,7 +111,7 @@ class ManageScheduleRemote extends Component {
   };
 
   handleSaveSchedule = async () => {
-    let { rangetime, selectedDoctor, currentDate } = this.state;
+    let { rangetime, selectedDoctor, currentDate, isUpdate } = this.state;
     let result = [];
     if (!selectedDoctor || _.isEmpty(selectedDoctor)) {
       toast.error("Invalid selected doctor!");
@@ -122,7 +128,7 @@ class ManageScheduleRemote extends Component {
           let object = {};
           object.doctorID = selectedDoctor.value;
           object.date = formateDate;
-          object.timeType = time; // Giả định time là keyMap hoặc một định danh nào đó
+          object.timeType = time;
           result.push(object);
         }
       });
@@ -130,23 +136,33 @@ class ManageScheduleRemote extends Component {
       toast.error("Invalid selected time!");
       return;
     }
-    let res = await saveBulkScheduleRemoteDoctor({
-      arrScheduleRemote: result,
-      doctorID: selectedDoctor.value,
-      formateDate: formateDate,
-    });
+
+    let res;
+    if (isUpdate) {
+      res = await updateScheduleRemoteDoctor({
+        arrScheduleRemote: result,
+        doctorID: selectedDoctor.value,
+        formateDate: formateDate,
+      });
+    } else {
+      res = await saveBulkScheduleRemoteDoctor({
+        arrScheduleRemote: result,
+        doctorID: selectedDoctor.value,
+        formateDate: formateDate,
+      });
+    }
 
     if (res && res.errCode === 0) {
-      toast.success("Information saved successfully!");
+      toast.success(isUpdate ? "Schedule updated successfully!" : "Schedule saved successfully!");
     } else {
-      toast.error("Error saving information!");
-      console.log("error saveBulkScheduleDoctor: ", res);
+      toast.error("Error saving schedule!");
+      console.log("error saveBulkScheduleRemoteDoctor: ", res);
     }
   };
 
   render() {
     let { language } = this.props;
-    let { rangetime } = this.state;
+    let { rangetime, isUpdate } = this.state;
     let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
     return (
       <div className="manage-schedule-container">
@@ -161,8 +177,8 @@ class ManageScheduleRemote extends Component {
               </label>
               <Select
                 value={this.state.selectedDoctor}
-                onChange={this.handleChangeSelect}
                 options={this.state.listDoctors}
+                isDisabled={true} // Disable the Select component
               />
             </div>
             <div className="col-6 form-group">
@@ -205,7 +221,7 @@ class ManageScheduleRemote extends Component {
             <button
               className="btn btn-primary btn-save-schedule"
               onClick={this.handleSaveSchedule}>
-              <FormattedMessage id="manage-schedule.save" />
+              <FormattedMessage id={isUpdate ? "manage-schedule.update" : "manage-schedule.save"} />
             </button>
           </div>
         </div>
@@ -218,8 +234,7 @@ const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.user.isLoggedIn,
     language: state.app.language,
-    allDoctors: state.admin.allDoctors,
-    allScheduleTime: state.admin.allScheduleTime,
+    userInfo: state.user.userInfo, // Use userInfo for logged-in doctor
   };
 };
 

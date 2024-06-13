@@ -9,7 +9,7 @@ import DatePicker from "../../../components/Input/DatePicker";
 import moment from "moment";
 import _, { times } from "lodash";
 import { toast } from "react-toastify";
-import { saveBulkScheduleDoctor } from "../../../services/userService";
+import { saveBulkScheduleDoctor, getScheduleDoctorByDate, updateScheduleDoctor } from "../../../services/userService"; // Ensure getScheduleDoctorByDate and updateSchedule are imported
 
 class ManageSchedule extends Component {
   constructor(props) {
@@ -19,6 +19,7 @@ class ManageSchedule extends Component {
       selectedDoctor: {},
       currentDate: moment(new Date()).startOf("day").valueOf(), // lay ngay ko lay gio de phu hop vs thu vien lich
       rangetime: [],
+      isUpdate: false, // Track if the schedule is being updated
     };
   }
 
@@ -75,10 +76,35 @@ class ManageSchedule extends Component {
     this.setState({ selectedDoctor: selectedOption });
   };
 
-  handleOnchangeDatePicker = (data) => {
-    this.setState({
-      currentDate: data[0],
-    });
+  handleOnchangeDatePicker = async (data) => {
+    let selectedDate = data[0];
+    let formateDate = new Date(selectedDate).getTime();
+    let { selectedDoctor } = this.state;
+
+    if (selectedDoctor && !_.isEmpty(selectedDoctor)) {
+      let res = await getScheduleDoctorByDate(selectedDoctor.value, formateDate);
+      if (res && res.errCode === 0) {
+        let scheduleData = res.data;
+        let updatedRangetime = this.state.rangetime.map((time) => {
+          if (scheduleData && scheduleData.length > 0) {
+            let isSelected = scheduleData.some((item) => item.timeType === time.keyMap);
+            return { ...time, isSelected: isSelected };
+          }
+          return { ...time, isSelected: false };
+        });
+
+        this.setState({
+          currentDate: selectedDate,
+          rangetime: updatedRangetime,
+          isUpdate: scheduleData.length > 0, // Only set to true if there is existing schedule
+        });
+      } else {
+        this.setState({
+          currentDate: selectedDate,
+          isUpdate: false, // Reset isUpdate if there is no schedule
+        });
+      }
+    }
   };
 
   handleClickBtnTime = (time) => {
@@ -95,7 +121,7 @@ class ManageSchedule extends Component {
   };
 
   handleSaveSchedule = async () => {
-    let { rangetime, selectedDoctor, currentDate } = this.state;
+    let { rangetime, selectedDoctor, currentDate, isUpdate } = this.state;
     let result = [];
     if (selectedDoctor && _.isEmpty(selectedDoctor)) {
       toast.error("Invalid selected doctor!");
@@ -105,8 +131,6 @@ class ManageSchedule extends Component {
       toast.error("Invalid date!");
       return;
     }
-    // let formateDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
-    // let formateDate = moment(currentDate).unix();
     let formateDate = new Date(currentDate).getTime();
     if (rangetime && rangetime.length > 0) {
       let selectedTime = rangetime.filter((item) => item.isSelected === true);
@@ -123,14 +147,24 @@ class ManageSchedule extends Component {
         return;
       }
     }
-    let res = await saveBulkScheduleDoctor({
-      arrSchedule: result,
-      doctorID: selectedDoctor.value,
-      formateDate: formateDate,
-    });
+
+    let res;
+    if (isUpdate) {
+      res = await updateScheduleDoctor({
+        arrSchedule: result,
+        doctorID: selectedDoctor.value,
+        formateDate: formateDate,
+      });
+    } else {
+      res = await saveBulkScheduleDoctor({
+        arrSchedule: result,
+        doctorID: selectedDoctor.value,
+        formateDate: formateDate,
+      });
+    }
 
     if (res && res.errCode === 0) {
-      toast.success("Save InFor succeed!");
+      toast.success(isUpdate ? "Update InFor succeed!" : "Save InFor succeed!");
     } else {
       toast.error("Error SaveBulkScheduleDoctor!");
       console.log("error saveBulkScheduleDoctor: ", res);
@@ -139,7 +173,7 @@ class ManageSchedule extends Component {
 
   render() {
     let { language } = this.props;
-    let { rangetime } = this.state;
+    let { rangetime, isUpdate } = this.state;
     let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
     return (
       <div className="manage-schedule-container">
@@ -193,7 +227,7 @@ class ManageSchedule extends Component {
             <button
               className="btn btn-primary btn-save-schedule"
               onClick={() => this.handleSaveSchedule()}>
-              <FormattedMessage id="manage-schedule.save" />
+              <FormattedMessage id={isUpdate ? "manage-schedule.update" : "manage-schedule.save"} />
             </button>
           </div>
         </div>

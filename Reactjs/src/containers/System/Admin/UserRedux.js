@@ -69,7 +69,6 @@ class UserRedux extends Component {
       let arrGenders = this.props.genderRedux;
       let arrRoles = this.props.roleRedux;
       let arrPositions = this.props.positionRedux;
-      console.log("check vo day:", );
       this.setState({
         email: "",
         password: "",

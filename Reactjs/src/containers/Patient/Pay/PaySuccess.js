@@ -50,11 +50,11 @@ class PaySuccess extends Component {
       console.error("No data parameter found");
     }
   };
-  backHome = () =>{
+  backHome = () => {
     if (this.props.history) {
       this.props.history.push(`/home`);
     }
-  }
+  };
   render() {
     return (
       <>
@@ -65,10 +65,16 @@ class PaySuccess extends Component {
               className="img-pay-success"
               style={{ backgroundImage: `url(${ImgPaySuccess})` }}></div>
           </div>
-          <div className="title-pay"><FormattedMessage id={"pay.payment-success"}/></div>
-          <div className="title-pay"><FormattedMessage id={"pay.check-mail"}/></div>
+          <div className="title-pay">
+            <FormattedMessage id={"pay.payment-success"} />
+          </div>
+          <div className="title-pay">
+            <FormattedMessage id={"pay.check-mail"} />
+          </div>
           <div className="pay mt-4">
-            <button className="btn btn-primary" onClick={this.backHome()}><FormattedMessage id={"pay.return-to-home-page"}/></button>
+            <button className="btn btn-primary" onClick={() => this.backHome()}>
+              <FormattedMessage id={"pay.return-to-home-page"} />
+            </button>
           </div>
         </div>
       </>

@@ -51,6 +51,9 @@ const getScheduleDoctorByDate = (doctorID, date) => {
     `/api/get-schedule-doctor-by-date?doctorID=${doctorID}&date=${date}`
   );
 };
+const updateScheduleDoctor = (data) => {
+  return axios.put("/api/update-schedule-doctor-by-date", data);
+};
 const getExtraInforDoctorById = (doctorId) => {
   return axios.get(`/api/get-extra-infor-doctor-by-id?doctorId=${doctorId}`);
 };
@@ -152,6 +155,9 @@ const getScheduleRemoteByDate = (doctorID, date) => {
     `/api/get-schedule-remote-doctor-by-date?doctorID=${doctorID}&date=${date}`
   );
 };
+const updateScheduleRemoteDoctor = (data) => {
+  return axios.put("/api/update-schedule-remote-doctor-by-date", data);
+};
 const postPatientBookAppointmentRemote = (data) => {
   return axios.post("/api/patient-book-appointment-remote", data);
 };
@@ -250,4 +256,6 @@ export {
   getClinicPage,
   deleteClinic,
   editClinicService,
+  updateScheduleDoctor,
+  updateScheduleRemoteDoctor
 };

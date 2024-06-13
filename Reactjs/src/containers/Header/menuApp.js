@@ -3,12 +3,12 @@ export const adminMenu = [
     //quản lý người dùng
     name: "menu.admin.manage-user",
     menus: [
+      // {
+      //   name: "menu.admin.crud",
+      //   link: "/system/user-manage",
+      // },
       {
-        name: "menu.admin.crud",
-        link: "/system/user-manage",
-      },
-      {
-        name: "menu.admin.crud-redux",
+        name: "Quản lý tài khoản",
         link: "/system/user-redux",
       },
       {
@@ -22,16 +22,16 @@ export const adminMenu = [
       // {
       //     name: 'menu.admin.manage-admin', link: '/system/user-admin',
       // },
-      {
-        //quản lý kế hoạch kahsm bệnh cảu bác sĩ
+      // {
+      //   //quản lý kế hoạch kahsm bệnh cảu bác sĩ
 
-        name: "menu.doctor.manage-schedule",
-        link: "/doctor/manage-schedule",
-      },
-      {
-        name: "quản lí lịch khám từ xa",
-        link: "/doctor/manage-schedule-remote",
-      },
+      //   name: "menu.doctor.manage-schedule",
+      //   link: "/doctor/manage-schedule",
+      // },
+      // {
+      //   name: "quản lí lịch khám từ xa",
+      //   link: "/doctor/manage-schedule-remote",
+      // },
     ],
   },
   {
