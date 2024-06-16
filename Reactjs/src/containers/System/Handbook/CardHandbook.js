@@ -23,6 +23,7 @@ class CardHandbook extends Component {
       let res = await deleteHandbook(data.id);
       if (res && res.errCode == 0) {
         toast.success(res.errMessage);
+        this.props.refreshHandbooks(); // Gọi hàm refresh từ component cha
         // await ();
       } else {
         toast.error(res.errMessage);
@@ -69,7 +70,7 @@ class CardHandbook extends Component {
                 {language === LANGUAGES.VI
                   ? data.title
                   : language === LANGUAGES.EN
-                  ? data.title.En
+                  ? data.titleEn
                   : language === LANGUAGES.JA
                   ? data.titleJa
                   : ""}

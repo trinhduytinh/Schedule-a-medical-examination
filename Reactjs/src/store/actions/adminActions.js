@@ -351,7 +351,7 @@ export const fetchRequiredDoctorInFoFailed = () => ({
 export const fetchAllHandbooks = () => {
   return async (dispatch, getState) => {
     try {
-      let res = await getAllHandbook(0, "R1");
+      let res = await getAllHandbook({ doctorId: 0, role: "R1" });
       if (res && res.errCode === 0) {
         dispatch({
           type: actionTypes.FETCH_ALL_HANDBOOK_SUCCESS,

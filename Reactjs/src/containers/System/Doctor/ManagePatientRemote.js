@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
 import DatePicker from "../../../components/Input/DatePicker";
 import LoadingOverlay from "react-loading-overlay"; // mang hinh load doi
 import {
+  deleteBookingDoctor,
   getAllPatientForDoctorRemote,
   handleLoginApi,
   postSendRemedy,
@@ -82,6 +83,16 @@ class ManagePatientRemote extends Component {
         ? "http://localhost:3000/doctor-call"
         : `${window.location.origin}/doctor-call`;
     window.open(currentURL, "_blank");
+  };
+  handleBtnDelete = async (item) => {
+    let res = await deleteBookingDoctor(item.id);
+    console.log("check item", res);
+    if (res && res.errCode === 0) {
+      toast.success(res.errMessage);
+      this.getDataPatient();
+    } else {
+      toast.error(res.errMessage);
+    }
   };
   closeRemedyModal = () => {
     this.setState({
@@ -164,9 +175,7 @@ class ManagePatientRemote extends Component {
                       <th>
                         <FormattedMessage id={"manage-patient.reason"} />
                       </th>
-                      <th>
-                        Mã ID
-                      </th>
+                      <th>Mã ID</th>
                       <th>
                         <FormattedMessage id={"manage-patient.action"} />
                       </th>
@@ -211,13 +220,18 @@ class ManagePatientRemote extends Component {
                                   id={"manage-patient.submit"}
                                 />
                               </button>
+                              <button
+                                className="mp-btn-delete"
+                                onClick={() => this.handleBtnDelete(item)}>
+                                Xóa
+                              </button>
                             </td>
                           </tr>
                         );
                       })
                     ) : (
                       <tr>
-                        <td colSpan={8} style={{ textAlign: "center" }}>
+                        <td colSpan={9} style={{ textAlign: "center" }}>
                           <FormattedMessage id={"manage-patient.no-data"} />
                         </td>
                       </tr>

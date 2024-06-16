@@ -3,12 +3,12 @@ export const adminMenu = [
     //quản lý người dùng
     name: "menu.admin.manage-user",
     menus: [
+      // {
+      //   name: "menu.admin.crud",
+      //   link: "/system/user-manage",
+      // },
       {
-        name: "menu.admin.crud",
-        link: "/system/user-manage",
-      },
-      {
-        name: "menu.admin.crud-redux",
+        name: "menu.admin.account-management",
         link: "/system/user-redux",
       },
       {
@@ -22,16 +22,16 @@ export const adminMenu = [
       // {
       //     name: 'menu.admin.manage-admin', link: '/system/user-admin',
       // },
-      {
-        //quản lý kế hoạch kahsm bệnh cảu bác sĩ
+      // {
+      //   //quản lý kế hoạch kahsm bệnh cảu bác sĩ
 
-        name: "menu.doctor.manage-schedule",
-        link: "/doctor/manage-schedule",
-      },
-      {
-        name: "quản lí lịch khám từ xa",
-        link: "/doctor/manage-schedule-remote",
-      },
+      //   name: "menu.doctor.manage-schedule",
+      //   link: "/doctor/manage-schedule",
+      // },
+      // {
+      //   name: "quản lí lịch khám từ xa",
+      //   link: "/doctor/manage-schedule-remote",
+      // },
     ],
   },
   {
@@ -66,10 +66,10 @@ export const adminMenu = [
   },
   {
     //Đổi mật khẩu
-    name: "Đổi mật khẩu",
+    name: "menu.admin.change-password",
     menus: [
       {
-        name: "Đổi mật khẩu",
+        name: "menu.admin.change-password",
         link: "/system/edit-password",
       },
     ],
@@ -91,17 +91,17 @@ export const doctorMenu = [
         link: "/doctor/manage-patient",
       },
       {
-        name: "Quản lý bài viết",
+        name: "menu.doctor.manage-posts",
         link: "/doctor/manage-handbook",
       },
     ],
   },
   {
     //Đổi mật khẩu
-    name: "Đổi mật khẩu",
+    name: "menu.admin.change-password",
     menus: [
       {
-        name: "Đổi mật khẩu",
+        name: "menu.admin.change-password",
         link: "/system/edit-password",
       },
     ],
@@ -122,25 +122,25 @@ export const doctorMenuRemote = [
         link: "/doctor/manage-patient",
       },
       {
-        name: "Quản lý bài viết",
+        name: "menu.doctor.manage-posts",
         link: "/doctor/manage-handbook",
       },
       {
-        name: "quản lí lịch khám từ xa",
+        name: "menu.doctor.manage-remote-appointment-schedule",
         link: "/doctor/manage-schedule-remote",
       },
       {
-        name: "Quản lý lịch khám bệnh từ xa",
+        name: "menu.doctor.remote-patient-management",
         link: "/doctor/manage-patient-remote",
       },
     ],
   },
   {
     //Đổi mật khẩu
-    name: "Đổi mật khẩu",
+    name: "menu.admin.change-password",
     menus: [
       {
-        name: "Đổi mật khẩu",
+        name: "menu.admin.change-password",
         link: "/system/edit-password",
       },
     ],

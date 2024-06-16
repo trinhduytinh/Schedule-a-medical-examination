@@ -23,9 +23,10 @@ import "./DoctorCall.scss";
 
 // Import thành phần header tùy chỉnh
 import HomeHeader from "../HomePage/HomeHeader";
+import { FormattedMessage } from "react-intl";
 
 // Kết nối tới máy chủ WebSocket với URL từ biến môi trường
-const socket = io.connect("http://localhost:8081");
+const socket = io.connect(process.env.REACT_APP_SOCKET_IO_URL);
 function DoctorCall() {
   // Khai báo các biến trạng thái cho thành phần
   const [me, setMe] = useState(""); // ID của người dùng hiện tại
@@ -145,10 +146,14 @@ function DoctorCall() {
     <>
       <HomeHeader /> {/* Hiển thị header của trang chủ */}
       <div className="container-call-video container-fluid">
-        <div className="tilte">Khám bệnh từ xa</div>
+        <div className="tilte">
+          <FormattedMessage id={"call-video.telemedicine"} />
+        </div>
         <div className="video-container row">
           <div className="video col-1 me-3">
-            <span className="title-video pb-2">Màng hình của bạn</span>
+            <span className="title-video pb-2">
+              <FormattedMessage id={"call-video.your-screen"} />
+            </span>
             {/* Hiển thị video của mình */}
             {stream && (
               <video
@@ -161,7 +166,9 @@ function DoctorCall() {
             )}
           </div>
           <div className="video col">
-            <span className="title-video">Màng hình của bệnh nhân</span>
+            <span className="title-video">
+              <FormattedMessage id={"call-video.patient-monitor"} />
+            </span>
             {/* Hiển thị video của người dùng khác nếu cuộc gọi được chấp nhận và chưa kết thúc */}
             {callAccepted && !callEnded ? (
               <video
@@ -197,7 +204,7 @@ function DoctorCall() {
                   variant="contained"
                   color="secondary"
                   onClick={leaveCall}>
-                  End Call
+                  <FormattedMessage id={"call-video.end-call"} />
                 </Button>
               ) : (
                 <IconButton
@@ -216,9 +223,9 @@ function DoctorCall() {
           {/* Hiển thị thông báo và nút trả lời khi có cuộc gọi đến */}
           {receivingCall && !callAccepted ? (
             <div className="caller">
-              <h1>{name} is calling...</h1>
+              <h1>{name} <FormattedMessage id={"call-video.is-calling"} /></h1>
               <Button variant="contained" color="primary" onClick={answerCall}>
-                Answer
+                <FormattedMessage id={"call-video.answer"} />
               </Button>
             </div>
           ) : null}

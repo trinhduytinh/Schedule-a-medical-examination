@@ -2,6 +2,7 @@ import db from "../models/index";
 import bcrypt from "bcryptjs";
 import emailService from "./emailService";
 import { v4 as uuidv4 } from "uuid";
+const { Op } = require("sequelize");
 require("dotenv").config();
 const salt = bcrypt.genSaltSync(10);
 
@@ -94,23 +95,46 @@ let getAllUsers = (userId) => {
     }
   });
 };
-let getUserWithPagination = (page, limit) => {
+// Hàm lấy dữ liệu người dùng với phân trang và tìm kiếm
+let getUserWithPagination = (page, limit, search) => {
   return new Promise(async (resolve, reject) => {
     try {
+      // Tính toán vị trí bắt đầu của trang hiện tại
       let offset = (page - 1) * limit;
-      //js object destructuring
+
+      // Tạo điều kiện tìm kiếm nếu có từ khóa tìm kiếm
+      let whereCondition = search
+        ? {
+            [Op.or]: [
+              { email: { [Op.like]: `%${search}%` } }, // Tìm kiếm theo email
+              { firstName: { [Op.like]: `%${search}%` } }, // Tìm kiếm theo tên
+              { lastName: { [Op.like]: `%${search}%` } }, // Tìm kiếm theo họ
+              { address: { [Op.like]: `%${search}%` } }, // Tìm kiếm theo địa chỉ
+            ],
+          }
+        : {};
+
+      // Thực hiện truy vấn lấy dữ liệu người dùng với điều kiện và phân trang
       const { count, rows } = await db.User.findAndCountAll({
+        where: whereCondition,
         offset: offset,
         limit: limit,
       });
+
+      // Tính toán tổng số trang
       let totalPages = Math.ceil(count / limit);
+
+      // Tạo dữ liệu trả về
       let data = {
-        totalRows: count,
-        totalPages: totalPages,
-        users: rows,
+        totalRows: count, // Tổng số hàng
+        totalPages: totalPages, // Tổng số trang
+        users: rows, // Dữ liệu người dùng
       };
+
+      // Giải quyết promise với dữ liệu trả về
       resolve(data);
     } catch (error) {
+      // Bắt lỗi và từ chối promise
       reject(error);
     }
   });
@@ -183,6 +207,7 @@ let handleCreateNewUsersLogin = (data) => {
             password: hashUserPasswordFromBcrypt,
             firstName: data.firstName,
             lastName: data.lastName,
+            roleId: "R3",
           });
           resolve({
             errCode: 0,
@@ -332,7 +357,6 @@ let buildUrlEmail = (email, token) => {
 let forgotPassword = (email, language) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log("check email", email);
       let userData = {};
       let isExist = await checkUserEmail(email);
       if (isExist) {

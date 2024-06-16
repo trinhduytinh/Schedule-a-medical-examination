@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
 import DatePicker from "../../../components/Input/DatePicker";
 import LoadingOverlay from "react-loading-overlay"; // mang hinh load doi
 import {
+  deleteBookingDoctor,
   getAllPatientForDoctor,
   handleLoginApi,
   postSendRemedy,
@@ -75,6 +76,16 @@ class ManagePatient extends Component {
       isOpenRemedyModal: true,
       dataModal: data,
     });
+  };
+  handleBtnDelete = async (item) => {
+    let res = await deleteBookingDoctor(item.id);
+    console.log("check item", res);
+    if (res && res.errCode === 0) {
+      toast.success(res.errMessage);
+      this.getDataPatient();
+    } else {
+      toast.error(res.errMessage);
+    }
   };
   closeRemedyModal = () => {
     this.setState({
@@ -197,6 +208,11 @@ class ManagePatient extends Component {
                                 className="mp-btn-confirm"
                                 onClick={() => this.handleBtnConfirm(item)}>
                                  <FormattedMessage id={"manage-patient.submit"} />
+                              </button>
+                              <button
+                                className="mp-btn-delete"
+                                onClick={() => this.handleBtnDelete(item)}>
+                                Xóa
                               </button>
                             </td>
                           </tr>

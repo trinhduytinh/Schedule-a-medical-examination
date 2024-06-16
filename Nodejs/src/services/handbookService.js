@@ -1,4 +1,5 @@
 const db = require("../models");
+const { Op } = require("sequelize");
 import { translate } from "bing-translate-api";
 async function translateText(text, language) {
   const maxLength = 1000;
@@ -103,6 +104,98 @@ let getAllHandbook = (userId, userRole) => {
       });
     } catch (e) {
       reject(e);
+    }
+  });
+};
+// Hàm lấy dữ liệu bai viet với phân trang và tìm kiếm
+let getAllHandbookWithPagination = (data) => {
+  return new Promise(async (resolve, reject) => {
+    let page = +data.page;
+    let limit = +data.limit;
+    let doctorId = data.doctorId;
+    let role = data.role;
+    let search = data.search;
+    if (!page || !limit || !doctorId || !role) {
+      resolve({ errCode: -1, errMessage: "Missing required parameters!" });
+    }
+
+    try {
+      let offset = (page - 1) * limit;
+      let whereCondition = {};
+
+      if (search) {
+        whereCondition = {
+          [Op.or]: [
+            { title: { [Op.like]: `%${search}%` } },
+            { titleEn: { [Op.like]: `%${search}%` } },
+            { titleJa: { [Op.like]: `%${search}%` } },
+          ],
+        };
+      }
+
+      if (role === "R1") {
+        // Role R1: Admin - Get all handbooks
+        const { count, rows } = await db.Handbook.findAndCountAll({
+          where: whereCondition,
+          offset: offset,
+          limit: limit,
+        });
+
+        // Convert image to binary
+        if (rows && rows.length > 0) {
+          rows.forEach((item) => {
+            item.image = new Buffer(item.image, "base64").toString("binary");
+          });
+        }
+
+        let totalPages = Math.ceil(count / limit);
+        resolve({
+          errCode: 0,
+          errMessage: "OK",
+          data: {
+            rows,
+            totalPages,
+          },
+        });
+      } else if (role === "R2") {
+        // Role R2: Doctor - Get handbooks by doctorId
+        const { count, rows } = await db.Handbook.findAndCountAll({
+          where: {
+            ...whereCondition,
+            doctorId: doctorId,
+          },
+          offset: offset,
+          limit: limit,
+        });
+
+        // Convert image to binary
+        if (rows && rows.length > 0) {
+          rows.forEach((item) => {
+            item.image = new Buffer(item.image, "base64").toString("binary");
+          });
+        }
+
+        let totalPages = Math.ceil(count / limit);
+        resolve({
+          errCode: 0,
+          errMessage: "OK",
+          data: {
+            rows,
+            totalPages,
+          },
+        });
+      } else {
+        // Other roles - handle accordingly
+        resolve({
+          errCode: -1,
+          errMessage: "Unauthorized access",
+        });
+      }
+    } catch (e) {
+      reject({
+        errCode: -1,
+        errMessage: "Error from the server",
+      });
     }
   });
 };
@@ -243,10 +336,12 @@ let deleteHandbook = (id) => {
     });
   });
 };
+
 module.exports = {
   createHandbook: createHandbook,
   getAllHandbook: getAllHandbook,
   getDetailHandbookById: getDetailHandbookById,
   updateHandbookData: updateHandbookData,
   deleteHandbook: deleteHandbook,
+  getAllHandbookWithPagination: getAllHandbookWithPagination,
 };

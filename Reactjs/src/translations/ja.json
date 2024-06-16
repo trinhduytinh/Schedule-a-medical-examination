@@ -1,4 +1,22 @@
 {
+  "login": {
+    "forgot-password": "パスワードを忘れた場合",
+    "please-enter-your-email-and-click": "メールアドレスを入力してクリックしてください",
+    "link-via-email": "メールでリンク",
+    "to-reset-your-password-for-your-account": "アカウントのパスワードをリセットするには",
+    "submit": "送信",
+    "back-to-login": "ログインに戻る",
+    "register-an-account": "アカウント登録",
+    "note": "注意：アカウントの登録が成功した後、管理者に連絡して情報を更新してください。",
+    "email": "メール：",
+    "password": "パスワード：",
+    "first-name": "名",
+    "last-name": "姓",
+    "user-name": "ユーザー名：",
+    "login": "ログイン",
+    "forgot-your-password": "パスワードをお忘れですか？",
+    "register": "登録する？"
+  },
   "homeheader": {
     "specialty": "専門分野",
     "search-doctor": "専門分野で医師を検索",
@@ -36,11 +54,16 @@
       "specialty": "専門分野",
       "manage-specialty": "専門分野管理",
       "handbook": "ハンドブック",
-      "manage-handbook": "ハンドブック管理"
+      "manage-handbook": "ハンドブック管理",
+      "account-management": "アカウント管理",
+      "change-password": "パスワード変更"
     },
     "doctor": {
-      "manage-schedule": "診療予定の管理",
-      "manage-patient": "診察のための患者を管理する"
+      "manage-schedule": "診療スケジュールの管理",
+      "manage-patient": "患者の管理",
+      "manage-posts": "投稿の管理",
+      "manage-remote-appointment-schedule": "リモート診療予約スケジュールの管理",
+      "remote-patient-management": "遠隔患者管理"
     },
     "patient": {
       "scheduling-information": "予約情報",
@@ -91,7 +114,10 @@
     "specialty-management": "専門管理",
     "name_of_specialty": "専門名",
     "specialized_image": "専門の画像",
-    "save": "保存"
+    "save": "保存",
+    "add-new-specialty": "新しい専門分野を追加",
+    "stt": "STT",
+    "action": "操作"
   },
   "manage-handbook": {
     "manage-handbook": " ハンドブック管理",
@@ -121,10 +147,24 @@
   },
   "manage-clinic": {
     "manage-clinic": "クリニック管理",
+    "add-new-clinic": "新しいクリニックを追加",
     "name-clinic": "クリニック名",
     "image-clinic": "クリニック画像",
-    "address-clinic": "クリニックの住所",
-    "save": "保存"
+    "address-clinic": "クリニック住所",
+    "save": "保存",
+    "STT": "STT",
+    "action": "操作"
+  },
+  "change-password": {
+    "change-password": "パスワード変更",
+    "current-password": "現在のパスワード：",
+    "new-password": "新しいパスワード：",
+    "enter-a-new-password": "新しいパスワードを再入力してください：",
+    "submit": "送信"
+  },
+  "login-home": {
+    "hello": "こんにちは",
+    "do-you-want": "今日は何をしたいですか？"
   },
   "patient": {
     "detail-doctor": {
@@ -180,7 +220,8 @@
       "note": "備考",
       "specialty": "専門を選択",
       "select-clinic": "クリニックを選択",
-      "manage-user": "ユーザーアカウントを管理"
+      "manage-user": "ユーザーアカウントを管理",
+      "remote-examination": "リモート検診"
     }
   },
   "more": {
@@ -197,5 +238,14 @@
     "information-remote": "遠隔診療予約情報",
     "pay-when-booking": "予約時に支払い",
     "check-medical-schedule": "診療スケジュール確認"
+  },
+  "call-video": {
+    "telemedicine": "遠隔診療",
+    "your-screen": "あなたの画面",
+    "doctor's-screen": "医師の画面",
+    "wait": "医師からの電話をお待ちください..............",
+    "answer": "応答",
+    "end-call": "通話終了",
+    "is-calling": "呼び出し中...."
   }
 }

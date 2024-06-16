@@ -7,22 +7,27 @@ import { toast } from "react-toastify";
 import {
   createNewHandBookServices,
   editHandbookService,
-  getAllHandbook,
+  getAllHandbook as getAllHandbookService,
 } from "../../../services/userService";
 import CardHandbook from "./CardHandbook";
 import ModalHandbookEdit from "./ModalHandbookEdit";
 import LoadingOverlay from "react-loading-overlay";
+import ReactPaginate from "react-paginate";
 
 class ManageHandbook extends Component {
   constructor(props) {
     super(props);
     this.state = {
       arrHandbooks: [],
-      isOpenModalHandbook: false,
-      isOpenModalEditHandbook: false,
       handbookEdit: {},
       doctorId: "",
+      currentPage: 1,
+      currentLimit: 10,
+      totalPages: 0,
+      searchQuery: "", // Thêm searchQuery vào state
       isShowLoading: false,
+      isOpenModalHandbook: false,
+      isOpenModalEditHandbook: false,
     };
   }
 
@@ -33,20 +38,25 @@ class ManageHandbook extends Component {
     });
   }
 
-  async componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.userInfo !== prevProps.userInfo) {
+  async componentDidUpdate(prevProps, prevState) {
+    // Kiểm tra nếu searchQuery thay đổi thì gọi lại getAllHandbook
+    if (prevState.searchQuery !== this.state.searchQuery) {
+      this.getAllHandbook(1);
     }
   }
+
   toggleHandbookModal = () => {
     this.setState({
       isOpenModalHandbook: !this.state.isOpenModalHandbook,
     });
   };
+
   toggleEditHandbookModal = () => {
     this.setState({
       isOpenModalEditHandbook: !this.state.isOpenModalEditHandbook,
     });
   };
+
   handleAddNewHandbook = () => {
     this.setState({
       isOpenModalHandbook: true,
@@ -76,16 +86,39 @@ class ManageHandbook extends Component {
       console.log(error);
     }
   };
-  getAllHandbook = async () => {
-    let res = await getAllHandbook(this.props.userInfo.id, this.props.userInfo.roleId);
-    if (res && res.errCode !== 0) {
-      toast.error(res.errMessage);
-    } else {
-      this.setState({
-        arrHandbooks: res.data,
+
+  getAllHandbook = async (page = this.state.currentPage) => {
+    const { currentLimit, searchQuery } = this.state;
+    const roleId = this.props.userInfo.roleId;
+    const doctorId = this.props.userInfo.id;
+    try {
+      this.setState({ isShowLoading: true });
+      let res = await getAllHandbookService({
+        page,
+        limit: currentLimit,
+        doctorId,
+        role: roleId,
+        search: searchQuery,
       });
+      console.log("check res", res);
+
+      if (res && res.infor && res.infor.errCode === 0) {
+        this.setState({
+          arrHandbooks: res.infor.data.rows,
+          totalPages: res.infor.data.totalPages,
+          currentPage: page,
+        });
+      } else {
+        toast.error("Error fetching data");
+      }
+      this.setState({ isShowLoading: false });
+    } catch (error) {
+      console.log(error);
+      this.setState({ isShowLoading: false });
+      toast.error("Error fetching data");
     }
   };
+
   doEditHandbook = async (handbook) => {
     try {
       this.setState({
@@ -109,20 +142,33 @@ class ManageHandbook extends Component {
       console.log(e);
     }
   };
-  //nhận từ con
+
   receiveDataFromChild = async (data) => {
     this.setState({
       handbookEdit: data,
       isOpenModalEditHandbook: true,
     });
   };
+
+  handlePageClick = async (event) => {
+    const selectedPage = +event.selected + 1;
+    this.setState({ currentPage: selectedPage }, () => {
+      this.getAllHandbook(selectedPage);
+    });
+  };
+
+  handleSearchChange = (event) => {
+    this.setState({ searchQuery: event.target.value });
+  };
+
   render() {
-    //properties, nested
     let {
       arrHandbooks,
       isOpenModalEditHandbook,
       isOpenModalHandbook,
       handbookEdit,
+      totalPages,
+      searchQuery,
     } = this.state;
     return (
       <>
@@ -144,28 +190,64 @@ class ManageHandbook extends Component {
                 editHandbook={this.doEditHandbook}
               />
             )}
-            <div className="title text-center"><FormattedMessage id={"manage-handbook.managing-articles"}/></div>
+            <div className="title text-center">
+              <FormattedMessage id={"manage-handbook.managing-articles"} />
+            </div>
             <div className="mx-1 my-4">
               <button
                 className="btn btn-primary px-3"
-                onClick={() => this.handleAddNewHandbook()}>
-                <i className="fas fa-plus"></i><FormattedMessage id={"manage-handbook.add-new-handbook"}/>
+                onClick={this.handleAddNewHandbook}>
+                <i className="fas fa-plus"></i>
+                <FormattedMessage id={"manage-handbook.add-new-handbook"} />
               </button>
             </div>
-            <div class="handbook-card row row-cols-1 row-cols-md-4">
+            <div className="search-container col-3 mb-3">
+              <input
+                className="input-search"
+                type="text"
+                value={searchQuery}
+                onChange={this.handleSearchChange}
+                placeholder="Search..."
+              />
+            </div>
+            <div className="handbook-card row row-cols-1 row-cols-md-4">
               {arrHandbooks &&
                 arrHandbooks.map((item, index) => {
-                  console.log("check image", item);
                   return (
                     <div className="row" key={index}>
                       <CardHandbook
                         data={item}
                         receiveDataFromChild={this.receiveDataFromChild}
+                        refreshHandbooks={this.getAllHandbook} // Truyền callback xuống CardHandbook
                       />
                     </div>
                   );
                 })}
             </div>
+            {totalPages > 0 && (
+              <div className="user-footer">
+                <ReactPaginate
+                  nextLabel="next >"
+                  onPageChange={this.handlePageClick}
+                  pageRangeDisplayed={3}
+                  marginPagesDisplayed={2}
+                  pageCount={totalPages}
+                  previousLabel="< previous"
+                  pageClassName="page-item"
+                  pageLinkClassName="page-link"
+                  previousClassName="page-item"
+                  previousLinkClassName="page-link"
+                  nextClassName="page-item"
+                  nextLinkClassName="page-link"
+                  breakLabel="..."
+                  breakClassName="page-item"
+                  breakLinkClassName="page-link"
+                  containerClassName="pagination"
+                  activeClassName="active"
+                  renderOnZeroPageCount={null}
+                />
+              </div>
+            )}
           </div>
         </LoadingOverlay>
       </>
@@ -175,7 +257,6 @@ class ManageHandbook extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    //lay id ng dung dang nhap
     userInfo: state.user.userInfo,
   };
 };

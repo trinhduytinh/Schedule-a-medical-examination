@@ -31,7 +31,6 @@ let getAllDoctor = async (req, res) => {
 let postInforDoctor = async (req, res) => {
   try {
     let response = await doctorService.saveDetailInforDoctor(req.body);
-    console.log("check log", req.body);
     return res.status(200).json(response);
   } catch (e) {
     console.log(e);
@@ -75,6 +74,17 @@ let getScheduleByDate = async (req, res) => {
     return res.status(200).json(infor);
   } catch (e) {
     console.log(e);
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from the server",
+    });
+  }
+};
+let updateSchedule = async (req, res) => {
+  try {
+    let infor = await doctorService.updateSchedule(req.body);
+    return res.status(200).json(infor);
+  } catch (error) {
     return res.status(200).json({
       errCode: -1,
       errMessage: "Error from the server",
@@ -145,7 +155,10 @@ let getStars = async (req, res) => {
 };
 let totalStars = async (req, res) => {
   try {
-    let response = await doctorService.totalStars(req.query.doctorId, +req.query.newStars);
+    let response = await doctorService.totalStars(
+      req.query.doctorId,
+      +req.query.newStars
+    );
     return res.status(200).json(response);
   } catch (e) {
     console.log(e);
@@ -154,6 +167,16 @@ let totalStars = async (req, res) => {
       errMessage: "Error from the server",
     });
   }
+};
+let deleteBookingDoctor = async (req, res) => {
+  if (!req.body.id) {
+    return res.status(200).json({
+      errCode: 1,
+      errMessage: "Missing required parameters!",
+    });
+  }
+  let message = await doctorService.deleteBookingDoctor(req.body.id);
+  return res.status(200).json(message);
 };
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
@@ -168,4 +191,6 @@ module.exports = {
   sendRemedy: sendRemedy,
   getStars: getStars,
   totalStars: totalStars,
+  updateSchedule: updateSchedule,
+  deleteBookingDoctor: deleteBookingDoctor,
 };

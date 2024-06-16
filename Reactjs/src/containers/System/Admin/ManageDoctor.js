@@ -333,7 +333,7 @@ class ManageDoctor extends Component {
           spinner
           text="Loading...">
           <div className="manage-doctor-container">
-            <div className="manage-doctor-title">
+            <div className="title">
               <FormattedMessage id={"admin.manage-doctor.title"} />
             </div>
             <div className="more-infor">
@@ -474,8 +474,9 @@ class ManageDoctor extends Component {
               </div>
               <div className="col-4 form-group">
                 <label className="form-label">
-                  {/* <FormattedMessage id={"admin.manage-doctor.select-clinic"} /> */}
-                  Khám từ xa
+                <FormattedMessage
+                      id={"admin.manage-doctor.remote-examination"}
+                    />
                 </label>
                 <Select
                   value={this.state.selectedRemote}

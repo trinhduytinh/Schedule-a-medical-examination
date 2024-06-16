@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Schedule_Remote extends Model {
     /**
@@ -16,9 +17,13 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   Schedule_Remote.init(
     {
-      currentNumber: DataTypes.INTEGER,
+      currentNumber: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0, // Thiết lập giá trị mặc định
+      },
       maxNumber: DataTypes.INTEGER,
       date: DataTypes.STRING,
       timeType: DataTypes.STRING,
@@ -29,5 +34,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Schedule_Remote",
     }
   );
+
   return Schedule_Remote;
 };

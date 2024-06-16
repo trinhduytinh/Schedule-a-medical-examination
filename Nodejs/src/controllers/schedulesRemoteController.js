@@ -37,6 +37,17 @@ let getScheduleRemoteByDate = async (req, res) => {
     });
   }
 };
+let updateScheduleRemote = async (req, res) => {
+  try {
+    let infor = await schedulesRemoteService.updateScheduleRemote(req.body);
+    return res.status(200).json(infor);
+  } catch (error) {
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from the server",
+    });
+  }
+};
 // let getExtraInforDoctorById = async (req, res) => {
 //   try {
 //     let infor = await doctorService.getExtraInforDoctorById(req.query.doctorId);
@@ -129,4 +140,5 @@ module.exports = {
   postVerifyBookAppointmentRemote: postVerifyBookAppointmentRemote,
   getListPatientRemoteForDoctor: getListPatientRemoteForDoctor,
   createPaymentBookingRemote: createPaymentBookingRemote,
+  updateScheduleRemote: updateScheduleRemote,
 };
