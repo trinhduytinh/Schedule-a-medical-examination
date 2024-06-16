@@ -8,7 +8,7 @@ import "./CallVideo.scss";
 import HomeFooter from "../HomePage/HomeFooter";
 import { FormattedMessage } from "react-intl";
 
-const socket = io.connect(process.env.REACT_APP_SOCKET_IO_URL);
+const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 
 function CallVideo() {
   const [me, setMe] = useState("");

@@ -26,7 +26,7 @@ import HomeHeader from "../HomePage/HomeHeader";
 import { FormattedMessage } from "react-intl";
 
 // Kết nối tới máy chủ WebSocket với URL từ biến môi trường
-const socket = io.connect(process.env.REACT_APP_SOCKET_IO_URL);
+const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 function DoctorCall() {
   // Khai báo các biến trạng thái cho thành phần
   const [me, setMe] = useState(""); // ID của người dùng hiện tại
