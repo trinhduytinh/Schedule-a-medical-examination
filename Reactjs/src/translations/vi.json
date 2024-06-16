@@ -1,4 +1,22 @@
 {
+  "login": {
+    "forgot-password": "Quên mật khẩu",
+    "please-enter-your-email-and-click": "Vui lòng nhập email của bạn và nhấn vào",
+    "link-via-email": " Liên kết qua Email ",
+    "to-reset-your-password-for-your-account": "để đặt lại mật khẩu cho tài khoản của bạn.",
+    "submit": "Xác nhận",
+    "back-to-login": "Quay lại đăng nhập",
+    "register-an-account": "Đăng ký tài khoản",
+    "note": "Lưu ý sau khi đăng ký tài khoản thành công. Vui lòng liên hệ với admin cập nhập thông tin.",
+    "email": "Email: ",
+    "password": "Mật khẩu: ",
+    "first-name": "Họ",
+    "last-name": "Tên",
+    "user-name": "Tên đăng nhập: ",
+    "login": "Đăng nhập",
+    "forgot-your-password": "Bạn quên mật khẩu?",
+    "register": "Đăng ký?"
+  },
   "homeheader": {
     "specialty": "Chuyên khoa",
     "search-doctor": "Tìm bác sĩ theo chuyên khoa",
@@ -36,13 +54,18 @@
       "specialty": "Chuyên khoa",
       "manage-specialty": "Quản lý chuyên khoa",
       "handbook": "Cẩm nang",
-      "manage-handbook": "Quản lý cẩm nang"
+      "manage-handbook": "Quản lý cẩm nang",
+      "account-management": "Quản lý tài khoản",
+      "change-password": "Đổi mật khẩu"
     },
     "doctor": {
       "manage-schedule": "Quản lý kế hoạch khám bệnh",
-      "manage-patient": "Quản lý bệnh nhân khám bệnh"
+      "manage-patient": "Quản lý bệnh nhân khám bệnh",
+      "manage-posts": "Quản lý bài viết",
+      "manage-remote-appointment-schedule": "Quản lý lịch khám từ xa",
+      "remote-patient-management": "Quản lý lịch khám bệnh từ xa"
     },
-    "patient":{
+    "patient": {
       "scheduling-information": "Thông tin đặt lịch",
       "delete-the-appointment": "Xóa lịch hẹn",
       "menu": "Menu",
@@ -91,7 +114,10 @@
     "specialty-management": "Quản lý chuyên khoa",
     "name_of_specialty": "Tên chuyên khoa",
     "specialized_image": "Ảnh chuyên khoa",
-    "save": "Save"
+    "save": "Save",
+    "add-new-specialty": " Thêm mới chuyên khoa",
+    "stt": "STT",
+    "action": "Hành động"
   },
   "manage-handbook": {
     "manage-handbook": "Quản lý sổ tay",
@@ -121,10 +147,24 @@
   },
   "manage-clinic": {
     "manage-clinic": "Quản lý phòng khám",
+    "add-new-clinic": " Thêm mới phòng khám",
     "name-clinic": "Tên phòng khám",
     "image-clinic": "Ảnh phòng khám",
     "address-clinic": "Địa chỉ phòng khám",
-    "save": "Lưu"
+    "save": "Lưu",
+    "STT": "STT",
+    "action": "Hành động"
+  },
+  "change-password": {
+    "change-password": "Đổi mật khẩu",
+    "current-password": "Mật khẩu hiện tại: ",
+    "new-password": "Mật khẩu mới: ",
+    "enter-a-new-password": "Nhập lại mật khẩu mới: ",
+    "submit": "Xác nhận"
+  },
+  "login-home": {
+    "hello": "Xin chào",
+    "do-you-want": "Hôm nay bạn muốn làm gì?"
   },
   "patient": {
     "detail-doctor": {
@@ -180,15 +220,16 @@
       "note": "Ghi chú",
       "specialty": "Chọn chuyên khoa",
       "select-clinic": "Chọn phòng khám",
-      "manage-user": "Quản lý tài khoản người dùng"
+      "manage-user": "Quản lý tài khoản người dùng",
+      "remote-examination": "Khám từ xa"
     }
   },
-  "more":{
+  "more": {
     "medical-facility": "Cơ sở y tế",
     "medical-handbook": "Cẩm nang y tế",
     "clinic-for-you": "Chuyên khoa phổ biến"
   },
-  "pay":{
+  "pay": {
     "payment-failed": "Thanh toán thất bại!",
     "return-to-home-page": "Quay về trang chủ",
     "payment-success": "Thanh toán thành công.",
@@ -197,5 +238,15 @@
     "information-remote": "Thông tin đặt lịch khám bệnh từ xa",
     "pay-when-booking": "Thanh toán khi đặt lịch",
     "check-medical-schedule": "Kiểm tra lịch khám"
+  },
+  "call-video": {
+    "telemedicine": "Khám bệnh từ xa",
+    "your-screen": "Màn hình của bạn",
+    "patient-monitor": "Màn hình của bệnh nhân",
+    "doctor's-screen": "Màn hình của bác sĩ",
+    "wait": "Vui lòng đợi cuộc gọi từ bác sĩ..............",
+    "answer": "Trả lời",
+    "end-call": "Kết thúc cuộc gọi",
+    "is-calling": " Đang gọi...."
   }
 }

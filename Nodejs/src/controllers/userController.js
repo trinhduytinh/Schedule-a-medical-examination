@@ -25,11 +25,9 @@ let handleLogin = async (req, res) => {
 };
 
 let handleGetAllUsers = async (req, res) => {
-  if (req.query.page && req.query.limit) {
-    let page = req.query.page;
-    let limit = req.query.limit;
-    //+ chuyen sang kieu int
-    let users = await userService.getUserWithPagination(+page, +limit);
+  let { page, limit, search } = req.query;
+  if (page && limit) {
+    let users = await userService.getUserWithPagination(+page, +limit, search);
     return res.status(200).json({
       errCode: 0,
       errMessage: "OK",

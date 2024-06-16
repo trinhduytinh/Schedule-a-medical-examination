@@ -44,6 +44,7 @@ let initWebRoutes = (app) => {
   router.post('/api/send-remedy', doctorController.sendRemedy);
   router.post('/api/total-stars', doctorController.totalStars);
   router.get('/api/get-stars', doctorController.getStars);
+  router.delete('/api/delete-booking-doctor',doctorController.deleteBookingDoctor);
 
   router.post('/api/patient-book-appointment', patientController.postBookAppointment);
   router.post('/api/verify-book-appointment', patientController.postVerifyBookAppointment);

@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import "./LoginHome.scss";
-import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
+import "./LoginHome.scss"; // dung de chuyen doi ngon ngu
 import { LANGUAGES, CRUD_ACTION, CommonUtils } from "../../utils";
-import { toast } from "react-toastify";
+import { FormattedMessage } from "react-intl";
 
 class LoginHome extends Component {
   constructor(props) {
@@ -21,14 +20,16 @@ class LoginHome extends Component {
       <>
         <div className="container">
           <div className="title-welcome">
-            Xin chào
+            <FormattedMessage id="login-home.hello" />{" "}
             {language === LANGUAGES.VI
               ? labelVi
               : language === LANGUAGES.EN
               ? labelEn
               : labelVi}
           </div>
-          <div className="title">Hôm nay bạn muốn làm gì?</div>
+          <div className="title">
+            <FormattedMessage id="login-home.do-you-want" />
+          </div>
         </div>
       </>
     );

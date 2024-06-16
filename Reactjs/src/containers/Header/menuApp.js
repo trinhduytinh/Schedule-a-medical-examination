@@ -8,7 +8,7 @@ export const adminMenu = [
       //   link: "/system/user-manage",
       // },
       {
-        name: "Quản lý tài khoản",
+        name: "menu.admin.account-management",
         link: "/system/user-redux",
       },
       {
@@ -66,10 +66,10 @@ export const adminMenu = [
   },
   {
     //Đổi mật khẩu
-    name: "Đổi mật khẩu",
+    name: "menu.admin.change-password",
     menus: [
       {
-        name: "Đổi mật khẩu",
+        name: "menu.admin.change-password",
         link: "/system/edit-password",
       },
     ],
@@ -91,17 +91,17 @@ export const doctorMenu = [
         link: "/doctor/manage-patient",
       },
       {
-        name: "Quản lý bài viết",
+        name: "menu.doctor.manage-posts",
         link: "/doctor/manage-handbook",
       },
     ],
   },
   {
     //Đổi mật khẩu
-    name: "Đổi mật khẩu",
+    name: "menu.admin.change-password",
     menus: [
       {
-        name: "Đổi mật khẩu",
+        name: "menu.admin.change-password",
         link: "/system/edit-password",
       },
     ],
@@ -122,25 +122,25 @@ export const doctorMenuRemote = [
         link: "/doctor/manage-patient",
       },
       {
-        name: "Quản lý bài viết",
+        name: "menu.doctor.manage-posts",
         link: "/doctor/manage-handbook",
       },
       {
-        name: "quản lí lịch khám từ xa",
+        name: "menu.doctor.manage-remote-appointment-schedule",
         link: "/doctor/manage-schedule-remote",
       },
       {
-        name: "Quản lý lịch khám bệnh từ xa",
+        name: "menu.doctor.remote-patient-management",
         link: "/doctor/manage-patient-remote",
       },
     ],
   },
   {
     //Đổi mật khẩu
-    name: "Đổi mật khẩu",
+    name: "menu.admin.change-password",
     menus: [
       {
-        name: "Đổi mật khẩu",
+        name: "menu.admin.change-password",
         link: "/system/edit-password",
       },
     ],

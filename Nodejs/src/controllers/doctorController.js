@@ -31,7 +31,6 @@ let getAllDoctor = async (req, res) => {
 let postInforDoctor = async (req, res) => {
   try {
     let response = await doctorService.saveDetailInforDoctor(req.body);
-    console.log("check log", req.body);
     return res.status(200).json(response);
   } catch (e) {
     console.log(e);
@@ -169,6 +168,16 @@ let totalStars = async (req, res) => {
     });
   }
 };
+let deleteBookingDoctor = async (req, res) => {
+  if (!req.body.id) {
+    return res.status(200).json({
+      errCode: 1,
+      errMessage: "Missing required parameters!",
+    });
+  }
+  let message = await doctorService.deleteBookingDoctor(req.body.id);
+  return res.status(200).json(message);
+};
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
   getAllDoctor: getAllDoctor,
@@ -183,4 +192,5 @@ module.exports = {
   getStars: getStars,
   totalStars: totalStars,
   updateSchedule: updateSchedule,
+  deleteBookingDoctor: deleteBookingDoctor,
 };

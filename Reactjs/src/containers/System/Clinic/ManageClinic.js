@@ -91,8 +91,9 @@ class ManageClinic extends Component {
       isOpenModalClinic,
       isOpenModalEditClinic,
       handClinicEdit,
-      totalPages
+      totalPages,
     } = this.state;
+    let { language } = this.props;
     return (
       <>
         <div className="manage-specialty-container">
@@ -107,7 +108,7 @@ class ManageClinic extends Component {
               currentClinic={handClinicEdit}
             />
           )}
-          <div className="ms-title">
+          <div className="title">
             <FormattedMessage id="manage-specialty.specialty-management" />
           </div>
           <div className="mx-1 my-4">
@@ -115,22 +116,36 @@ class ManageClinic extends Component {
               className="btn btn-primary px-3"
               onClick={() => this.handleAddNewClinic()}>
               <i className="fas fa-plus"></i>
-              Thêm mới phòng khám
+              <FormattedMessage id={"manage-clinic.add-new-clinic"} />
             </button>
           </div>
           <table id="TableManageUser">
             <tbody>
               <tr>
-                <th>STT</th>
-                <th>Tên phòng khám</th>
-                <th>Actions</th>
+                <th>
+                  <FormattedMessage id={"manage-clinic.STT"} />
+                </th>
+                <th>
+                  <FormattedMessage id={"manage-clinic.name-clinic"} />
+                </th>
+                <th>
+                  <FormattedMessage id={"manage-clinic.action"} />
+                </th>
               </tr>
               {arrClinic && arrClinic.length > 0 ? (
                 arrClinic.map((item, index) => {
                   return (
                     <tr key={index}>
                       <td>{index + 1}</td>
-                      <td>{item.name}</td>
+                      <td>
+                        {language === LANGUAGES.VI
+                          ? `${item.name}`
+                          : language === LANGUAGES.EN
+                          ? `${item.nameEn}`
+                          : language === LANGUAGES.JA
+                          ? `${item.nameJa}`
+                          : ""}
+                      </td>
                       <td>
                         <button
                           className="btn-edit"

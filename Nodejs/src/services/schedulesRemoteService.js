@@ -141,7 +141,6 @@ let updateScheduleRemote = (data) => {
           attributes: ["timeType", "date", "doctorID", "maxNumber"],
           raw: true,
         });
-        console.log("check existing", existing);
         // Xác định lịch trình cần xóa
         let toDelete = _.differenceWith(existing, scheduleRemote, (a, b) => {
           return a.timeType === b.timeType && +a.date === +b.date;
@@ -153,7 +152,6 @@ let updateScheduleRemote = (data) => {
         });
         // Thực hiện xóa
         if (toDelete && toDelete.length > 0) {
-          console.log("check toDelete", toDelete);
           await db.Schedule_Remote.destroy({
             where: {
               doctorID: data.doctorID,
@@ -261,42 +259,94 @@ let postBookAppointmentRemote = (data) => {
           errMessage: "Missing parameter",
         });
       } else {
-        let token = uuidv4();
-        await emailService.sendSimpleEmailRemote({
-          receiverEmail: data.email,
-          patientName: data.fullName,
-          time: data.timeString,
-          doctorName: data.doctorName,
-          language: data.language,
-          redirectLink: buildUrlEmail(data.doctorId, token),
-        });
-        //upsert patient
-        let user = await db.User.findOrCreate({
-          where: { email: data.email },
-          defaults: {
-            email: data.email,
-            roleId: "R3",
-            gender: data.selectedGender,
-            address: data.address,
-            firstName: data.fullName,
-            phonenumber: data.phoneNumber,
+        // Lấy lịch trình để kiểm tra currentNumber và maxNumber
+        let scheduleRemote = await db.Schedule_Remote.findOne({
+          where: {
+            doctorID: data.doctorId,
+            date: data.date,
+            timeType: data.timeType,
           },
         });
+        if (!scheduleRemote) {
+          resolve({
+            errCode: 2,
+            errMessage: "Schedule Remote not found",
+          });
+        } else if (scheduleRemote.currentNumber >= scheduleRemote.maxNumber) {
+          resolve({
+            errCode: 3,
+            errMessage: "Booking is full",
+          });
+        } else {
+          // Generate token
+          let token = uuidv4();
 
-        if (user && user[0]) {
-          await db.Booking.findOrCreate({
-            where: { patientID: user[0].id },
+          //upsert patient
+          let user = await db.User.findOrCreate({
+            where: { email: data.email },
             defaults: {
-              statusId: "RM",
-              doctorId: data.doctorId,
-              patientID: user[0].id,
-              date: data.date,
-              timeType: data.timeType,
-              reason: data.reason,
-              birthday: data.birthday,
-              token: token,
+              email: data.email,
+              roleId: "R3",
+              gender: data.selectedGender,
+              address: data.address,
+              firstName: data.fullName,
+              phonenumber: data.phoneNumber,
             },
           });
+
+          if (user && user[0]) {
+            // Kiểm tra xem người dùng đã đặt lịch tương tự chưa
+            let existingBooking = await db.Booking.findOne({
+              where: {
+                patientID: user[0].id,
+                doctorId: data.doctorId,
+                date: data.date,
+                timeType: data.timeType,
+              },
+            });
+            if (existingBooking) {
+              resolve({
+                errCode: 4,
+                errMessage: "You have already booked this schedule",
+              });
+            } else {
+              await emailService.sendSimpleEmailRemote({
+                receiverEmail: data.email,
+                patientName: data.fullName,
+                time: data.timeString,
+                doctorName: data.doctorName,
+                language: data.language,
+                redirectLink: buildUrlEmail(data.doctorId, token),
+              });
+              // Create booking
+              await db.Booking.create({
+                statusId: "RM",
+                doctorId: data.doctorId,
+                patientID: user[0].id,
+                date: data.date,
+                timeType: data.timeType,
+                reason: data.reason,
+                birthday: data.birthday,
+                token: token,
+              });
+
+              // Increment currentNumber in schedule
+              await db.Schedule_Remote.update(
+                { currentNumber: scheduleRemote.currentNumber + 1 },
+                { where: { id: scheduleRemote.id } }
+              );
+
+              resolve({
+                errCode: 0,
+                errMessage: "Save info patient succeed!",
+              });
+            }
+          } else {
+            resolve({
+              errCode: 5,
+              errMessage: "User creation failed",
+            });
+          }
         }
         resolve({
           errCode: 0,

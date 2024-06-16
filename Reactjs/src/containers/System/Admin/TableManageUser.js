@@ -29,6 +29,7 @@ class TableManageUser extends Component {
       currentPage: 1,
       currentLimit: 10,
       totalPages: 0,
+      searchQuery: "", // Thêm searchQuery vào state
     };
   }
 
@@ -37,14 +38,14 @@ class TableManageUser extends Component {
   }
 
   fetchUsers = async (page = this.state.currentPage) => {
-    const { currentLimit } = this.state;
-    const response = await getUsersPage(page, currentLimit);
+    const { currentLimit, searchQuery } = this.state;
+    const response = await getUsersPage(page, currentLimit, searchQuery); // Thêm searchQuery vào gọi API
     if (response && response.errCode === 0) {
-      this.setState((prevState) => ({
+      this.setState({
         usersRedux: response.users.users,
         totalPages: response.users.totalPages,
-        currentPage: page, // Cập nhật currentPage dựa trên tham số truyền vào
-      }));
+        currentPage: page,
+      });
     }
   };
 
@@ -59,29 +60,40 @@ class TableManageUser extends Component {
     // Sau khi chỉnh sửa thành công, cập nhật lại danh sách người dùng
     await this.fetchUsers(this.state.currentPage);
   };
-
   handlePageClick = async (event) => {
     const selectedPage = +event.selected + 1;
     this.setState({ currentPage: selectedPage }, () => {
       this.fetchUsers(selectedPage);
     });
   };
+  handleSearchChange = (event) => {
+    this.setState({ searchQuery: event.target.value });
+    this.fetchUsers(1); // Khi tìm kiếm, luôn bắt đầu từ trang 1
+  };
   render() {
     let arrUsers = this.state.usersRedux;
-    let { totalPages } = this.state;
+    let { totalPages, searchQuery } = this.state;
     return (
       <React.Fragment>
+        <div className="search-container col-3 mb-3">
+          <input
+            className="input-search"
+            type="text"
+            value={searchQuery}
+            onChange={this.handleSearchChange}
+            placeholder="Search..."
+          />
+        </div>
         <table id="TableManageUser">
           <tbody>
             <tr>
-              <th>Email</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Address</th>
-              <th>Actions</th>
+              <th><FormattedMessage id={"manage-user.email"}/></th>
+              <th><FormattedMessage id={"manage-user.first-name"}/></th>
+              <th><FormattedMessage id={"manage-user.last-name"}/></th>
+              <th><FormattedMessage id={"manage-user.address"}/></th>
+              <th><FormattedMessage id={"manage-user.action"}/></th>
             </tr>
-            {arrUsers &&
-              arrUsers.length > 0 &&
+            {arrUsers && arrUsers.length > 0 ? (
               arrUsers.map((item, index) => {
                 return (
                   <tr key={index}>
@@ -103,7 +115,14 @@ class TableManageUser extends Component {
                     </td>
                   </tr>
                 );
-              })}
+              })
+            ) : (
+              <tr>
+                <td colSpan={5} style={{ textAlign: "center" }}>
+                  <FormattedMessage id={"manage-patient.no-data"} />
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
         {totalPages > 0 && (

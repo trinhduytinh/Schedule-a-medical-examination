@@ -233,7 +233,7 @@ let deleteListPatient = (id) => {
     });
     resolve({
       errCode: 0,
-      errMessage: `The handbook is deleted`,
+      errMessage: `The booking is deleted`,
     });
   });
 };

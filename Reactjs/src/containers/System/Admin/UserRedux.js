@@ -220,7 +220,9 @@ class UserRedux extends Component {
 
     return (
       <div className="user-redux-container">
-        <div className="title"><FormattedMessage id={"admin.manage-doctor.manage-user"}/></div>
+        <div className="title">
+          <FormattedMessage id={"admin.manage-doctor.manage-user"} />
+        </div>
         <div className="user-redux-body">
           <div className="container">
             <div className="row">
@@ -424,6 +426,13 @@ class UserRedux extends Component {
                   )}
                 </button>
               </div>
+              {/* <div className="search col-3 mb-3">
+                <input
+                  className="input-search"
+                  type="text"
+                  name="search"
+                  placeholder="Search.."></input>
+              </div> */}
               <div className="col-12 mb-5">
                 <TableManageUser
                   handleEditUserFromParentKey={this.handleEditUserFromParent}

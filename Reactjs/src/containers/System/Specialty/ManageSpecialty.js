@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, memo } from "react";
 import { connect } from "react-redux";
 import "./ManageSpecialty.scss";
 import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
@@ -15,6 +15,7 @@ import ModalSpecialtyEdit from "./ModalSpecialtyEdit";
 import ReactPaginate from "react-paginate";
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
+
 class ManageSpecialty extends Component {
   constructor(props) {
     super(props);
@@ -24,46 +25,55 @@ class ManageSpecialty extends Component {
       currentPage: 1,
       currentLimit: 10,
       totalPages: 0,
-      isShowLoading: false,
       isOpenModalSpecialty: false,
       isOpenModalEditSpecialty: false,
     };
   }
+
   componentDidMount() {
     this.fetchSpecialty();
   }
-  // getAllSpecialtyNew = async () => {
-  //   let res = await getAllSpecialty();
-  //   if (res && res.errCode === 0) {
-  //     this.setState({
-  //       arrSpecialty: res.data,
-  //     });
-  //   }
-  // };
-  async componentDidUpdate(prevProps, prevState, snapshot) {}
+
+  fetchSpecialty = async (page = this.state.currentPage) => {
+    const { currentLimit } = this.state;
+    const response = await getSpecialtyPage(page, currentLimit);
+    if (response && response.errCode === 0) {
+      this.setState({
+        arrSpecialty: response.data.specialty,
+        totalPages: response.data.totalPages,
+        currentPage: page,
+      });
+    }
+  };
 
   toggleSpecialtyModal = async () => {
-    this.setState({
-      isOpenModalSpecialty: !this.state.isOpenModalSpecialty,
-    });
-    await this.fetchSpecialty(this.state.currentPage);
+    this.setState(
+      (prevState) => ({
+        isOpenModalSpecialty: !prevState.isOpenModalSpecialty,
+      }),
+      this.fetchSpecialty
+    );
   };
+
   toggleEditSpecialtyModal = () => {
-    this.setState({
-      isOpenModalEditSpecialty: !this.state.isOpenModalEditSpecialty,
-    });
+    this.setState((prevState) => ({
+      isOpenModalEditSpecialty: !prevState.isOpenModalEditSpecialty,
+    }));
   };
+
   handleEditSpecialtyModal = (item) => {
     this.setState({
-      isOpenModalEditSpecialty: !this.state.isOpenModalEditSpecialty,
+      isOpenModalEditSpecialty: true,
       handSpecialtyEdit: item,
     });
   };
+
   handleAddNewSpecialty = () => {
     this.setState({
       isOpenModalSpecialty: true,
     });
   };
+
   handleDeleteSpecialty = async (specialty) => {
     let res = await deleteSpecialty(specialty.id);
     if (res && res.errCode === 0) {
@@ -73,31 +83,23 @@ class ManageSpecialty extends Component {
       toast.error(res.errMessage);
     }
   };
-  fetchSpecialty = async (page = this.state.currentPage) => {
-    const { currentLimit } = this.state;
-    const response = await getSpecialtyPage(page, currentLimit);
-    if (response && response.errCode === 0) {
-      this.setState((prevState) => ({
-        arrSpecialty: response.data.specialty,
-        totalPages: response.data.totalPages,
-        currentPage: page, // Cập nhật currentPage dựa trên tham số truyền vào
-      }));
-    }
-  };
+
   handlePageClick = async (event) => {
     const selectedPage = +event.selected + 1;
     this.setState({ currentPage: selectedPage }, () => {
       this.fetchSpecialty(selectedPage);
     });
   };
+
   render() {
-    let {
+    const {
       arrSpecialty,
       isOpenModalSpecialty,
       isOpenModalEditSpecialty,
       handSpecialtyEdit,
       totalPages,
     } = this.state;
+    let { language } = this.props;
     return (
       <>
         <div className="manage-specialty-container">
@@ -112,49 +114,62 @@ class ManageSpecialty extends Component {
               currentSpecialty={handSpecialtyEdit}
             />
           )}
-          <div className="ms-title">
+          <div className="title">
             <FormattedMessage id="manage-specialty.specialty-management" />
           </div>
           <div className="mx-1 my-4">
             <button
               className="btn btn-primary px-3"
-              onClick={() => this.handleAddNewSpecialty()}>
+              onClick={this.handleAddNewSpecialty}>
               <i className="fas fa-plus"></i>
-              Thêm mới chuyên khoa
+              <FormattedMessage id={"manage-specialty.add-new-specialty"} />
             </button>
           </div>
           <table id="TableManageUser">
             <tbody>
               <tr>
-                <th>STT</th>
-                <th>Tên chuyên khoa</th>
-                <th>Actions</th>
+                <th>
+                  <FormattedMessage id={"manage-specialty.stt"} />
+                </th>
+                <th>
+                  {" "}
+                  <FormattedMessage id={"manage-specialty.name_of_specialty"} />
+                </th>
+                <th>
+                  <FormattedMessage id={"manage-specialty.action"} />
+                </th>
               </tr>
               {arrSpecialty && arrSpecialty.length > 0 ? (
-                arrSpecialty.map((item, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{item.name}</td>
-                      <td>
-                        <button
-                          className="btn-edit"
-                          onClick={() => this.handleEditSpecialtyModal(item)}>
-                          <i className="fas fa-pencil-alt"></i>
-                        </button>
-                        <button
-                          className="btn-delete"
-                          onClick={() => this.handleDeleteSpecialty(item)}>
-                          <i className="fas fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })
+                arrSpecialty.map((item, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>
+                      {language === LANGUAGES.VI
+                        ? `${item.name}`
+                        : language === LANGUAGES.EN
+                        ? `${item.nameEn}`
+                        : language === LANGUAGES.JA
+                        ? `${item.nameJa}`
+                        : ""}
+                    </td>
+                    <td>
+                      <button
+                        className="btn-edit"
+                        onClick={() => this.handleEditSpecialtyModal(item)}>
+                        <i className="fas fa-pencil-alt"></i>
+                      </button>
+                      <button
+                        className="btn-delete"
+                        onClick={() => this.handleDeleteSpecialty(item)}>
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))
               ) : (
                 <tr>
                   <td colSpan={8} style={{ textAlign: "center" }}>
-                    <FormattedMessage id={"manage-patient.no-data"} />
+                    <FormattedMessage id="manage-patient.no-data" />
                   </td>
                 </tr>
               )}
@@ -196,8 +211,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ManageSpecialty);
+export default connect(mapStateToProps)(memo(ManageSpecialty));

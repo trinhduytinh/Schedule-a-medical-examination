@@ -7,8 +7,8 @@ const handleLoginApi = (userEmail, userPassword) => {
 const getAllUsers = (inputId) => {
   return axios.get(`/api/get-all-users?id=${inputId}`);
 };
-const getUsersPage = (page, limit) => {
-  return axios.get(`/api/get-all-users?page=${page}&limit=${limit}`);
+const getUsersPage = (page, limit, search) => {
+  return axios.get(`/api/get-all-users?page=${page}&limit=${limit}&search=${search}`);
 };
 const createNewUserService = (data) => {
   return axios.post("/api/create-new-user", data);
@@ -110,8 +110,14 @@ const postSendRemedy = (data) => {
 const createNewHandBookServices = (data) => {
   return axios.post("/api/create-new-handbook", data);
 };
-const getAllHandbook = (doctorId, role) => {
-  return axios.get(`/api/get-handbook?doctorId=${doctorId}&role=${role}`);
+// const getAllHandbook = (doctorId, role) => {
+//   return axios.get(`/api/get-handbook?doctorId=${doctorId}&role=${role}`);
+// };
+const getAllHandbook = (data) => {
+  const { page, limit, doctorId, role, search } = data;
+  return axios.get(`/api/get-handbook`, {
+    params: { page, limit, doctorId, role, search },
+  });
 };
 const getAllDetailHandbookById = (handbookId) => {
   return axios.get(`/api/get-detail-handbook-by-id?id=${handbookId}`);
@@ -202,7 +208,13 @@ const createNewUserLogin = (data) => {
 const getDoctorInfor = (doctorId) => {
   return axios.get(`/api/get-user-info?doctorId=${doctorId}`);
 };
-
+const deleteBookingDoctor = (bookingId) => {
+  return axios.delete("/api/delete-booking-doctor", {
+    data: {
+      id: bookingId,
+    },
+  });
+};
 export {
   handleLoginApi,
   getAllUsers,
@@ -257,5 +269,6 @@ export {
   deleteClinic,
   editClinicService,
   updateScheduleDoctor,
-  updateScheduleRemoteDoctor
+  updateScheduleRemoteDoctor,
+  deleteBookingDoctor,
 };

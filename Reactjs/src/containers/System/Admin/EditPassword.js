@@ -54,11 +54,15 @@ class EditPassword extends Component {
   render() {
     return (
       <div className="container">
-        <div className="title">Đổi mật khẩu</div>
+        <div className="title">
+          <FormattedMessage id={"change-password.change-password"} />
+        </div>
         <div className="form-edit-password">
           <form>
             <div className="col-12 form-group login-input mb-3">
-              <label className="form-label">Mật khẩu hiện tại: </label>
+              <label className="form-label">
+                <FormattedMessage id={"change-password.current-password"} />
+              </label>
               <div className="custom-input-password">
                 <input
                   type={this.state.isShowCurrentPassword ? "text" : "password"}
@@ -83,7 +87,9 @@ class EditPassword extends Component {
               </div>
             </div>
             <div className="col-12 form-group login-input mb-3">
-              <label className="form-label">Mật khẩu mới: </label>
+              <label className="form-label">
+                <FormattedMessage id={"change-password.new-password"} />{" "}
+              </label>
               <div className="custom-input-password">
                 <input
                   type={this.state.isShowNewPassword ? "text" : "password"}
@@ -108,7 +114,9 @@ class EditPassword extends Component {
               </div>
             </div>
             <div className="col-12 form-group login-input mb-3">
-              <label className="form-label">Nhập lại mật khẩu mới: </label>
+              <label className="form-label">
+                <FormattedMessage id={"change-password.enter-a-new-password"} />
+              </label>
               <div className="custom-input-password">
                 <input
                   type={this.state.isShowReEnterPassword ? "text" : "password"}
@@ -136,7 +144,7 @@ class EditPassword extends Component {
               type="submit"
               className="btn btn-primary"
               onClick={this.SubmitEditPassword}>
-              Submit
+              <FormattedMessage id={"change-password.submit"} />
             </button>
           </form>
         </div>

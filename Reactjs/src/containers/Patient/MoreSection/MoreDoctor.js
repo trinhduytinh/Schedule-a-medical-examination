@@ -35,7 +35,6 @@ class MoreDoctor extends Component {
   };
   render() {
     let { arrDoctors } = this.state;
-    console.log("check data", arrDoctors);
     let { language } = this.props;
     return (
       <>

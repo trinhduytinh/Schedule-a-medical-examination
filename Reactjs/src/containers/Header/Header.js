@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { FormattedMessage } from "react-intl"; // dung de chuyen doi ngon ngu
+import { FormattedMessage } from "react-intl";
 import * as actions from "../../store/actions";
 import Navigator from "../../components/Navigator";
 import { adminMenu, doctorMenu, doctorMenuRemote } from "./menuApp";
@@ -9,6 +9,9 @@ import "./Header.scss";
 import { isEmpty } from "lodash";
 import { getDoctorInfor } from "../../services/userService";
 import { toast } from "react-toastify";
+import vn from "../../assets/vietnam.png";
+import ja from "../../assets/ja.png";
+import en from "../../assets/en.png";
 
 class Header extends Component {
   constructor(props) {
@@ -17,9 +20,11 @@ class Header extends Component {
       menuApp: [],
     };
   }
+
   handleChangeLanguage = (event) => {
     this.props.changeLanguageAppRedux(event.target.value);
   };
+
   async componentDidMount() {
     let { userInfo } = this.props;
     let menu = [];
@@ -36,19 +41,29 @@ class Header extends Component {
             menu = doctorMenu;
           }
         } else {
-          toast.error("Lỗi!");
+          toast.error("Error!");
         }
+      }
+      if (role === USER_ROLE.NEW_USER) {
+        toast.info(
+          "Please contact the system administrator for updated information."
+        );
       }
     }
     this.setState({
       menuApp: menu,
     });
   }
+  changeLanguage = (language) => {
+    //fire redux event : actions
+    if (language === "VN") this.props.changeLanguageAppRedux(LANGUAGES.VI);
+    if (language === "EN") this.props.changeLanguageAppRedux(LANGUAGES.EN);
+    if (language === "JA") this.props.changeLanguageAppRedux(LANGUAGES.JA);
+  };
   render() {
     const { processLogout, language, userInfo } = this.props;
     return (
       <div className="header-container">
-        {/* thanh navigator */}
         <div className="header-tabs-container">
           <Navigator menus={this.state.menuApp} />
         </div>
@@ -57,12 +72,103 @@ class Header extends Component {
             <FormattedMessage id="homeheader.welcome" />,{" "}
             {userInfo && userInfo.firstName ? userInfo.firstName : ""}!
           </span>
-          {/* nút logout */}
-          <select value={language} onChange={this.handleChangeLanguage}>
+          {/* <select value={language} onChange={this.handleChangeLanguage}>
             <option value={LANGUAGES.VI}>Tiếng Việt</option>
             <option value={LANGUAGES.EN}>English</option>
-            <option value={LANGUAGES.JA}>日本語</option>
-          </select>
+            <option value={LANGUAGES.JA}>日本語1</option>
+          </select> */}
+          <div className="change-language">
+            {language === LANGUAGES.VI ? (
+              <div className="dropdown-language">
+                <button className="dropdown-btn">
+                  <img src={vn}></img>
+                  <span>
+                    <FormattedMessage id={"homeheader.vn"} />
+                  </span>
+                </button>
+                <div className="dropdown-content">
+                  <button
+                    onClick={() => {
+                      this.changeLanguage("EN");
+                    }}>
+                    <img src={en}></img>
+                    <div>
+                      <FormattedMessage id={"homeheader.en"} />
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => {
+                      this.changeLanguage("JA");
+                    }}>
+                    <img src={ja}></img>
+                    <div>
+                      <FormattedMessage id={"homeheader.ja"} />
+                    </div>
+                  </button>
+                </div>
+              </div>
+            ) : language === LANGUAGES.EN ? (
+              <div className="dropdown-language">
+                <button className="dropdown-btn">
+                  <img src={en}></img>
+                  <span>
+                    <FormattedMessage id={"homeheader.en"} />
+                  </span>
+                </button>
+                <div className="dropdown-content">
+                  <button
+                    onClick={() => {
+                      this.changeLanguage("VN");
+                    }}>
+                    <img src={vn}></img>
+                    <div>
+                      <FormattedMessage id={"homeheader.vn"} />
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => {
+                      this.changeLanguage("JA");
+                    }}>
+                    <img src={ja}></img>
+                    <div>
+                      <FormattedMessage id={"homeheader.ja"} />
+                    </div>
+                  </button>
+                </div>
+              </div>
+            ) : language === LANGUAGES.JA ? (
+              <div className="dropdown-language">
+                <button className="dropdown-btn">
+                  <img src={ja}></img>
+                  <span>
+                    <FormattedMessage id={"homeheader.ja"} />
+                  </span>
+                </button>
+                <div className="dropdown-content">
+                  <button
+                    onClick={() => {
+                      this.changeLanguage("EN");
+                    }}>
+                    <img src={en}></img>
+                    <div>
+                      <FormattedMessage id={"homeheader.en"} />
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => {
+                      this.changeLanguage("VN");
+                    }}>
+                    <img src={vn}></img>
+                    <div>
+                      <FormattedMessage id={"homeheader.vn"} />
+                    </div>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
           <div
             className="btn btn-logout"
             onClick={processLogout}

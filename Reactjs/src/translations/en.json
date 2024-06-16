@@ -1,4 +1,22 @@
 {
+  "login": {
+    "forgot-password": "Forgot password",
+    "please-enter-your-email-and-click": "Please enter your email and click",
+    "link-via-email": "Link via Email",
+    "to-reset-your-password-for-your-account": "to reset your password for your account.",
+    "submit": "Submit",
+    "back-to-login": "Back to login",
+    "register-an-account": "Register an account",
+    "note": "Note: After successfully registering your account, please contact admin to update your information.",
+    "email": "Email: ",
+    "password": "Password: ",
+    "first-name": "First Name",
+    "last-name": "Last Name",
+    "user-name": "Username: ",
+    "login": "Login",
+    "forgot-your-password": "Forgot your password?",
+    "register": "Register?"
+  },
   "homeheader": {
     "specialty": "Specialty",
     "search-doctor": "Search doctors by specialty",
@@ -36,11 +54,16 @@
       "specialty": "Specialty",
       "manage-specialty": "Specialty management",
       "handbook": "Handbook",
-      "manage-handbook": "Handbook management"
+      "manage-handbook": "Handbook management",
+      "account-management": "Account management",
+      "change-password": "Change password"
     },
     "doctor": {
-      "manage-schedule": "Manage doctor's schedule",
-      "manage-patient": "Manage Patients for Medical Examination"
+      "manage-schedule": "Manage examination schedule",
+      "manage-patient": "Manage patient records",
+      "manage-posts": "Manage posts",
+      "manage-remote-appointment-schedule": "Manage remote appointment schedule",
+      "remote-patient-management": "Remote patient management"
     },
     "patient": {
       "scheduling-information": "Appointment Information",
@@ -91,7 +114,10 @@
     "specialty-management": "Specialty management",
     "name_of_specialty": "Specialty name",
     "specialized_image": "Specialty image",
-    "save": "Save"
+    "save": "Save",
+    "add-new-specialty": "Add new specialty",
+    "stt": "STT",
+    "action": "Action"
   },
   "manage-handbook": {
     "manage-handbook": " Handbook management",
@@ -120,11 +146,25 @@
     "no-data": "No data"
   },
   "manage-clinic": {
-    "manage-clinic": "Clinic management",
+    "manage-clinic": "Manage clinic",
+    "add-new-clinic": "Add new clinic",
     "name-clinic": "Clinic name",
     "image-clinic": "Clinic image",
     "address-clinic": "Clinic address",
-    "save": "Save"
+    "save": "Save",
+    "STT": "STT",
+    "action": "Action"
+  },
+  "change-password": {
+    "change-password": "Change password",
+    "current-password": "Current password: ",
+    "new-password": "New password: ",
+    "enter-a-new-password": "Enter new password again: ",
+    "submit": "Submit"
+  },
+  "login-home": {
+    "hello": "Hello",
+    "do-you-want": "What would you like to do today?"
   },
   "patient": {
     "detail-doctor": {
@@ -180,7 +220,8 @@
       "note": "Note",
       "specialty": "Select Specialty",
       "select-clinic": "Select Clinic",
-      "manage-user": "Manage user accounts"
+      "manage-user": "Manage user accounts",
+      "remote-examination": "Remote examination"
     }
   },
   "more": {
@@ -197,5 +238,15 @@
     "information-remote": "Telemedicine Appointment Information",
     "pay-when-booking": "Pay When Booking",
     "check-medical-schedule": "Check Medical Schedule"
-  }
+  },
+  "call-video": {
+    "telemedicine": "Telemedicine",
+    "your-screen": "Your screen",
+    "doctor's-screen": "Doctor's screen",
+    "wait": "Please wait for the call from the doctor..............",
+    "answer": "Answer",
+    "end-call": "End call",
+    "is-calling": "Calling...."
+}
+
 }

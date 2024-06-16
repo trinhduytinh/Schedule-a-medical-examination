@@ -71,6 +71,7 @@ class Login extends Component {
       }
       if (data && data.errCode === 0) {
         this.props.userLoginSuccess(data.user);
+        this.props.navigate("/system/home"); // Chuyển hướng đến trang LoginHome sau khi đăng nhập thành công
       }
     } catch (e) {
       if (e.response && e.response.data) {
@@ -116,15 +117,15 @@ class Login extends Component {
           this.setState({
             email: "",
           });
-          toast.success("Gửi email thành công!");
+          toast.success("Email sent successfully!");
         } else {
           toast.error(res.message);
         }
       } else {
-        toast.error("Vui lòng nhập đúng cú pháp!");
+        toast.error("Please enter the correct syntax!");
       }
     } else {
-      toast.error("Vui lòng nhập email!");
+      toast.error("Please enter an email address!");
     }
   };
   handleCreateUser = async () => {
@@ -141,16 +142,18 @@ class Login extends Component {
           lastName: lastName,
         });
         if (res && res.errCode === 0) {
-          console.log("check res", res);
-          toast.success("Đăng ký tài khoản thành công!");
+          toast.success(
+            "Account registration successful! Please contact admin to update information."
+          );
         } else {
           toast.error(res.errMessage);
         }
       } else {
-        toast.error("Vui lòng nhập email!");
+        toast.error("Please enter email!");
       }
     }
   };
+
   handleBackToLogin = () => {
     this.setState({
       isShowForgotPassword: false,
@@ -166,12 +169,20 @@ class Login extends Component {
           <div className="login-background">
             <div className="login-container">
               <div className="login-content row">
-                <div className="col-12 text-login">Quên mật khẩu</div>
+                <div className="col-12 text-login">
+                  <FormattedMessage id={"login.forgot-password"} />
+                </div>
                 <div className="col-12 form-group login-input">
                   <label>
-                    Vui lòng nhập email của bạn và nhấn vào{" "}
-                    <strong>"Liên kết qua Email"</strong> để đặt lại mật khẩu
-                    cho tài khoản của bạn.
+                    <FormattedMessage
+                      id={"login.please-enter-your-email-and-click"}
+                    />
+                    <strong>
+                      <FormattedMessage id={"login.link-via-email"} />
+                    </strong>
+                    <FormattedMessage
+                      id={"login.to-reset-your-password-for-your-account"}
+                    />
                   </label>
                   <input
                     type="text"
@@ -185,14 +196,14 @@ class Login extends Component {
                   <button
                     className="btn-login"
                     onClick={this.handleSubmitForgotPassword}>
-                    Submit
+                    <FormattedMessage id={"login.submit"} />
                   </button>
                 </div>
                 <div className="col-12">
                   <span
                     className="forgot-password"
                     onClick={this.handleBackToLogin}>
-                    Quay lại đăng nhập
+                    <FormattedMessage id={"login.back-to-login"} />
                   </span>
                 </div>
               </div>
@@ -202,13 +213,16 @@ class Login extends Component {
           <div className="login-background">
             <div className="login-container">
               <div className="login-content row">
-                <div className="col-12 text-login">Đăng ký tài khoản</div>
+                <div className="col-12 text-login">
+                  <FormattedMessage id={"login.register-an-account"} />
+                </div>
                 <div className="col-12 form-group login-input">
                   <label>
-                    Lưu ý sau khi đăng ký tài khoản thành công. Vui lòng liên hệ
-                    với admin cập nhập thông tin.
+                    <FormattedMessage id={"login.note"} />
                   </label>
-                  <label className="mt-3">Email</label>
+                  <label className="mt-3">
+                    <FormattedMessage id={"login.email"} />
+                  </label>
                   <input
                     type="text"
                     className="form-control"
@@ -218,7 +232,9 @@ class Login extends Component {
                   />
                 </div>
                 <div className="col-12 form-group login-input">
-                  <label>Password: </label>
+                  <label>
+                    <FormattedMessage id={"login.password"} />
+                  </label>
                   <div className="custom-input-password">
                     <input
                       type={this.state.isShowPassword ? "text" : "password"}
@@ -239,7 +255,9 @@ class Login extends Component {
                   </div>
                 </div>
                 <div className="col-6 form-group login-input">
-                  <label>First Name</label>
+                  <label>
+                    <FormattedMessage id={"login.first-name"} />
+                  </label>
                   <input
                     type="text"
                     className="form-control"
@@ -249,7 +267,9 @@ class Login extends Component {
                   />
                 </div>
                 <div className="col-6 form-group login-input">
-                  <label>Last name</label>
+                  <label>
+                    <FormattedMessage id={"login.last-name"} />
+                  </label>
                   <input
                     type="text"
                     className="form-control"
@@ -260,14 +280,14 @@ class Login extends Component {
                 </div>
                 <div className="col-12">
                   <button className="btn-login" onClick={this.handleCreateUser}>
-                    Submit
+                    <FormattedMessage id={"login.submit"} />
                   </button>
                 </div>
                 <div className="col-12">
                   <span
                     className="forgot-password"
                     onClick={this.handleBackToLogin}>
-                    Quay lại đăng nhập
+                    <FormattedMessage id={"login.back-to-login"} />
                   </span>
                 </div>
               </div>
@@ -277,9 +297,9 @@ class Login extends Component {
           <div className="login-background">
             <div className="login-container">
               <div className="login-content row">
-                <div className="col-12 text-login">Login</div>
+                <div className="col-12 text-login"><FormattedMessage id={"login.login"} /></div>
                 <div className="col-12 form-group login-input">
-                  <label>Username: </label>
+                  <label><FormattedMessage id={"login.user-name"} /></label>
                   <input
                     type="text"
                     className="form-control"
@@ -289,7 +309,7 @@ class Login extends Component {
                   />
                 </div>
                 <div className="col-12 form-group login-input">
-                  <label>Password: </label>
+                  <label><FormattedMessage id={"login.password"} /></label>
                   <div className="custom-input-password">
                     <input
                       type={this.state.isShowPassword ? "text" : "password"}
@@ -314,21 +334,21 @@ class Login extends Component {
                 </div>
                 <div className="col-12">
                   <button className="btn-login" onClick={this.handleLogin}>
-                    Login
+                    <FormattedMessage id={"login.login"}/>
                   </button>
                 </div>
                 <div className="col-9">
                   <span
                     className="forgot-password"
                     onClick={this.handleForgotPassword}>
-                    Forgot your password?
+                    <FormattedMessage id={"login.forgot-your-password"}/>
                   </span>
                 </div>
                 <div className="col-3">
                   <span
                     className="forgot-password"
                     onClick={this.handleRegister}>
-                    Đăng ký?
+                    <FormattedMessage id={"login.register"}/>
                   </span>
                 </div>
               </div>

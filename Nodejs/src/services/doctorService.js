@@ -465,7 +465,6 @@ let getDetailDoctorById = (inputId) => {
 };
 let bulkCreateSchedule = (data) => {
   return new Promise(async (resolve, reject) => {
-    console.log("check data bulkCreateSchedule", data);
     try {
       if (!data.arrSchedule || !data.doctorID || !data.formateDate) {
         resolve({
@@ -881,7 +880,26 @@ let totalStars = async (doctorId, newStars) => {
     }
   });
 };
-
+let deleteBookingDoctor = (id) => {
+  return new Promise(async (resolve, reject) => {
+    let booking = await db.Booking.findOne({
+      where: { id: id },
+    });
+    if (!booking) {
+      resolve({
+        errCode: 2,
+        errMessage: `The booking isn't exist`,
+      });
+    }
+    await db.Booking.destroy({
+      where: { id: id },
+    });
+    resolve({
+      errCode: 0,
+      errMessage: `The booking is deleted`,
+    });
+  });
+};
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
   getAllDoctor: getAllDoctor,
@@ -896,4 +914,5 @@ module.exports = {
   getStars: getStars,
   totalStars: totalStars,
   updateSchedule: updateSchedule,
+  deleteBookingDoctor: deleteBookingDoctor,
 };

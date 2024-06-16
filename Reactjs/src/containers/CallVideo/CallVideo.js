@@ -6,8 +6,9 @@ import Button from "@material-ui/core/Button";
 import HomeHeader from "../HomePage/HomeHeader";
 import "./CallVideo.scss";
 import HomeFooter from "../HomePage/HomeFooter";
+import { FormattedMessage } from "react-intl";
 
-const socket = io.connect("http://localhost:8081");
+const socket = io.connect(process.env.REACT_APP_SOCKET_IO_URL);
 
 function CallVideo() {
   const [me, setMe] = useState("");
@@ -38,9 +39,8 @@ function CallVideo() {
       socket.on("tokenVerified", (data) => {
         if (data.success) {
           setMe(data.patientId); // Đặt ID bệnh nhân thành mã token
-          console.log("Token verified", data);
         } else {
-          alert("Token không hợp lệ hoặc đã hết hạn");
+          alert("Invalid or expired token!");
         }
       });
     }
@@ -85,10 +85,14 @@ function CallVideo() {
     <>
       <HomeHeader />
       <div className="container-call-video container-fluid">
-        <div className="title">Khám bệnh từ xa</div>
+        <div className="title">
+          <FormattedMessage id={"call-video.telemedicine"} />
+        </div>
         <div className="video-container row">
           <div className="video col-1 me-3">
-            <span className="title-video pb-2">Màn hình của bạn</span>
+            <span className="title-video pb-2">
+              <FormattedMessage id={"call-video.your-screen"} />
+            </span>
             {stream && (
               <video
                 playsInline
@@ -100,7 +104,9 @@ function CallVideo() {
             )}
           </div>
           <div className="video col">
-            <span className="title-video">Màn hình của bác sĩ</span>
+            <span className="title-video">
+              <FormattedMessage id={"call-video.doctor's-screen"} />
+            </span>
             {callAccepted && !callEnded ? (
               <video
                 playsInline
@@ -115,37 +121,41 @@ function CallVideo() {
                     <span class="visually-hidden">Loading...</span>
                   </div>
                 </div>
-                <h4>Vui lòng đợi cuộc gọi từ bác sĩ.....</h4>
+                <h4>
+                  <FormattedMessage id={"call-video.wait"} />
+                </h4>
               </div>
             )}
           </div>
           <div className="myId col-2">
-          {receivingCall && !callAccepted ? (
-            <div className="caller">
-              <h1>{name} is calling...</h1>
-              <Button variant="contained" color="primary" onClick={answerCall}>
-                Answer
-              </Button>
+            {receivingCall && !callAccepted ? (
+              <div className="caller">
+                <h1>{name} is calling...</h1>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={answerCall}>
+                  <FormattedMessage id={"call-video.answer"} />
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={leaveCall}
+                  style={{ marginLeft: "10px" }}>
+                  <FormattedMessage id={"call-video.end-call"} />
+                </Button>
+              </div>
+            ) : (
               <Button
                 variant="contained"
                 color="secondary"
                 onClick={leaveCall}
-                style={{ marginLeft: "10px" }}>
-                End Call
+                style={{ marginTop: "10px" }}>
+                <FormattedMessage id={"call-video.end-call"} />
               </Button>
-            </div>
-          ) : (
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={leaveCall}
-              style={{ marginTop: "10px" }}>
-              End Call
-            </Button>
-          )}
+            )}
+          </div>
         </div>
-        </div>
-        
       </div>
     </>
   );

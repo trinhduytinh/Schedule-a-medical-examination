@@ -11,8 +11,6 @@ import { LANGUAGES } from "../../../../utils";
 import Select from "react-select";
 import {
   createPaymentBookingRemote,
-  postPatientBookAppointment,
-  postPatientBookAppointmentRemote,
 } from "../../../../services/userService";
 import { toast } from "react-toastify";
 import moment from "moment";
