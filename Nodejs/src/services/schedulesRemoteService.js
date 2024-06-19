@@ -413,7 +413,7 @@ let getListPatientRemoteForDoctor = (doctorId, date) => {
             {
               model: db.User,
               as: "patientData",
-              attributes: ["email", "firstName", "address", "gender"],
+              attributes: ["email", "firstName", "address", "gender", "phonenumber"],
               include: [
                 {
                   model: db.Allcode,
@@ -452,50 +452,72 @@ let createPaymentBookingRemote = async (data) => {
           errMessage: "Missing required parameter",
         });
       } else {
-        let inforDoctor = await db.Doctor_Infor.findOne({
-          where: { doctorId: data.doctorId },
-          include: [
-            {
-              model: db.Allcode,
-              as: "priceTypeData",
-              attributes: ["valueEn", "valueJa", "valueVi"],
-            },
-          ],
-          raw: true,
+        let scheduleRemote = await db.Schedule_Remote.findOne({
+          where: {
+            doctorID: data.doctorId,
+            date: data.date,
+            timeType: data.timeType,
+          },
         });
-
-        if (!inforDoctor) {
-          return resolve({
+        if (!scheduleRemote) {
+          resolve({
             errCode: 2,
-            errMessage: "Doctor not found",
+            errMessage: "Schedule not found",
+          });
+        } else if (scheduleRemote.currentNumber >= scheduleRemote.maxNumber) {
+          resolve({
+            errCode: 3,
+            errMessage: "Booking is full",
+          });
+        } else {
+          let inforDoctor = await db.Doctor_Infor.findOne({
+            where: { doctorId: data.doctorId },
+            include: [
+              {
+                model: db.Allcode,
+                as: "priceTypeData",
+                attributes: ["valueEn", "valueJa", "valueVi"],
+              },
+            ],
+            raw: true,
+          });
+
+          if (!inforDoctor) {
+            return resolve({
+              errCode: 2,
+              errMessage: "Doctor not found",
+            });
+          }
+          const encodedData = encodeURIComponent(JSON.stringify(data));
+          const currentTime = Math.floor(Date.now() / 1000); // Thời gian hiện tại (Unix Timestamp)
+          const expiredAt = currentTime + 5 * 60; // Thời gian hết hạn sau 5 phút
+
+          const body = {
+            orderCode: Date.now(),
+            amount: +inforDoctor["priceTypeData.valueVi"],
+            description: "Thanh toán hóa đơn",
+            buyerName: data.fullName,
+            buyerEmail: data.email,
+            buyerPhone: data.phoneNumber,
+            buyerAddress: data.address,
+            items: [
+              {
+                name: `Bác sĩ: ${data.doctorName}`,
+                quantity: 1,
+                price: +inforDoctor["priceTypeData.valueVi"],
+              },
+            ],
+            returnUrl: `${process.env.URL_REACT}/pay-success?data=${encodedData}`,
+            cancelUrl: `${process.env.URL_REACT}/pay-cancel`,
+            expiredAt: expiredAt, // Thêm thuộc tính expiredAt vào đối tượng body
+          };
+
+          const paymentLink = await payOS.createPaymentLink(body);
+          resolve({
+            errCode: 0,
+            paymentLink: paymentLink,
           });
         }
-        const encodedData = encodeURIComponent(JSON.stringify(data));
-        const body = {
-          orderCode: Date.now(),
-          // amount: inforDoctor["priceTypeData.valueVi"],
-          amount: 1,
-          description: "Thanh toán hóa đơn",
-          buyerName: data.fullName,
-          buyerEmail: data.email,
-          buyerPhone: data.phoneNumber,
-          buyerAddress: data.address,
-          items: [
-            {
-              name: `Bác sĩ: ${data.doctorName}`,
-              quantity: 1,
-              price: 10000,
-            },
-          ],
-          returnUrl: `${process.env.URL_REACT}/pay-cancel`,
-          cancelUrl: `${process.env.URL_REACT}/pay-success?data=${encodedData}`,
-        };
-
-        const paymentLink = await payOS.createPaymentLink(body);
-        resolve({
-          errCode: 0,
-          paymentLink: paymentLink,
-        });
       }
     } catch (e) {
       console.error("Error in createPaymentBookingRemote:", e);

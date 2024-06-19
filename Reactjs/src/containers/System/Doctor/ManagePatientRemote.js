@@ -167,6 +167,9 @@ class ManagePatientRemote extends Component {
                         <FormattedMessage id={"manage-patient.address"} />
                       </th>
                       <th>
+                        <FormattedMessage id={"manage-patient.sdt"} />
+                      </th>
+                      <th>
                         <FormattedMessage id={"manage-patient.sex"} />
                       </th>
                       <th>
@@ -175,7 +178,10 @@ class ManagePatientRemote extends Component {
                       <th>
                         <FormattedMessage id={"manage-patient.reason"} />
                       </th>
-                      <th>Mã ID</th>
+                      <th>
+                        {" "}
+                        <FormattedMessage id={"manage-patient.id"} />
+                      </th>
                       <th>
                         <FormattedMessage id={"manage-patient.action"} />
                       </th>
@@ -203,6 +209,7 @@ class ManagePatientRemote extends Component {
                             <td>{time}</td>
                             <td>{item.patientData.firstName}</td>
                             <td>{item.patientData.address}</td>
+                            <td>{item.patientData.phonenumber}</td>
                             <td>{gender}</td>
                             <td>{this.convertTime(item.birthday)}</td>
                             <td>{item.reason}</td>
@@ -231,7 +238,7 @@ class ManagePatientRemote extends Component {
                       })
                     ) : (
                       <tr>
-                        <td colSpan={9} style={{ textAlign: "center" }}>
+                        <td colSpan={10} style={{ textAlign: "center" }}>
                           <FormattedMessage id={"manage-patient.no-data"} />
                         </td>
                       </tr>

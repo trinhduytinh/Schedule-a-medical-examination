@@ -85,9 +85,3 @@
   display: flex;
   gap: 10px; /* Khoảng cách giữa các nút Button */
 }
-div._loading_overlay_wrapper {
-  position: unset !important;
-  ._loading_overlay_overlay{
-    z-index: 10000;
-  }
-}

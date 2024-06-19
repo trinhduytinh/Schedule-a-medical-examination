@@ -34,6 +34,7 @@
       justify-content: space-between;
       align-items: center;
       .child-content {
+        cursor: pointer;
         .subs-title {
           font-weight: 400;
           font-size: 12px;
@@ -228,6 +229,7 @@
       justify-content: center;
       .option-child {
         width: 100px;
+        cursor: pointer;
         .icon-child {
           background: #d9d9d9;
           width: 80px;

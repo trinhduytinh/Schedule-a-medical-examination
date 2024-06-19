@@ -143,7 +143,9 @@
     "reason": "Reason for examination",
     "action": "Action",
     "submit": "Submit",
-    "no-data": "No data"
+    "no-data": "No data",
+    "id": "ID Code",
+    "sdt": "Phone Number"
   },
   "manage-clinic": {
     "manage-clinic": "Manage clinic",
@@ -247,6 +249,5 @@
     "answer": "Answer",
     "end-call": "End call",
     "is-calling": "Calling...."
-}
-
+  }
 }

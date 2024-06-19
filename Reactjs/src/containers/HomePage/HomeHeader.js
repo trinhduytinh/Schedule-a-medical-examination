@@ -110,6 +110,21 @@ class HomeHeader extends Component {
       isOpenModalBooking: true,
     });
   };
+  handleViewMoreClinic = () => {
+    if (this.props.history) {
+      this.props.history.push(`/more-clinic`);
+    }
+  };
+  handleViewMoreSpecialty = () => {
+    if (this.props.history) {
+      this.props.history.push(`more-specialty`);
+    }
+  };
+  handleViewMoreDoctor = () => {
+    if (this.props.history) {
+      this.props.history.push(`more-doctor`);
+    }
+  };
   render() {
     let language = this.props.language;
     let { isOpenModalBooking } = this.state;
@@ -143,7 +158,9 @@ class HomeHeader extends Component {
                 onClick={() => this.returnToHome()}></div>
             </div>
             <div className="center-content">
-              <div className="child-content">
+              <div
+                className="child-content"
+                onClick={() => this.handleViewMoreSpecialty()}>
                 <div>
                   <b>
                     <FormattedMessage id={"homeheader.specialty"} />
@@ -153,7 +170,9 @@ class HomeHeader extends Component {
                   <FormattedMessage id={"homeheader.search-doctor"} />
                 </div>
               </div>
-              <div className="child-content">
+              <div
+                className="child-content"
+                onClick={() => this.handleViewMoreClinic()}>
                 <div>
                   <b>
                     <FormattedMessage id={"homeheader.health-facility"} />
@@ -163,7 +182,9 @@ class HomeHeader extends Component {
                   <FormattedMessage id={"homeheader.select-room"} />
                 </div>
               </div>
-              <div className="child-content">
+              <div
+                className="child-content"
+                onClick={() => this.handleViewMoreDoctor()}>
                 <div>
                   <b>
                     <FormattedMessage id={"homeheader.doctor"} />
@@ -297,7 +318,9 @@ class HomeHeader extends Component {
             </div>
             <div className="content-down">
               <div className="options">
-                <div className="option-child">
+                <div
+                  className="option-child"
+                  onClick={() => this.handleViewMoreSpecialtyRemote()}>
                   <div className="icon-child">
                     <i className="fas fa-mobile-alt"></i>
                   </div>

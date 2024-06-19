@@ -33,19 +33,19 @@ let postBookAppointment = (data) => {
           where: {
             doctorID: data.doctorId,
             date: data.date,
-            timeType: data.timeType
-          }
+            timeType: data.timeType,
+          },
         });
 
         if (!schedule) {
           resolve({
             errCode: 2,
-            errMessage: "Schedule not found"
+            errMessage: "Schedule not found",
           });
         } else if (schedule.currentNumber >= schedule.maxNumber) {
           resolve({
             errCode: 3,
-            errMessage: "Booking is full"
+            errMessage: "Booking is full",
           });
         } else {
           // Generate token
@@ -127,8 +127,6 @@ let postBookAppointment = (data) => {
     }
   });
 };
-
-
 
 let postVerifyBookAppointment = (data) => {
   return new Promise(async (resolve, reject) => {

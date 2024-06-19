@@ -41,7 +41,6 @@ import PaySuccess from "./Patient/Pay/PaySuccess";
 import PayCancellation from "./Patient/Pay/PayCancellation";
 import ChangPassword from "./Auth/ChangPassword";
 
-
 class App extends Component {
   handlePersistorState = () => {
     const { persistor } = this.props;
@@ -79,28 +78,52 @@ class App extends Component {
                     component={userIsAuthenticated(System)}
                   />
                   <Route
-                    path={'/doctor'}
+                    path={"/doctor"}
                     component={userIsAuthenticated(Doctor)}
                   />
                   <Route path={path.HOMEPAGE} component={HomePage} />
                   <Route path={path.DETAIL_DOCTOR} component={DetailDoctor} />
-                  <Route path={path.DETAIL_SPECIALTY} component={DetailSpecialty} />
-                  <Route path={path.VERIFY_EMAIL_BOOKING} component={VerifyEmail} />
+                  <Route
+                    path={path.DETAIL_SPECIALTY}
+                    component={DetailSpecialty}
+                  />
+                  <Route
+                    path={path.VERIFY_EMAIL_BOOKING}
+                    component={VerifyEmail}
+                  />
                   <Route path={path.DETAIL_Clinic} component={DetailClinic} />
-                  <Route path={path.DETAIL_HandBook} component={DetailsHandbook} />
-                  <Route path={path.MORE_SPECIALTY} component={MoreSpecialty}/>
-                  <Route path={path.MORE_CLINIC} component={MoreClinic}/>
-                  <Route path={path.MORE_HANDBOOK} component={MoreHandbook}/>
-                  <Route path={path.MORE_DOCTOR} component={MoreDoctor}/>
-                  <Route path={path.MORE_SPECIALTY_REMOTE} component={SpecialtyRemote}/>
-                  <Route path={path.DETAIL_SPECIALTY_REMOTE} component={DetailSpecialtyRemote} />
-                  <Route path={path.DETAIL_DOCTOR_REMOTE} component={DetailDoctorRemote} />
-                  <Route path={path.VERIFY_EMAIL_BOOKING_REMOTE} component={CallVideo} />
+                  <Route
+                    path={path.DETAIL_HandBook}
+                    component={DetailsHandbook}
+                  />
+                  <Route path={path.MORE_SPECIALTY} component={MoreSpecialty} />
+                  <Route path={path.MORE_CLINIC} component={MoreClinic} />
+                  <Route path={path.MORE_HANDBOOK} component={MoreHandbook} />
+                  <Route path={path.MORE_DOCTOR} component={MoreDoctor} />
+                  <Route
+                    path={path.MORE_SPECIALTY_REMOTE}
+                    component={SpecialtyRemote}
+                  />
+                  <Route
+                    path={path.DETAIL_SPECIALTY_REMOTE}
+                    component={DetailSpecialtyRemote}
+                  />
+                  <Route
+                    path={path.DETAIL_DOCTOR_REMOTE}
+                    component={DetailDoctorRemote}
+                  />
+                  <Route
+                    path={path.VERIFY_EMAIL_BOOKING_REMOTE}
+                    component={CallVideo}
+                  />
                   <Route path={path.DOCTOR_CALL} component={DoctorCall} />
-                  <Route path={path.MANAGE_PATIENT_REMOTE} component={ManagePatientRemote} />
-                  <Route path={path.PAY_SUCCESS} component = {PaySuccess}/>
-                  <Route path={path.PAY_CANCEL} component = {PayCancellation}/>
-                  <Route path={path.CHANG_PASSWORD} component = {ChangPassword}/>
+                  <Route
+                    path={path.MANAGE_PATIENT_REMOTE}
+                    component={ManagePatientRemote}
+                  />
+                  <Route path={path.PAY_SUCCESS} component={PaySuccess} />
+                  <Route path={path.PAY_CANCEL} component={PayCancellation} />
+                  <Route path={path.CHANG_PASSWORD} component={ChangPassword} />
                 </Switch>
               </CustomScrollbars>
             </div>

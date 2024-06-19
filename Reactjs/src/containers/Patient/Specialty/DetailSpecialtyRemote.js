@@ -174,7 +174,6 @@ class DetailSpecialtyRemote extends Component {
               let doctorLocation = dataDetailSpecialty.doctorSpecialty.find(
                 (doctor) => doctor.doctorId === item
               ).provinceId;
-              console.log("isRemote for doctorId", item, "is", true); // Thêm dòng này
               return (
                 <div className="each-doctor" key={index}>
                   <div className="dt-content-left">

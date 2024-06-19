@@ -143,7 +143,9 @@
     "reason": "Lý do khám",
     "action": "Hành động",
     "submit": "Xác nhận",
-    "no-data": "Không có dữ liệu"
+    "no-data": "Không có dữ liệu",
+    "id":" Mã ID",
+    "sdt": "SĐT" 
   },
   "manage-clinic": {
     "manage-clinic": "Quản lý phòng khám",

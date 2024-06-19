@@ -164,6 +164,9 @@ class ManagePatient extends Component {
                         <FormattedMessage id={"manage-patient.address"} />
                       </th>
                       <th>
+                        <FormattedMessage id={"manage-patient.sdt"} />
+                      </th>
+                      <th>
                         <FormattedMessage id={"manage-patient.sex"} />
                       </th>
                       <th>
@@ -179,6 +182,7 @@ class ManagePatient extends Component {
                     </tr>
                     {dataPatient && dataPatient.length > 0 ? (
                       dataPatient.map((item, index) => {
+                        console.log("check item", item);
                         let time, gender;
                         switch (language) {
                           case LANGUAGES.VI:
@@ -200,6 +204,7 @@ class ManagePatient extends Component {
                             <td>{time}</td>
                             <td>{item.patientData.firstName}</td>
                             <td>{item.patientData.address}</td>
+                            <td>{item.patientData.phonenumber}</td>
                             <td>{gender}</td>
                             <td>{this.convertTime(item.birthday)}</td>
                             <td>{item.reason}</td>
@@ -207,7 +212,9 @@ class ManagePatient extends Component {
                               <button
                                 className="mp-btn-confirm"
                                 onClick={() => this.handleBtnConfirm(item)}>
-                                 <FormattedMessage id={"manage-patient.submit"} />
+                                <FormattedMessage
+                                  id={"manage-patient.submit"}
+                                />
                               </button>
                               <button
                                 className="mp-btn-delete"
@@ -220,8 +227,8 @@ class ManagePatient extends Component {
                       })
                     ) : (
                       <tr>
-                        <td colSpan={8} style={{ textAlign: "center" }}>
-                        <FormattedMessage id={"manage-patient.no-data"} />
+                        <td colSpan={9} style={{ textAlign: "center" }}>
+                          <FormattedMessage id={"manage-patient.no-data"} />
                         </td>
                       </tr>
                     )}

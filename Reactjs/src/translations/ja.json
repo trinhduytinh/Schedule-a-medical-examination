@@ -143,7 +143,9 @@
     "reason": "受診理由",
     "action": "アクション",
     "submit": "提出",
-    "no-data": "データがありません"
+    "no-data": "データがありません",
+    "id": "ID コード",
+    "sdt": "電話番号"
   },
   "manage-clinic": {
     "manage-clinic": "クリニック管理",

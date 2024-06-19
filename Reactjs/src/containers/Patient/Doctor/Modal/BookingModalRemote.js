@@ -9,9 +9,7 @@ import DatePicker from "../../../../components/Input/DatePicker";
 import * as actions from "../../../../store/actions";
 import { LANGUAGES } from "../../../../utils";
 import Select from "react-select";
-import {
-  createPaymentBookingRemote,
-} from "../../../../services/userService";
+import { createPaymentBookingRemote } from "../../../../services/userService";
 import { toast } from "react-toastify";
 import moment from "moment";
 import LoadingOverlay from "react-loading-overlay";
@@ -216,7 +214,6 @@ class BookingModalRemote extends Component {
           timeString: timeString,
           doctorName: doctorName,
         });
-
         if (resPayment && resPayment.errCode === 0) {
           toast.success("Booking a new appointment succeed!");
           window.location.href = resPayment.paymentLink.checkoutUrl; // Redirect to payment link
@@ -304,7 +301,7 @@ class BookingModalRemote extends Component {
             <div className="booking-modal-content">
               <div className="booking-modal-header">
                 <span className="left">
-                  <FormattedMessage id={"pay.information-remote"}/>
+                  <FormattedMessage id={"pay.information-remote"} />
                 </span>
                 <span className="right" onClick={closeBookingClose}>
                   <i className="fas fa-times"></i>
@@ -386,6 +383,7 @@ class BookingModalRemote extends Component {
                       onChange={this.handleOnCHangeDatePicker}
                       className="form-control"
                       value={this.state.birthday}
+                      maxDate={new Date()} // restrict to current date
                     />
                   </div>
                   <div className="form-group col-6">
